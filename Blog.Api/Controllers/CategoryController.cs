@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.APi.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;

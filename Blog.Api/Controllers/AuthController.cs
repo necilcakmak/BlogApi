@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.APi.Controllers
 {
-    [Route("api/[controller]")]
-    [AllowAnonymous]
     [ApiController]
+    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [ApiVersion("1.1")]
+    [AllowAnonymous]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
@@ -16,6 +18,7 @@ namespace Blog.APi.Controllers
             _authService = authService;
         }
 
+        [MapToApiVersion("1.0")]
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
@@ -25,6 +28,13 @@ namespace Blog.APi.Controllers
                 return BadRequest(res);
             }
             return Ok(res);
+        }
+
+        [MapToApiVersion("1.1")]
+        [HttpPost("login")]
+        public IActionResult LoginV2(LoginDto loginDto)
+        {
+            return Ok("login test V2");
         }
 
         [HttpPost("register")]

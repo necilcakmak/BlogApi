@@ -4,9 +4,11 @@ using Blog.Business;
 using Blog.Business.AutoMapper;
 using Blog.Core.Utilities;
 using Blog.Dto.Validators.Auth;
+using Blog.Repository.EntityFramework.Context;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -26,14 +28,23 @@ builder.Services.AddControllers(options =>
 
 #endregion
 
+#region api versioning
+builder.Services.AddApiVersioning(v =>
+{
+    v.DefaultApiVersion = new ApiVersion(1, 0);//default version
+    v.AssumeDefaultVersionWhenUnspecified = true;
+    v.ReportApiVersions = true;//notify client of versions 
+    v.ApiVersionReader = new HeaderApiVersionReader("api-version");
+});
 builder.Services.AddEndpointsApiExplorer();
+#endregion
 
-#region swagger ayarlari
+#region swagger settings
 builder.Services.AddSwaggerGen(swagger =>
 {
     swagger.SwaggerDoc("v1", new OpenApiInfo
     {
-        Version = "v1",
+        Version = "V1",
         Title = "Blog Api",
         Description = "ASP.NET Core 6.0 Web API"
     });
@@ -57,13 +68,13 @@ builder.Services.AddSwaggerGen(swagger =>
                                     Id = "Bearer"
                                 }
                             },
-                            new string[] {}
+                            Array.Empty<string>()
                     }
                 });
 });
 #endregion
 
-#region token ayarlari
+#region token settings
 var tokenOptions = builder.Configuration.GetSection(key: "TokenOptions").Get<TokenOptions>();
 var key = Encoding.ASCII.GetBytes(tokenOptions.SecurityKey);
 builder.Services.AddAuthentication(x =>
@@ -89,11 +100,12 @@ builder.Services.AddAuthentication(x =>
 });
 #endregion
 
-#region servisleri inject edelim
-builder.Services.LoadMyServices(builder.Configuration.GetConnectionString("BlogDB"));
+#region inject my services
+string dbConnection = builder.Configuration.GetConnectionString("BlogDB");
+builder.Services.LoadMyServices(dbConnection);
 #endregion
 
-#region auto mapper ekleyelim
+#region add auto mapper
 builder.Services.AddAutoMapper(typeof(MappingProfiles));
 #endregion
 
@@ -103,19 +115,23 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
 });
-/////////////////////////////////////////////////////////////////////////////////////////////////
-var app = builder.Build();
 
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.DocumentTitle = "Blog Api UI";
+    });
 }
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "Images")),
-    RequestPath = "/Images"
-});
+// app.UseStaticFiles(new StaticFileOptions
+// {
+//     FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "Images")),
+//     RequestPath = "/Images"
+// });
 #region cors ayarlari
 app.UseCors(options => options
 .WithOrigins(new[] { "http://localhost:8080", "http://localhost:4000" })
@@ -131,5 +147,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
+using (var serviceScope = app.Services.CreateScope())
+{
+    var context = serviceScope.ServiceProvider.GetRequiredService<BlogDbContext>();
+    context.Database.EnsureCreated();
+}
 app.Run();

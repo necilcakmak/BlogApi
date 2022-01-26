@@ -29,6 +29,19 @@ namespace Blog.Repository.EntityFramework.Concrete.UnitOfWork
             await _blogDbContext.DisposeAsync();
         }
 
+        public void Save()
+        {
+            var entries = _blogDbContext.ChangeTracker.Entries().Where(E => E.State == EntityState.Added || E.State == EntityState.Modified).ToList();
+            foreach (var entityEntry in entries)
+            {
+                if (entityEntry.State == EntityState.Modified)
+                {
+                    entityEntry.Property(BaseEntityType.UpdatedDate).CurrentValue = DateTime.Now.ToUniversalTime();
+                }
+            }
+            _blogDbContext.SaveChanges();
+        }
+
         public async Task<int> SaveAsync()
         {
             var entries = _blogDbContext.ChangeTracker.Entries().Where(E => E.State == EntityState.Added || E.State == EntityState.Modified).ToList();

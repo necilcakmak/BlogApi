@@ -13,19 +13,19 @@ namespace Blog.Repository.EntityFramework.Concrete
 {
     public class CommentRepository : EfRepositoryBase<Comment>, ICommentRepository
     {
+        BlogDbContext _dbContext;
         public CommentRepository(BlogDbContext context) : base(context)
         {
             UserId = BlogDbContext.UserId;
+            _dbContext = context;
         }
 
         public async Task<bool> DeleteMyComment(Guid id)
         {
-            IQueryable<Comment> query = _context.Set<Comment>();
-            query = query.Where(x => x.Id == id && x.UserId == UserId);
-            var comment = await query.FirstOrDefaultAsync();
+            var comment = await _dbContext.Comments.Where(x => x.Id == id && x.UserId == UserId).FirstOrDefaultAsync();
             if (comment != null)
             {
-                await Task.Run(() => { _context.Set<Comment>().Remove(comment); });
+                await Task.Run(() => { _dbContext.Comments.Remove(comment); });
                 return true;
             }
             return false;

@@ -1,19 +1,23 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
-COPY *.sln .
-COPY ["Blog.Api/Blog.Api.csproj", "Blog.Api/"]
-COPY ["Blog.Business/Blog.Business.csproj", "Blog.Business/"]
-COPY ["Blog.Dto/Blog.Dto.csproj", "Blog.Dto/"]
-COPY ["Blog.Core/Blog.Core.csproj", "Blog.Core/"]
-COPY ["Blog.Entities/Blog.Entities.csproj", "Blog.Entities/"]
-COPY ["Blog.Repository/Blog.Repository.csproj", "Blog.Repository/"]
 
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["Blog.Api/Blog.Api.csproj", "Blog.Api/"]
+COPY ["Blog.Core/Blog.Core.csproj", "Blog.Core/"]
+COPY ["Blog.Dto/Blog.Dto.csproj", "Blog.Dto/"]
+COPY ["Blog.Entities/Blog.Entities.csproj", "Blog.Entities/"]
+COPY ["Blog.Business/Blog.Business.csproj", "Blog.Business/"]
+COPY ["Blog.Repository/Blog.Repository.csproj", "Blog.Repository/"]
 RUN dotnet restore "Blog.Api/Blog.Api.csproj"
 COPY . .
-WORKDIR "/app/Blog.Api"
-RUN dotnet publish -c Release -o out
+WORKDIR "/src/Blog.Api"
+RUN dotnet build "Blog.Api.csproj" -c Release -o /app/build
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
+FROM build AS publish
+RUN dotnet publish "Blog.Api.csproj" -c Release -o /app/publish
+
+FROM base AS final
 WORKDIR /app
-COPY --from=build /app/Blog.Api/out ./
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Blog.Api.dll"]

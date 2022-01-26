@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.APi.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -16,7 +18,6 @@ namespace Blog.APi.Controllers
             _userService = userService;
         }
 
-        [Authorize]
         [HttpPut("updatemyinformation")]
         public async Task<IActionResult> UpdateMyInformation(UserUpdateDto userUpdateDto)
         {
@@ -28,7 +29,6 @@ namespace Blog.APi.Controllers
             return Ok(res);
         }
 
-        [Authorize]
         [HttpGet("getmyinformation")]
         public async Task<IActionResult> UserInformation()
         {

@@ -8,30 +8,32 @@ namespace Blog.Repository.EntityFramework.Concrete
 {
     public class ArticleRepository : EfRepositoryBase<Article>, IArticleRepository
     {
+        BlogDbContext _blogDbContext;
         public ArticleRepository(BlogDbContext context) : base(context)
         {
             UserId = BlogDbContext.UserId;
+            _blogDbContext = context;
         }
 
         public async Task<bool> DeleteMyArticle(Guid id)
         {
-            IQueryable<Article> query = _context.Set<Article>();
-            query = query.Where(x => x.UserId == UserId && x.Id == id);
-            var article = await query.FirstOrDefaultAsync();
+            var article = await _blogDbContext.Articles.Where(x => x.UserId == UserId && x.Id == id).FirstOrDefaultAsync();
             if (article != null)
             {
-                await Task.Run(() => { _context.Set<Article>().Remove(article); });
+                await Task.Run(() => { _blogDbContext.Articles.Remove(article); });
                 return true;
             }
             return false;
-
         }
 
         public async Task<List<Article>> GetMyArticleAsync()
         {
-            IQueryable<Article> query = _context.Set<Article>();
-            query = query.Where(x => x.UserId == UserId).Include(x => x.Category).ThenInclude(x => x.MainCategory).Include(x => x.Comments);
-            return await query.ToListAsync();
+            var articles = await _blogDbContext.Articles.Where(x => x.UserId == UserId)
+                .Include(x => x.Category)
+                .ThenInclude(x => x.MainCategory)
+                .Include(x => x.Comments)
+                .ToListAsync();
+            return articles;
         }
     }
 }

@@ -1,10 +1,16 @@
 ﻿using AutoMapper;
+using Blog.Api.Controllers;
+using Blog.APi.Controllers;
 using Blog.ApiTest.TestSetup;
 using Blog.Business.Concrete;
+using Blog.Core.Results;
+using Blog.Dto.Category;
 using Blog.Dto.MainCategory;
 using Blog.Entities.Entities;
 using Blog.Repository.EntityFramework.Abstract.UnitOfWork;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using Xunit;
 
 namespace Blog.ApiTest.ServicesTest
@@ -40,6 +46,26 @@ namespace Blog.ApiTest.ServicesTest
             //Assert
             res.Success.Should().BeFalse();
             res.Message.Should().Be("MainCategoryNameUsed");
+        }
+
+        [Fact]
+        public async void WhenValidInputsAreGiven_MainCategory_ShouldBeCreated()
+        {
+            //Arrange
+            MainCategoryAddDto mainCategoryAddDto = new()
+            {
+                MainCategoryName = "test name"
+            };
+
+            //Act
+            MainCategoryService command = new(_unitOfWork, _mapper);
+            await command.Add(mainCategoryAddDto);
+
+            //Assert
+            var mainCategory = await _unitOfWork.MainCategories.GetAllAsync();
+            var category = mainCategory.Last();
+            category.Should().NotBeNull();
+            category.MainCategoryName.Should().Be(mainCategoryAddDto.MainCategoryName);
         }
     }
 }
