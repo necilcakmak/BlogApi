@@ -10,6 +10,8 @@ services:
       dockerfile: Blog.Api/Dockerfile
     environment:
       ConnectionStrings:BlogDB: "Server=pqDb;port=5432;database=BlogDB;username=root;password=1234"
+    volumes:
+      - upload_images:/BlogApi/images
     ports: 
       - 80:80
 
@@ -38,5 +40,6 @@ services:
       - "5050:80"
       
 volumes:
+  upload_images:
   db_volume:
   dbadmin_volume:

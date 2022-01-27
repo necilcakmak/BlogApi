@@ -9,7 +9,6 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -127,11 +126,7 @@ if (app.Environment.IsDevelopment())
         options.DocumentTitle = "Blog Api UI";
     });
 }
-// app.UseStaticFiles(new StaticFileOptions
-// {
-//     FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "Images")),
-//     RequestPath = "/Images"
-// });
+
 #region cors ayarlari
 app.UseCors(options => options
 .WithOrigins(new[] { "http://localhost:8080", "http://localhost:4000" })
@@ -141,6 +136,7 @@ app.UseCors(options => options
 );
 #endregion
 
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseMiddleware<AuthMiddleware>();
 app.UseAuthentication();
