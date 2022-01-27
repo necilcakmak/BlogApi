@@ -1,21 +1,22 @@
 version: "3.8"
 services: 
-  apiservice:
+  api_service:
     container_name: containerapi
     image: necilcakmak/blog:api
     depends_on:
-      - pqDb
+      - pg_service
     build: 
       context: .
       dockerfile: Blog.Api/Dockerfile
     environment:
-      ConnectionStrings:BlogDB: "Server=pqDb;port=5432;database=BlogDB;username=root;password=1234"
+      ConnectionStrings:BlogDB: "Server=pg_service;port=5432;database=BlogDB;username=root;password=1234"
     volumes:
       - upload_images:/BlogApi/images
     ports: 
       - 80:80
 
-  pqDb:
+  pg_service:
+    container_name: pg_container
     image: postgres:latest
     environment:
       - POSTGRES_USER=root
@@ -27,8 +28,8 @@ services:
     volumes:
       - db_volume:/var/lib/postgresql/data/
 
-  pgadmin:
-    container_name: pgadmin
+  pgadmin_service:
+    container_name: pgadmin_container
     image: dpage/pgadmin4
     restart: always
     volumes:

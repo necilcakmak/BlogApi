@@ -30,12 +30,12 @@ namespace Blog.APi.Controllers
             return Ok(res);
         }
 
-        [MapToApiVersion("1.1")]
-        [HttpPost("login")]
-        public IActionResult LoginV2(LoginDto loginDto)
-        {
-            return Ok("login test V2");
-        }
+        //[MapToApiVersion("1.1")]
+        //[HttpPost("login")]
+        //public IActionResult LoginV2(LoginDto loginDto)
+        //{
+        //    return Ok("login test V2");
+        //}
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto registerDto)

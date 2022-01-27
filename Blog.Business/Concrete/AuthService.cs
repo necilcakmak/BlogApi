@@ -18,9 +18,11 @@ namespace Blog.Business.Concrete
         private readonly ITokenHelper _tokenHelper;
         private readonly IMapper _mapper;
         private readonly IHashManager _hashManager;
+        private readonly IMailService _mailService;
         private readonly LangService<User> _lng;
-        public AuthService(IUnitOfWork unitOfWork, ITokenHelper tokenHelper, IMapper mapper, IHashManager hashManager)
+        public AuthService(IUnitOfWork unitOfWork, ITokenHelper tokenHelper, IMapper mapper, IHashManager hashManager, IMailService mailService)
         {
+            _mailService = mailService;
             _lng = new LangService<User>();
             _hashManager = hashManager;
             _mapper = mapper;
@@ -60,6 +62,7 @@ namespace Blog.Business.Concrete
             user.Password = _hashManager.Encrpt(user.Password);
             await _unitOfWork.Users.AddAsync(user);
             await _unitOfWork.SaveAsync();
+            _mailService.SendMail(new MailDto { From = user.Email });
             return new Result(true, _lng.Message(LangEnums.RegisterSuccess));
 
         }

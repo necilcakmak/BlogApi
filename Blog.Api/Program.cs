@@ -54,8 +54,9 @@ builder.Services.AddSwaggerGen(swagger =>
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer eyabcdef\"",
     });
+
     swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
@@ -109,27 +110,32 @@ builder.Services.AddAutoMapper(typeof(MappingProfiles));
 #endregion
 
 builder.Services.Configure<TokenOptions>(builder.Configuration.GetSection("TokenOptions"));
+builder.Services.Configure<MailOptions>(builder.Configuration.GetSection("EmailSettings"));
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
 });
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////  APP   ///////////////////////////////////////////////////////////////
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
+// if (app.Environment.IsDevelopment())
+// {
+//     app.UseSwagger();
+//     app.UseSwaggerUI(options =>
+//     {
+//         options.DocumentTitle = "Blog Api UI";
+//     });
+// }
+app.UseSwagger();
+app.UseSwaggerUI(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        options.DocumentTitle = "Blog Api UI";
-    });
-}
-
-#region cors ayarlari
+    options.DocumentTitle = "Blog Api UI";
+});
+#region cors settings
 app.UseCors(options => options
-.WithOrigins(new[] { "http://localhost:8080", "http://localhost:4000" })
+.WithOrigins(new[] { "http://localhost:5000", "http://localhost:4000", "http://localhost:3000" })
 .AllowAnyHeader()
 .AllowAnyMethod()
 .AllowCredentials()

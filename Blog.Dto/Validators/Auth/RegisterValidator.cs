@@ -15,10 +15,10 @@ namespace Blog.Dto.Validators.Auth
                 .Length(5, 50).WithMessage("{PropertyName} must be between {MinLength} and {MaxLength} characters")
                 .NotNull().WithMessage("{PropertyName} must not be null");
             RuleFor(x => x.UserName)
-                .Length(5, 50).WithMessage("{PropertyName} must be between {MinLength} and {MaxLength} characters")
+                .Length(3, 50).WithMessage("{PropertyName} must be between {MinLength} and {MaxLength} characters")
                 .NotNull().WithMessage("{PropertyName} must not be null");
             RuleFor(x => x.UserSurname)
-                .Length(5, 50).WithMessage("{PropertyName} must be between {MinLength} and {MaxLength} characters")
+                .Length(2, 50).WithMessage("{PropertyName} must be between {MinLength} and {MaxLength} characters")
                 .NotNull().WithMessage("{PropertyName} must not be null");
             RuleFor(x => x.Password)
                 .Length(5, 50).WithMessage("{PropertyName} must be between {MinLength} and {MaxLength} characters")

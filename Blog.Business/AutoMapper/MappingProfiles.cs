@@ -12,7 +12,7 @@ namespace Blog.Business.AutoMapper
 {
     public class MappingProfiles : Profile
     {
-        private int Age(DateTime dateOfBirth)
+        private static int Age(DateTime dateOfBirth)
         {
             var today = DateTime.Today;
             var a = (today.Year * 100 + today.Month) * 100 + today.Day;
@@ -26,6 +26,7 @@ namespace Blog.Business.AutoMapper
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(x => DateTime.Now.ToUniversalTime()))
                 .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.Now.ToUniversalTime()))
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(x => true))
+                .ForMember(dest => dest.IsApproved, opt => opt.MapFrom(x => false))
                 .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(x => x.BirthDate.ToUniversalTime()));
             //article mappings
 

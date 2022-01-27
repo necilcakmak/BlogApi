@@ -38,7 +38,6 @@ namespace Blog.Repository.EntityFramework.Mapping
 
             builder.Property(c => c.Thumbnail).HasMaxLength(250).HasDefaultValue("default.jpg");
 
-
             builder.HasOne(a => a.User).WithMany(c => c.Articles).HasForeignKey(a => a.UserId);
             builder.HasOne(a => a.Category).WithMany(c => c.Articles).HasForeignKey(a => a.CategoryId);
 

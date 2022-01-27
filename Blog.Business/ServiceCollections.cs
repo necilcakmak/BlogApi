@@ -25,6 +25,7 @@ namespace Blog.Business
             serviceCollection.AddTransient<IAuthService, AuthService>();
             serviceCollection.AddTransient<ITokenHelper, TokenHelper>();
             serviceCollection.AddSingleton<IHashManager, HashManager>();
+            serviceCollection.AddSingleton<IMailService, MailService>();
             return serviceCollection;
         }
 

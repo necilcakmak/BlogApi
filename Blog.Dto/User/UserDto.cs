@@ -14,6 +14,7 @@ namespace Blog.Dto.User
         public string? Email { get; set; }
         public bool Gender { get; set; }
         public int Age { get; set; }
+        public bool IsApproved { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public bool IsActive { get; set; }

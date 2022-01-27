@@ -5,6 +5,7 @@ Uygulama olarak Blog uygulaması üzerine code first yaklaşımı ile postgres d
 # Uygulamayı Başlatmak
 
 ## Docker Üzerinde
+Docker üzerinde çalıştırmak için makinanızda docker ve docker-compose kurulu olması gerekmektedir
 Proje ana dizininde
 ```
 docker-compose build
@@ -19,5 +20,6 @@ Localde çalıştırmak için makinanızda Postgres ve .Net Core 6.0 paketlerini
 - Postgres Database
 - Docker & Docker-Compose
 - Fluent Validation
+- AutoMapper
 
 Bu proje [Necil ÇAKMAK](https://twitter.com/necilcakmak) tarafından yapılmıştır.
