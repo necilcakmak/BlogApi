@@ -35,6 +35,17 @@ namespace Blog.Business.Concrete
             return new Result(true, _lng.Message(LangEnums.Deleted));
         }
 
+        public async Task<Result> Get(Guid id)
+        {
+            var user = await _unitOfWork.Users.GetAsync(x => x.Id == id);
+            if (user == null)
+            {
+                return new Result(false, _lng.Message(LangEnums.NotFound));
+            }
+            var userDto = _mapper.Map<UserDto>(user);
+            return new DataResult<UserDto>(userDto, true, _lng.Message(LangEnums.Listed));
+        }
+
         public async Task<Result> UpdateMyInformation(UserUpdateDto userUpdateDto)
         {
             var user = await _unitOfWork.Users.GetMyUserInformation();

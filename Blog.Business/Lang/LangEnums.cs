@@ -7,6 +7,7 @@ namespace Blog.Business.Lang
         Added,
         Deleted,
         Listed,
+        Error,
 
         NotUpdated,
         NotAdded,
@@ -20,7 +21,8 @@ namespace Blog.Business.Lang
         EmailAvailable,
         NicknameAvailable,
         RegisterSuccess,
-
+        MailSended,
+        AccountConfirmed,
         NameUsed
     }
 }

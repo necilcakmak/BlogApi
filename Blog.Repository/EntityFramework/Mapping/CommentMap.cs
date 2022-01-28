@@ -21,7 +21,7 @@ namespace Blog.Repository.EntityFramework.Mapping
 
             builder.Property(c => c.UpdatedDate).IsRequired().HasDefaultValue(DateTime.Now.ToUniversalTime());
 
-            builder.Property(c => c.IsActive).IsRequired().HasDefaultValue(true);
+            builder.Property(c => c.IsActive).IsRequired().HasDefaultValue(false);
 
             builder.Property(c => c.Text).HasMaxLength(500);
             builder.Property(c => c.Text).IsRequired();

@@ -7,5 +7,6 @@ namespace Blog.Repository.EntityFramework.Abstract
     public interface IUserRepository : IEfRepositoryBase<User>
     {
         Task<User> GetMyUserInformation();
+        Task<bool> UserApproved(Guid id);
     }
 }

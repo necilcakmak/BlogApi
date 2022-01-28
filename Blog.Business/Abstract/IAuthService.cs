@@ -12,5 +12,6 @@ namespace Blog.Business.Abstract
     {
         Task<Result> Login(LoginDto loginDto);
         Task<Result> Register(RegisterDto registerDto);
+        Task<Result> AccountConfirm(Guid id);
     }
 }

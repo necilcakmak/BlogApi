@@ -8,6 +8,7 @@ namespace Blog.Dto.MainCategory
 {
     public class MainCategoryDto
     {
+        public Guid Id { get; set; }
         public string MainCategoryName { get; set; }
     }
 }

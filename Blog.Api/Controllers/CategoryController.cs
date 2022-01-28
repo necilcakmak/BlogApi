@@ -50,8 +50,8 @@ namespace Blog.APi.Controllers
             return Ok(res);
         }
 
-        [Authorize(Roles ="Admin")]
-        [HttpDelete("delete")]
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var res = await _categoryService.Delete(id);

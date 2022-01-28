@@ -20,5 +20,19 @@ namespace Blog.Repository.EntityFramework.Concrete
             var user = await _dbContext.Users.Where(x => x.Id == UserId).FirstAsync();
             return user;
         }
+
+        public async Task<bool> UserApproved(Guid id)
+        {
+            var user = await _dbContext.Users.Where(x => x.Id == id).FirstAsync();
+            if (user == null)
+            {
+                return false;
+            }
+            user.IsApproved = true;
+            user.UpdatedDate = DateTime.UtcNow;
+            _dbContext.Users.Update(user);
+            _dbContext.SaveChanges();
+            return true;
+        }
     }
 }

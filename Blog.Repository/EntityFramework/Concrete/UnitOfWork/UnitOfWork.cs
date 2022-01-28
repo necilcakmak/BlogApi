@@ -49,7 +49,7 @@ namespace Blog.Repository.EntityFramework.Concrete.UnitOfWork
             {
                 if (entityEntry.State == EntityState.Modified)
                 {
-                    entityEntry.Property(BaseEntityType.UpdatedDate).CurrentValue = DateTime.Now.ToUniversalTime();
+                    entityEntry.Property(BaseEntityType.UpdatedDate).CurrentValue = DateTime.UtcNow;
                 }
             }
             return await _blogDbContext.SaveChangesAsync();

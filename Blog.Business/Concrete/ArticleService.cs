@@ -5,6 +5,7 @@ using Blog.Core.Results;
 using Blog.Dto.Article;
 using Blog.Entities.Entities;
 using Blog.Repository.EntityFramework.Abstract.UnitOfWork;
+using Newtonsoft.Json;
 
 namespace Blog.Business.Concrete
 {
@@ -22,12 +23,14 @@ namespace Blog.Business.Concrete
 
         public async Task<Result> Get(Guid id)
         {
-            var article = await _unitOfWork.Articles.GetAsync(x => x.Id == id);
+            var article = await _unitOfWork.Articles.GetAsync(x => x.Id == id, x => x.User, x => x.Category.MainCategory, x => x.Comments);
+
             if (article == null)
             {
                 return new Result(false, _lang.Message(LangEnums.NotFound));
             }
-            return new DataResult<Article>(article, true, _lang.Message(LangEnums.Listed));
+            var articleDto = _mapper.Map<ArticleDto>(article);
+            return new DataResult<ArticleDto>(articleDto, true, _lang.Message(LangEnums.Listed));
         }
 
         public async Task<Result> Add(ArticleAddDto articleAddDto)
@@ -41,7 +44,7 @@ namespace Blog.Business.Concrete
 
         public async Task<Result> GetList()
         {
-            var articles = await _unitOfWork.Articles.GetAllAsync(null, x => x.Comments, x => x.User,x=>x.Category.MainCategory);
+            var articles = await _unitOfWork.Articles.GetAllAsync(includeProperties: x => x.Category.MainCategory);
             if (articles.Count <= 0)
             {
                 return new Result(false, _lang.Message(LangEnums.NotFound));
@@ -68,7 +71,7 @@ namespace Blog.Business.Concrete
             await _unitOfWork.Articles.UpdateAsync(article);
             await _unitOfWork.SaveAsync();
             var articleDto = _mapper.Map<ArticleDto>(article);
-            return new DataResult<Article>(article, true, _lang.Message(LangEnums.Updated));
+            return new DataResult<ArticleDto>(articleDto, true, _lang.Message(LangEnums.Updated));
         }
 
         public async Task<Result> GetListMyArticle()
@@ -92,6 +95,21 @@ namespace Blog.Business.Concrete
             }
             await _unitOfWork.SaveAsync();
             return new Result(true, _lang.Message(LangEnums.Deleted));
+        }
+
+        public async Task<Result> UpdateMyArticle(ArticleUpdateDto articleUpdateDto)
+        {
+            var articleInDb = await _unitOfWork.Articles.GetSelectedArticle(articleUpdateDto.Id);
+            if (articleInDb == null)
+            {
+                return new Result(false, _lang.Message(LangEnums.NotFound));
+            }
+            var jsonModel = JsonConvert.SerializeObject(articleUpdateDto);
+            JsonConvert.PopulateObject(jsonModel, articleInDb);
+            await _unitOfWork.Articles.UpdateAsync(articleInDb);
+            await _unitOfWork.SaveAsync();
+            var articleDto = _mapper.Map<ArticleDto>(articleInDb);
+            return new DataResult<ArticleDto>(articleDto, true, _lang.Message(LangEnums.Updated));
         }
     }
 }

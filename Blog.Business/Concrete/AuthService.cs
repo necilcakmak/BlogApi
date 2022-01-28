@@ -62,9 +62,19 @@ namespace Blog.Business.Concrete
             user.Password = _hashManager.Encrpt(user.Password);
             await _unitOfWork.Users.AddAsync(user);
             await _unitOfWork.SaveAsync();
-            _mailService.SendMail(new MailDto { From = user.Email });
-            return new Result(true, _lng.Message(LangEnums.RegisterSuccess));
+            _mailService.SendMail(new MailDto { From = user.Email }, user.Id);
+            return new Result(true, _lng.Message(LangEnums.MailSended));
 
+        }
+
+        public async Task<Result> AccountConfirm(Guid id)
+        {
+            bool res = await _unitOfWork.Users.UserApproved(id);
+            if (!res)
+            {
+                return new Result(false, _lng.Message(LangEnums.AccountNotFound));
+            }
+            return new Result(true, _lng.Message(LangEnums.AccountConfirmed));
         }
     }
 }

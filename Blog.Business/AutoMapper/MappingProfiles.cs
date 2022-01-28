@@ -23,46 +23,43 @@ namespace Blog.Business.AutoMapper
         {
             //auth mappings.
             CreateMap<RegisterDto, User>()
-                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(x => DateTime.Now.ToUniversalTime()))
-                .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.Now.ToUniversalTime()))
-                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(x => true))
+                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
+                .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
                 .ForMember(dest => dest.IsApproved, opt => opt.MapFrom(x => false))
                 .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(x => x.BirthDate.ToUniversalTime()));
-            //article mappings
 
+            //article mappings
             CreateMap<ArticleAddDto, Article>()
-                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(x => DateTime.Now.ToUniversalTime()))
-                .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.Now.ToUniversalTime()))
-                .ForMember(dest => dest.UserId, opt => opt.MapFrom(x => BlogDbContext.UserId))
-                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(x => true));
+                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
+                .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(x => BlogDbContext.UserId));
+            CreateMap<ArticleUpdateDto, Article>()
+                .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.UtcNow));
             CreateMap<Article, ArticleDto>();
 
             //category mappings
             CreateMap<CategoryAddDto, Category>()
-                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(x => DateTime.Now.ToUniversalTime()))
-                .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.Now.ToUniversalTime()))
-                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(x => true));
+                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
+                .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.UtcNow));
             CreateMap<Category, CategoryDto>();
 
             //main category mappings
             CreateMap<MainCategoryAddDto, MainCategory>()
-                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(x => DateTime.Now.ToUniversalTime()))
-                .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.Now.ToUniversalTime()))
-                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(x => true));
+                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
+                .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.UtcNow));
             CreateMap<MainCategory, MainCategoryDto>();
 
             //comment mappings
             CreateMap<CommentAddDto, Comment>()
-                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(x => DateTime.Now.ToUniversalTime()))
-                .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.Now.ToUniversalTime()))
+                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
+                .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(x => BlogDbContext.UserId))
-                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(x => true));
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(x => false));
             CreateMap<Comment, CommentDto>();
 
             //user mappings
             CreateMap<UserUpdateDto, User>()
-                .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.Now.ToUniversalTime()))
-                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(x => true))
+                .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
             CreateMap<User, UserDto>()
                 .ForMember(dest => dest.Age, opt => opt.MapFrom(x => Age(x.BirthDate)));

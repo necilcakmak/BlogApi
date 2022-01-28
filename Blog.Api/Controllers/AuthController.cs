@@ -47,5 +47,17 @@ namespace Blog.APi.Controllers
             }
             return Ok(res);
         }
+
+        [HttpGet("accountconfirm/{id}")]
+        public async Task<IActionResult> AccountConfirm(string id)
+        {
+            Guid guid = new(id);
+            var res = await _authService.AccountConfirm(guid);
+            if (!res.Success)
+            {
+                return BadRequest(res);
+            }
+            return Ok(res);
+        }
     }
 }

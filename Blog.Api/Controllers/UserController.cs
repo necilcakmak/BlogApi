@@ -1,7 +1,6 @@
 ﻿using Blog.Business.Abstract;
 using Blog.Dto.User;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.APi.Controllers
@@ -33,6 +32,30 @@ namespace Blog.APi.Controllers
         public async Task<IActionResult> UserInformation()
         {
             var res = await _userService.UserInformation();
+            if (!res.Success)
+            {
+                return BadRequest(res);
+            }
+            return Ok(res);
+        }
+
+        [HttpGet("get/{id}")]
+        public async Task<IActionResult> Get(Guid id)
+        {
+            var res = await _userService.Get(id);
+            if (!res.Success)
+            {
+                return BadRequest(res);
+            }
+            return Ok(res);
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var res = await _userService.Delete(id);
             if (!res.Success)
             {
                 return BadRequest(res);

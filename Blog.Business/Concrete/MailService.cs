@@ -13,8 +13,9 @@ namespace Blog.Business.Concrete
         {
             _mailSettings = options.Value;
         }
-        public void SendMail(MailDto mailDto)
+        public void SendMail(MailDto mailDto, Guid id)
         {
+            string uiUrl = $"{ _mailSettings.ApiUrl }auth/accountconfirm/{id}";
             MailMessage msg = new(); //Mesaj gövdesini tanımlıyoruz...
             msg.Subject = "E-Mail Onay";
             msg.From = new MailAddress("necilblog@necil.com", "Necil Blog");
@@ -22,7 +23,8 @@ namespace Blog.Business.Concrete
 
             //Mesaj içeriğinde HTML karakterler yer alıyor ise aşağıdaki alan TRUE olarak gönderilmeli ki HTML olarak yorumlansın. Yoksa düz yazı olarak gönderilir...
             msg.IsBodyHtml = true;
-            msg.Body = "Buraya HTML body ayarlayacağım...";
+            msg.Body = "Üyeliğinizi aktif hale getirmek için aşağıdaki Linke tıklayınız." +
+                    "Onay İçin <a href=" + uiUrl + ">TIKLAYINIZ.</a>";
 
             //Mesaj önceliği
             msg.Priority = MailPriority.Normal;

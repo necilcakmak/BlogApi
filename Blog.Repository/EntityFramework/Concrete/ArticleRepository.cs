@@ -35,5 +35,15 @@ namespace Blog.Repository.EntityFramework.Concrete
                 .ToListAsync();
             return articles;
         }
+
+        public async Task<Article> GetSelectedArticle(Guid id)
+        {
+            var articleInDb = await _blogDbContext.Articles.Where(x => x.Id == id && x.UserId == UserId)
+                .Include(x => x.User)
+                .Include(x => x.Category).ThenInclude(x=>x.MainCategory)
+                .Include(x => x.Comments)
+                .FirstOrDefaultAsync();
+            return articleInDb;
+        }
     }
 }

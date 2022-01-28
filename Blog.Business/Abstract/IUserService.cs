@@ -11,6 +11,7 @@ namespace Blog.Business.Abstract
     public interface IUserService
     {
         Task<Result> UserInformation();
+        Task<Result> Get(Guid id);
         Task<Result> Delete(Guid id);
         Task<Result> UpdateMyInformation(UserUpdateDto userUpdateDto);
     }

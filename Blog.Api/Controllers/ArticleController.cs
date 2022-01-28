@@ -51,7 +51,7 @@ namespace Blog.APi.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpDelete("delete")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var res = await _articleService.Delete(id);
@@ -66,7 +66,7 @@ namespace Blog.APi.Controllers
         [HttpPut("update")]
         public async Task<IActionResult> Update(ArticleAddDto articleAddDto)
         {
-            var res = await _articleService.Add(articleAddDto);
+            var res = await _articleService.Update(articleAddDto);
             if (!res.Success)
             {
                 return BadRequest(res);
@@ -87,10 +87,22 @@ namespace Blog.APi.Controllers
         }
 
         [Authorize]
-        [HttpGet("DeleteMyArticle")]
+        [HttpGet("deletemyarticle")]
         public async Task<IActionResult> DeleteMyArticle(Guid id)
         {
             var res = await _articleService.DeleteMyArticle(id);
+            if (!res.Success)
+            {
+                return BadRequest(res);
+            }
+            return Ok(res);
+        }
+
+        [Authorize]
+        [HttpPut("updatemyarticle")]
+        public async Task<IActionResult> UpdateMyArticle(ArticleUpdateDto articleUpdateDto)
+        {
+            var res = await _articleService.UpdateMyArticle(articleUpdateDto);
             if (!res.Success)
             {
                 return BadRequest(res);
