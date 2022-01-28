@@ -9,6 +9,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -120,6 +121,14 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 //////////////////////////////////  APP   ///////////////////////////////////////////////////////////////
 
 var app = builder.Build();
+using (var serviceScope = app.Services.CreateScope())
+{
+    var context = serviceScope.ServiceProvider.GetRequiredService<BlogDbContext>();
+    if (context.Database.GetPendingMigrations().Any())
+    {
+        context.Database.Migrate();
+    }
+}
 // if (app.Environment.IsDevelopment())
 // {
 //     app.UseSwagger();
@@ -149,9 +158,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-using (var serviceScope = app.Services.CreateScope())
-{
-    var context = serviceScope.ServiceProvider.GetRequiredService<BlogDbContext>();
-    context.Database.EnsureCreated();
-}
+
 app.Run();
