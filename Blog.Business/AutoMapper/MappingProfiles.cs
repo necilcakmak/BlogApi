@@ -12,7 +12,7 @@ namespace Blog.Business.AutoMapper
 {
     public class MappingProfiles : Profile
     {
-        private static int Age(DateTime dateOfBirth)
+        private static int CalculateAge(DateTime dateOfBirth)
         {
             var today = DateTime.Today;
             var a = (today.Year * 100 + today.Month) * 100 + today.Day;
@@ -62,7 +62,7 @@ namespace Blog.Business.AutoMapper
                 .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
             CreateMap<User, UserDto>()
-                .ForMember(dest => dest.Age, opt => opt.MapFrom(x => Age(x.BirthDate)));
+                .ForMember(dest => dest.Age, opt => opt.MapFrom(x => CalculateAge(x.BirthDate)));
         }
     }
 }

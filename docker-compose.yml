@@ -15,7 +15,9 @@ services:
       - upload_images:/BlogApi/images
     ports: 
       - 80:80
-
+    networks:
+      - micro_net
+      - int_net
   pg_service:
     container_name: pg_container
     image: postgres:latest
@@ -26,9 +28,10 @@ services:
     ports:
       - 5432:5432
     restart: always
+    networks:
+      - int_net
     volumes:
       - db_volume:/var/lib/postgresql/data/
-
   pgadmin_service:
     container_name: pgadmin_container
     image: dpage/pgadmin4
@@ -39,9 +42,31 @@ services:
       PGADMIN_DEFAULT_EMAIL: root@root.com
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
-      - "5050:80"
+      - "5050:80"   
+    networks:
+      - micro_net
+      - int_net 
+      
+  portainer_service:
+    image: portainer/portainer-ce
+    restart: always
+    container_name: c_portainer
+    ports:
+      - "8000:8000"
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
       
 volumes:
   upload_images:
   db_volume:
   dbadmin_volume:
+  portainer_volume:
+
+networks:
+  int_net:
+    driver: overlay
+    internal: true
+  micro_net:
+    driver: bridge
