@@ -15,7 +15,7 @@ namespace Blog.Business.Concrete
         }
         public void SendMail(MailDto mailDto, Guid id)
         {
-            string uiUrl = $"{ _mailSettings.ApiUrl }auth/accountconfirm/{id}";
+            string uiUrl = $"{ _mailSettings.ApiUrl }Account/{id}";
             MailMessage msg = new(); //Mesaj gövdesini tanımlıyoruz...
             msg.Subject = "E-Mail Onay";
             msg.From = new MailAddress("necilblog@necil.com", "Necil Blog");

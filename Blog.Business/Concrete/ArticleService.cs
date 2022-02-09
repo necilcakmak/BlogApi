@@ -44,7 +44,7 @@ namespace Blog.Business.Concrete
 
         public async Task<Result> GetList()
         {
-            var articles = await _unitOfWork.Articles.GetAllAsync(includeProperties: x => x.Category.MainCategory);
+            var articles = await _unitOfWork.Articles.GetAllAsync(null,x => x.Category.MainCategory, x => x.User);
             if (articles.Count <= 0)
             {
                 return new Result(false, _lang.Message(LangEnums.NotFound));

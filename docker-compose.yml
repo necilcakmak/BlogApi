@@ -5,6 +5,8 @@ services:
     image: necilcakmak/blog:api
     depends_on:
       - pg_service
+    networks:
+      - webnet
     build: 
       context: .
       dockerfile: Blog.Api/Dockerfile
@@ -14,11 +16,19 @@ services:
     volumes:
       - upload_images:/BlogApi/images
     ports: 
-      - 80:80
-
+      - 4000:80
+  ui_service:
+    container_name: ui_container
+    image: necilcakmak/blog:ui
+    networks:
+      - webnet
+    ports: 
+      - 80:8080
   pg_service:
     container_name: pg_container
     image: postgres:latest
+    networks:
+      - webnet
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=1234
@@ -45,3 +55,7 @@ volumes:
   upload_images:
   db_volume:
   dbadmin_volume:
+  portainer_volume:
+networks:
+  webnet:
+    driver: bridge
