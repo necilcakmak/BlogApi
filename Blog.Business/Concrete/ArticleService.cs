@@ -16,11 +16,12 @@ namespace Blog.Business.Concrete
         private readonly IUnitOfWork _unitOfWork;
         private readonly LangService<Article> _lang;
         private readonly IRabbitMQPublisher _rabbitMQPublisher;
-        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper,IRabbitMQPublisher rabbitMQPublisher)
+        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper, IRabbitMQPublisher rabbitMQPublisher)
         {
             _lang = new LangService<Article>();
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _rabbitMQPublisher = rabbitMQPublisher;
         }
 
         public async Task<Result> Get(Guid id)
