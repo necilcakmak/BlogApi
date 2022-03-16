@@ -37,9 +37,12 @@ namespace Blog.WorkerService
 
         private async Task Consumer_Received(object sender, BasicDeliverEventArgs @event)
         {
-            var data = JsonConvert.DeserializeObject<object>(Encoding.UTF8.GetString(@event.Body.ToArray()));
+            List<MailList> mailLists = JsonConvert.DeserializeObject<List<MailList>>(Encoding.UTF8.GetString(@event.Body.ToArray()));
+            foreach (var item in mailLists)
+            {
+                _logger.LogInformation($"{item.Mail} mail gönderildi...");
+            }
             _channel.BasicAck(@event.DeliveryTag, false);
-            _logger.LogInformation("mail gönderildi...");         
         }
     }
 }

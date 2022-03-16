@@ -1,4 +1,5 @@
-﻿using Blog.Entities.Entities;
+﻿using Blog.Dto;
+using Blog.Entities.Entities;
 using Blog.Repository.EntityFramework.Abstract;
 using Blog.Repository.EntityFramework.Concrete.Base;
 using Blog.Repository.EntityFramework.Context;
@@ -15,14 +16,14 @@ namespace Blog.Repository.EntityFramework.Concrete
             _dbContext = context;
         }
 
-        public async Task<List<string>> GetFollowersMailList()
+        public async Task<List<MailList>> GetFollowersMailList()
         {
             User user = await _dbContext.Users
                 .Where(x => x.Id == UserId)
                 .Include(x => x.UserSetting)
                 .ThenInclude(x => x.FollowersAuthors)
                 .ThenInclude(x => x.User).FirstAsync();
-            List<string> mailList = user.UserSetting.FollowersAuthors.Select(x => x.User.Email).ToList();
+            List<MailList> mailList = user.UserSetting.FollowersAuthors.Select(x => new MailList { Mail = x.User.Email }).ToList();
             return mailList;
         }
 

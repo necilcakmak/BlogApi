@@ -63,6 +63,7 @@ namespace Blog.Business.AutoMapper
             CreateMap<User, UserDto>()
                 .ForMember(dest => dest.Age, opt => opt.MapFrom(x => CalculateAge(x.BirthDate)))
                 .ForMember(dest => dest.UserSetting, opt => opt.MapFrom(x => x.UserSetting));
+            CreateMap<UserSetting, UserSettingDto>();
         }
     }
 }
