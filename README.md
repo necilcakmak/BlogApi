@@ -19,6 +19,7 @@ Localde çalıştırmak için makinanızda Postgres ve .Net Core 6.0 paketlerini
 - .Net Core 6.0
 - Postgres Database
 - Docker & Docker-Compose
+- RabbitMQ
 - Fluent Validation
 - AutoMapper
 
