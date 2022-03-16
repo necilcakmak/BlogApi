@@ -25,7 +25,14 @@ builder.Services.AddControllers(options =>
 {
     fv.RegisterValidatorsFromAssemblyContaining<RegisterValidator>();
 }).AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+#endregion
 
+#region redis
+builder.Services.AddStackExchangeRedisCache(option =>
+{
+    option.Configuration = builder.Configuration.GetConnectionString("RedisCon");
+    option.InstanceName = "test";
+});
 #endregion
 
 #region api versioning
@@ -142,7 +149,7 @@ app.UseSwaggerUI(options =>
 });
 #region cors settings
 app.UseCors(options => options
-.WithOrigins(new[] {"http://20.124.207.158", "http://localhost","http://localhost:8080","http://localhost:5000", "http://localhost:4000", "http://localhost:3000" })
+.WithOrigins(new[] { "http://20.124.207.158", "http://localhost", "http://localhost:8080", "http://localhost:5000", "http://localhost:4000", "http://localhost:3000" })
 .AllowAnyHeader()
 .AllowAnyMethod()
 .AllowCredentials()

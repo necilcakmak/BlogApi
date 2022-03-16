@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Blog.Business.Abstract;
+using Blog.Business.Abstract.RedisCache;
 using Blog.Business.Lang;
 using Blog.Core.Results;
 using Blog.Core.Utilities;
@@ -33,7 +34,6 @@ namespace Blog.Business.Concrete
         public async Task<Result> Login(LoginDto loginDto)
         {
             var user = await _unitOfWork.Users.GetAsync(x => x.Email == loginDto.Email || x.NickName == loginDto.Email);
-
             if (user != null && _hashManager.Verify(loginDto.Password, user.Password))
             {
                 var token = _tokenHelper.CreateTokenUye(user);
