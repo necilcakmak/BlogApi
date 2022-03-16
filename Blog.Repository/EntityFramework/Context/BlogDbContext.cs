@@ -11,10 +11,13 @@ namespace Blog.Repository.EntityFramework.Context
         {
         }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserSetting> UserSettings { get; set; }
         public DbSet<Article> Articles { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<MainCategory> MainCategories { get; set; }
+        public DbSet<FollowedAuthors> FollowedAuthors { get; set; }
+        public DbSet<FollowersAuthors> FollowersAuthors { get; set; }
 
         public override int SaveChanges()
         {
@@ -29,6 +32,9 @@ namespace Blog.Repository.EntityFramework.Context
             modelBuilder.ApplyConfiguration(new UserMap());
             modelBuilder.ApplyConfiguration(new CommentMap());
             modelBuilder.ApplyConfiguration(new MainCategoryMap());
+            modelBuilder.ApplyConfiguration(new UserSettingsMap());
+            modelBuilder.ApplyConfiguration(new FollowedAuthorsMap());
+            modelBuilder.ApplyConfiguration(new FollowersAuthorsMap());
         }
     }
 }

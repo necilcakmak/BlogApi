@@ -22,8 +22,6 @@ namespace Blog.Repository.EntityFramework.Mapping
             builder.Property(c => c.UserName).HasMaxLength(50);
             builder.Property(c => c.UserName).IsRequired();
 
-            builder.Property(u => u.IsApproved).HasDefaultValue(false);
-
             builder.Property(c => c.UserSurname).HasMaxLength(50);
             builder.Property(c => c.UserSurname).IsRequired();
 
@@ -39,7 +37,9 @@ namespace Blog.Repository.EntityFramework.Mapping
             builder.Property(c => c.Password).IsRequired();
 
             builder.Property(c => c.BirthDate).IsRequired();
+
             builder.ToTable("Users");
+
             builder.HasData(
                 new User
                 {
@@ -48,7 +48,6 @@ namespace Blog.Repository.EntityFramework.Mapping
                     UserSurname = "Çakmak",
                     NickName = "necilcakmak",
                     Email = "necil@necil.com",
-                    IsApproved = true,
                     Password = "$2a$11$wnQMJKF1vC6fAxs5IDaM1.5S3oMG.gEQMhON0bHUl5UQfe8v1AwIK",
                     Gender = true,
                     IsActive = true,
@@ -62,7 +61,6 @@ namespace Blog.Repository.EntityFramework.Mapping
                     CreatedDate = DateTime.Now.ToUniversalTime(),
                     UpdatedDate = DateTime.Now.ToUniversalTime(),
                     IsActive = true,
-                    IsApproved = true,
                     UserName = "Ömer",
                     UserSurname = "Gürsoy",
                     NickName = "ömergürsoy",

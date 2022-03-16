@@ -25,7 +25,6 @@ namespace Blog.Business.AutoMapper
             CreateMap<RegisterDto, User>()
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
                 .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
-                .ForMember(dest => dest.IsApproved, opt => opt.MapFrom(x => false))
                 .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(x => x.BirthDate.ToUniversalTime()));
 
             //article mappings
@@ -62,7 +61,8 @@ namespace Blog.Business.AutoMapper
                 .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
             CreateMap<User, UserDto>()
-                .ForMember(dest => dest.Age, opt => opt.MapFrom(x => CalculateAge(x.BirthDate)));
+                .ForMember(dest => dest.Age, opt => opt.MapFrom(x => CalculateAge(x.BirthDate)))
+                .ForMember(dest => dest.UserSetting, opt => opt.MapFrom(x => x.UserSetting));
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Blog.Business.Concrete
             _unitOfWork = unitOfWork;
         }
         public async Task<Result> Delete(Guid id)
-        {
+        {       
             var user = await _unitOfWork.Users.GetAsync(x => x.Id == id);
             if (user == null)
             {
@@ -67,6 +67,16 @@ namespace Blog.Business.Concrete
             await _unitOfWork.SaveAsync();
             UserDto userDto = _mapper.Map<UserDto>(updatedUser);
             return new DataResult<UserDto>(userDto, true, _lng.Message(LangEnums.Listed));
+        }
+
+        public async Task<Result> UpdateMySettings(UserSettingDto userSettingDto)
+        {
+            var userSetting = await _unitOfWork.UserSettings.GetMySettings();
+            userSetting.NewBlog = userSettingDto.NewBlog;
+            userSetting.ReceiveMail = userSettingDto.ReceiveMail;
+            await _unitOfWork.UserSettings.UpdateAsync(userSetting);
+            await _unitOfWork.SaveAsync();
+            return new Result(true, _lng.Message(LangEnums.Updated));
         }
 
         public async Task<Result> UserInformation()

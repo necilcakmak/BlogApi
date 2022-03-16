@@ -15,9 +15,20 @@ namespace Blog.Repository.EntityFramework.Concrete
             _dbContext = context;
         }
 
+        public async Task<List<string>> GetFollowersMailList()
+        {
+            User user = await _dbContext.Users
+                .Where(x => x.Id == UserId)
+                .Include(x => x.UserSetting)
+                .ThenInclude(x => x.FollowersAuthors)
+                .ThenInclude(x => x.User).FirstAsync();
+            List<string> mailList = user.UserSetting.FollowersAuthors.Select(x => x.User.Email).ToList();
+            return mailList;
+        }
+
         public async Task<User> GetMyUserInformation()
         {
-            var user = await _dbContext.Users.Where(x => x.Id == UserId).FirstAsync();
+            var user = await _dbContext.Users.Where(x => x.Id == UserId).Include(x => x.UserSetting).FirstAsync();
             return user;
         }
 
@@ -28,7 +39,7 @@ namespace Blog.Repository.EntityFramework.Concrete
             {
                 return false;
             }
-            user.IsApproved = true;
+            user.UserSetting.IsApproved = true;
             user.UpdatedDate = DateTime.UtcNow;
             _dbContext.Users.Update(user);
             _dbContext.SaveChanges();

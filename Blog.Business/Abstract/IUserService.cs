@@ -14,5 +14,7 @@ namespace Blog.Business.Abstract
         Task<Result> Get(Guid id);
         Task<Result> Delete(Guid id);
         Task<Result> UpdateMyInformation(UserUpdateDto userUpdateDto);
+        Task<Result> UpdateMySettings(UserSettingDto userSettingDto);
+
     }
 }

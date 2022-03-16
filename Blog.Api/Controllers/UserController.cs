@@ -39,6 +39,7 @@ namespace Blog.APi.Controllers
             return Ok(res);
         }
 
+        [AllowAnonymous]
         [HttpGet("get/{id}")]
         public async Task<IActionResult> Get(Guid id)
         {

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Blog.Business.Abstract;
+using Blog.Business.Abstract.RabbitMQ;
 using Blog.Business.Lang;
 using Blog.Core.Results;
 using Blog.Dto.Article;
@@ -14,7 +15,8 @@ namespace Blog.Business.Concrete
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly LangService<Article> _lang;
-        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IRabbitMQPublisher _rabbitMQPublisher;
+        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper,IRabbitMQPublisher rabbitMQPublisher)
         {
             _lang = new LangService<Article>();
             _mapper = mapper;
@@ -38,13 +40,17 @@ namespace Blog.Business.Concrete
             Article article = _mapper.Map<Article>(articleAddDto);
             await _unitOfWork.Articles.AddAsync(article);
             await _unitOfWork.SaveAsync();
+            #region rabbitmq publisher service send mail
+            var userFollwersUser = await _unitOfWork.Users.GetFollowersMailList();
+            _rabbitMQPublisher.Publish(userFollwersUser);
+            #endregion
             var articleDto = _mapper.Map<ArticleDto>(article);
             return new DataResult<ArticleDto>(articleDto, true, _lang.Message(LangEnums.Added));
         }
 
         public async Task<Result> GetList()
         {
-            var articles = await _unitOfWork.Articles.GetAllAsync(null,x => x.Category.MainCategory, x => x.User);
+            var articles = await _unitOfWork.Articles.GetAllAsync(null, x => x.Category.MainCategory, x => x.User);
             if (articles.Count <= 0)
             {
                 return new Result(false, _lang.Message(LangEnums.NotFound));

@@ -102,8 +102,7 @@ builder.Services.AddAuthentication(x =>
 #endregion
 
 #region inject my services
-string dbConnection = builder.Configuration.GetConnectionString("BlogDB");
-builder.Services.LoadMyServices(dbConnection);
+builder.Services.LoadMyServices(builder.Configuration);
 #endregion
 
 #region add auto mapper
@@ -112,7 +111,6 @@ builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
 builder.Services.Configure<TokenOptions>(builder.Configuration.GetSection("TokenOptions"));
 builder.Services.Configure<MailOptions>(builder.Configuration.GetSection("EmailSettings"));
-
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;

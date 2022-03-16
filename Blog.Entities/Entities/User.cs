@@ -16,8 +16,8 @@ namespace Blog.Entities.Entities
         public string Email { get; set; }
         public string Password { get; set; }
         public bool Gender { get; set; }
-        public bool IsApproved { get; set; }
         public DateTime BirthDate { get; set; }
+        public UserSetting UserSetting { get; set; }
         public ICollection<Article>? Articles { get; set; }
         public ICollection<Comment>? Comments { get; set; }
 

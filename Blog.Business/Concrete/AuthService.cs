@@ -62,6 +62,8 @@ namespace Blog.Business.Concrete
             user.Password = _hashManager.Encrpt(user.Password);
             await _unitOfWork.Users.AddAsync(user);
             await _unitOfWork.SaveAsync();
+            await _unitOfWork.UserSettings.AddAsync(new UserSetting { UserId = user.Id });
+            await _unitOfWork.SaveAsync();
             _mailService.SendMail(new MailDto { From = user.Email }, user.Id);
             return new Result(true, _lng.Message(LangEnums.MailSended));
 
