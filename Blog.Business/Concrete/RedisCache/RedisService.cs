@@ -27,6 +27,16 @@ namespace Blog.Business.Concrete.RedisCache
 
         }
 
+        public async Task<bool> InCache(string key)
+        {
+            var jsonData = await _distributedCache.GetStringAsync(key);
+            if (!string.IsNullOrEmpty(jsonData))
+            {
+                return true;
+            }
+            return false;
+        }
+
         public async Task SetAsync<T>(string key, T data)
         {
             var jsonData = JsonConvert.SerializeObject(data);

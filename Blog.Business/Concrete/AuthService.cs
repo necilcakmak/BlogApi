@@ -16,28 +16,31 @@ namespace Blog.Business.Concrete
     public class AuthService : IAuthService
     {
         private IUnitOfWork _unitOfWork;
-        private readonly ITokenHelper _tokenHelper;
         private readonly IMapper _mapper;
         private readonly IHashManager _hashManager;
         private readonly IMailService _mailService;
         private readonly LangService<User> _lng;
-        public AuthService(IUnitOfWork unitOfWork, ITokenHelper tokenHelper, IMapper mapper, IHashManager hashManager, IMailService mailService)
+        private readonly IRedisService _redisService;
+        public AuthService(IUnitOfWork unitOfWork, IMapper mapper, IHashManager hashManager, IMailService mailService, IRedisService redisService)
         {
+            _redisService = redisService;
             _mailService = mailService;
             _lng = new LangService<User>();
             _hashManager = hashManager;
             _mapper = mapper;
-            _tokenHelper = tokenHelper;
             _unitOfWork = unitOfWork;
         }
 
         public async Task<Result> Login(LoginDto loginDto)
         {
+
             var user = await _unitOfWork.Users.GetAsync(x => x.Email == loginDto.Email || x.NickName == loginDto.Email);
             if (user != null && _hashManager.Verify(loginDto.Password, user.Password))
             {
-                var token = _tokenHelper.CreateTokenUye(user);
-                token.User = _mapper.Map<UserDto>(user);
+                var key = Guid.NewGuid().ToString();
+                await _redisService.SetAsync(key, user);
+                var userDto = _mapper.Map<UserDto>(user);
+                var token = new AccessToken { Token = key, User = userDto };
                 return new DataResult<AccessToken>(token, true, _lng.Message(LangEnums.LoginSuccess));
             }
             return new Result(false, _lng.Message(LangEnums.AccountNotFound));

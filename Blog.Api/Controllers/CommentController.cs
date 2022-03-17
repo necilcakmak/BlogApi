@@ -1,4 +1,5 @@
-﻿using Blog.Business.Abstract;
+﻿using Blog.Api.Filters;
+using Blog.Business.Abstract;
 using Blog.Dto.Comment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ namespace Blog.APi.Controllers
             return Ok(res);
         }
 
-        [Authorize]
+        [AuthorizeFilter]
         [HttpPost("add")]
         public async Task<IActionResult> Add(CommentAddDto commentAddDto)
         {
@@ -49,7 +50,7 @@ namespace Blog.APi.Controllers
             return Ok(res);
         }
 
-        [Authorize(Roles = "Admin")]
+        [AuthorizeFilter("Admin")]
         [HttpDelete("delete")]
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -61,7 +62,7 @@ namespace Blog.APi.Controllers
             return Ok(res);
         }
 
-        [Authorize]
+        [AuthorizeFilter]
         [HttpPut("update")]
         public async Task<IActionResult> Update(CommentAddDto commentAddDto)
         {
@@ -73,7 +74,7 @@ namespace Blog.APi.Controllers
             return Ok(res);
         }
 
-        [Authorize]
+        [AuthorizeFilter]
         [HttpDelete("deletemycomment")]
         public async Task<IActionResult> DeleteMyComment(Guid id)
         {

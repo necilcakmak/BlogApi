@@ -9,6 +9,7 @@ namespace Blog.Business.Abstract.RedisCache
     public interface IRedisService
     {
         Task<T?> GetAsync<T>(string key);
+        Task<bool> InCache(string key);
         Task SetAsync<T>(string key, T data);
     }
 }

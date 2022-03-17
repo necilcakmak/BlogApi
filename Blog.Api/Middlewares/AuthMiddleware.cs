@@ -1,5 +1,7 @@
-﻿using Blog.Core.Results;
+﻿using Blog.Business.Abstract.RedisCache;
+using Blog.Core.Results;
 using Blog.Core.Utilities;
+using Blog.Entities.Entities;
 using Blog.Repository.EntityFramework.Context;
 
 namespace Blog.APi.Middlewares
@@ -7,10 +9,10 @@ namespace Blog.APi.Middlewares
     public class AuthMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ITokenHelper _tokenHelper;
-        public AuthMiddleware(RequestDelegate next, ITokenHelper tokenHelper)
+        private readonly IRedisService _redisService;
+        public AuthMiddleware(RequestDelegate next, IRedisService redisService)
         {
-            _tokenHelper = tokenHelper;
+            _redisService = redisService;
             _next = next;
         }
 
@@ -18,22 +20,23 @@ namespace Blog.APi.Middlewares
         {
             try
             {
-                var token = context.Request.Headers["Authorization"].ToString();
-                if (!string.IsNullOrEmpty(token))
-                {
-                    if (_tokenHelper.ValidateToken(token))
-                    {
-                        BlogDbContext.UserId = _tokenHelper.TokenToUserId(token);
-                    }
-                    else
-                    {
-                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                        context.Response.ContentType = "application/json";
-                        await context.Response.WriteAsync(
-                                new Result(false, "TokenNotValid").ToJson());
-                        return;
-                    }
-                }
+                //var token = context.Request.Headers["Authorization"].ToString();
+                //if (!string.IsNullOrEmpty(token))
+                //{
+                //    if (await _redisService.InCache(token))
+                //    {
+                //        var user = await _redisService.GetAsync<User>(token);
+                //        BlogDbContext.UserId = user.Id;
+                //    }
+                //    else
+                //    {
+                //        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                //        context.Response.ContentType = "application/json";
+                //        await context.Response.WriteAsync(
+                //                new Result(false, "TokenNotValid").ToJson());
+                //        return;
+                //    }
+                //}
                 await _next.Invoke(context);
             }
             catch (Exception ex)

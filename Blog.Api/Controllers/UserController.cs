@@ -1,4 +1,5 @@
-﻿using Blog.Business.Abstract;
+﻿using Blog.Api.Filters;
+using Blog.Business.Abstract;
 using Blog.Dto.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,7 @@ namespace Blog.APi.Controllers
             _userService = userService;
         }
 
+        [AuthorizeFilter]
         [HttpPut("updatemyinformation")]
         public async Task<IActionResult> UpdateMyInformation(UserUpdateDto userUpdateDto)
         {
@@ -28,6 +30,7 @@ namespace Blog.APi.Controllers
             return Ok(res);
         }
 
+        [AuthorizeFilter]
         [HttpGet("getmyinformation")]
         public async Task<IActionResult> UserInformation()
         {
@@ -39,7 +42,6 @@ namespace Blog.APi.Controllers
             return Ok(res);
         }
 
-        [AllowAnonymous]
         [HttpGet("get/{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
@@ -52,7 +54,7 @@ namespace Blog.APi.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
+        [AuthorizeFilter("Admin")]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
