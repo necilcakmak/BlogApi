@@ -37,7 +37,7 @@ namespace Blog.Business.Concrete.RedisCache
             return false;
         }
 
-        public async Task SetAsync<T>(string key, T data)
+        public async Task SetAsync(string key, object data)
         {
             var jsonData = JsonConvert.SerializeObject(data);
             var options = new DistributedCacheEntryOptions()

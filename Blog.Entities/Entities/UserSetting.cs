@@ -14,7 +14,5 @@ namespace Blog.Entities.Entities
         public bool IsApproved { get; set; }
         public User User { get; set; }
         public Guid UserId { get; set; }
-        public ICollection<FollowedAuthors> FollowedAuthors { get; set; }
-        public ICollection<FollowersAuthors> FollowersAuthors { get; set; }
     }
 }

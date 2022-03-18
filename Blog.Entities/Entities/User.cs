@@ -18,6 +18,8 @@ namespace Blog.Entities.Entities
         public bool Gender { get; set; }
         public DateTime BirthDate { get; set; }
         public UserSetting UserSetting { get; set; }
+        public ICollection<UserFollower> UserFollowers { get; set; }
+        public ICollection<UserFollowed> UserFollowed { get; set; }
         public ICollection<Article>? Articles { get; set; }
         public ICollection<Comment>? Comments { get; set; }
 

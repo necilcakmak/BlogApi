@@ -53,6 +53,17 @@ namespace Blog.Repository.EntityFramework.Mapping
                     ReceiveMail = true,
                     NewBlog = true,
                     IsApproved = false,
+                },
+                new UserSetting
+                {
+                    Id = new Guid("a6bacb41-6666-4f2c-b5c8-afdac80f2026"),
+                    CreatedDate = DateTime.Now.ToUniversalTime(),
+                    UpdatedDate = DateTime.Now.ToUniversalTime(),
+                    IsActive = true,
+                    UserId = new Guid("30d00d67-4f1e-405f-a992-f9ef825550c8"),
+                    ReceiveMail = true,
+                    NewBlog = true,
+                    IsApproved = true,
                 });
         }
     }

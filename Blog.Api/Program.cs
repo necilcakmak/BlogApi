@@ -1,3 +1,4 @@
+using Blog.Api.Extensions;
 using Blog.APi.Filters;
 using Blog.APi.Middlewares;
 using Blog.Business;
@@ -6,16 +7,14 @@ using Blog.Core.Utilities;
 using Blog.Dto.Validators.Auth;
 using Blog.Repository.EntityFramework.Context;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
 #region filters, fluentvalidation ve newtonsoft
 builder.Services.AddControllers(options =>
 {
@@ -24,15 +23,11 @@ builder.Services.AddControllers(options =>
 }).AddFluentValidation(fv =>
 {
     fv.RegisterValidatorsFromAssemblyContaining<RegisterValidator>();
-}).AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+}).AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 #endregion
 
 #region redis
-builder.Services.AddStackExchangeRedisCache(option =>
-{
-    option.Configuration = builder.Configuration.GetConnectionString("RedisCon");
-    option.InstanceName = "test";
-});
+builder.Services.RedisSettings(builder.Configuration);
 #endregion
 
 #region api versioning
@@ -47,66 +42,12 @@ builder.Services.AddEndpointsApiExplorer();
 #endregion
 
 #region swagger settings
-builder.Services.AddSwaggerGen(swagger =>
-{
-    swagger.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Version = "V1",
-        Title = "Blog Api",
-        Description = "ASP.NET Core 6.0 Web API"
-    });
-    swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer eyabcdef\"",
-    });
-
-    swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                          new OpenApiSecurityScheme
-                            {
-                                Reference = new OpenApiReference
-                                {
-                                    Type = ReferenceType.SecurityScheme,
-                                    Id = "Bearer"
-                                }
-                            },
-                            Array.Empty<string>()
-                    }
-                });
-});
+builder.Services.CustomSwagger();
 #endregion
 
-#region token settings
-var tokenOptions = builder.Configuration.GetSection(key: "TokenOptions").Get<TokenOptions>();
-var key = Encoding.ASCII.GetBytes(tokenOptions.SecurityKey);
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(x =>
-{
-    x.RequireHttpsMetadata = false;
-    x.SaveToken = true;
-    x.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidIssuer = tokenOptions.Issuer,
-        ValidAudience = tokenOptions.Audience,
-        ValidateIssuerSigningKey = true,
-        ClockSkew = TimeSpan.Zero,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-    };
-});
-#endregion
+builder.Services.AddAuthentication();
+
+builder.Services.AddHealthChecks();
 
 #region inject my services
 builder.Services.LoadMyServices(builder.Configuration);
@@ -116,7 +57,6 @@ builder.Services.LoadMyServices(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(MappingProfiles));
 #endregion
 
-builder.Services.Configure<TokenOptions>(builder.Configuration.GetSection("TokenOptions"));
 builder.Services.Configure<MailOptions>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
@@ -134,19 +74,19 @@ using (var serviceScope = app.Services.CreateScope())
         context.Database.Migrate();
     }
 }
-// if (app.Environment.IsDevelopment())
-// {
-//     app.UseSwagger();
-//     app.UseSwaggerUI(options =>
-//     {
-//         options.DocumentTitle = "Blog Api UI";
-//     });
-// }
-app.UseSwagger();
-app.UseSwaggerUI(options =>
+if (app.Environment.IsDevelopment())
 {
-    options.DocumentTitle = "Blog Api UI";
-});
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.DocumentTitle = "Blog Api UI";
+    });
+}
+
+#region healt check
+app.UseCustomHealtCheck();
+#endregion
+
 #region cors settings
 app.UseCors(options => options
 .WithOrigins(new[] { "http://20.124.207.158", "http://localhost", "http://localhost:8080", "http://localhost:5000", "http://localhost:4000", "http://localhost:3000" })
@@ -155,7 +95,6 @@ app.UseCors(options => options
 .AllowCredentials()
 );
 #endregion
-
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseMiddleware<AuthMiddleware>();

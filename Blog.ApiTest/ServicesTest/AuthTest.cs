@@ -47,7 +47,7 @@ namespace Blog.ApiTest.ServicesTest
             };
 
             //Act
-            AuthService command = new(_unitOfWork, null, _mapper, null, null);
+            AuthService command = new(_unitOfWork, _mapper, null, null, null);
             var res = await command.Register(registerDto);
 
             //Assert

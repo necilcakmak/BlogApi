@@ -29,7 +29,6 @@ namespace Blog.Business
             serviceCollection.AddScoped<IMainCategoryService, MainCategoryService>();
             serviceCollection.AddScoped<ICommentService, CommentService>();
             serviceCollection.AddTransient<IAuthService, AuthService>();
-            serviceCollection.AddTransient<ITokenHelper, TokenHelper>();
             serviceCollection.AddSingleton<IHashManager, HashManager>();
             serviceCollection.AddSingleton<IMailService, MailService>();
 

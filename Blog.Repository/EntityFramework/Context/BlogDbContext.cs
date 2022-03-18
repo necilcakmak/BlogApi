@@ -16,8 +16,8 @@ namespace Blog.Repository.EntityFramework.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<MainCategory> MainCategories { get; set; }
-        public DbSet<FollowedAuthors> FollowedAuthors { get; set; }
-        public DbSet<FollowersAuthors> FollowersAuthors { get; set; }
+        public DbSet<UserFollowed> UserFolloweds { get; set; }
+        public DbSet<UserFollower> UserFollowers { get; set; }
 
         public override int SaveChanges()
         {

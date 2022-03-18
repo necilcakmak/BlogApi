@@ -10,6 +10,6 @@ namespace Blog.Business.Abstract.RedisCache
     {
         Task<T?> GetAsync<T>(string key);
         Task<bool> InCache(string key);
-        Task SetAsync<T>(string key, T data);
+        Task SetAsync(string key, object data);
     }
 }

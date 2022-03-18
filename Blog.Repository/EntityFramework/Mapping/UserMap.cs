@@ -68,6 +68,20 @@ namespace Blog.Repository.EntityFramework.Mapping
                     Password = "$2a$11$uNx/XA0odP6BAp8xKqtkausOYVPqmGNmq1GYK/y0E6OgQNb/7XIfC",
                     Gender = false,
                     BirthDate = DateTime.Parse("1990-11-18").ToUniversalTime()
+                }, 
+                new User
+                {
+                    Id = new Guid("30d00d67-4f1e-405f-a992-f9ef825550c8"),
+                    CreatedDate = DateTime.Now.ToUniversalTime(),
+                    UpdatedDate = DateTime.Now.ToUniversalTime(),
+                    IsActive = true,
+                    UserName = "Server",
+                    UserSurname = "Doğan",
+                    NickName = "serverdogan",
+                    Email = "server@dogan.com",
+                    Password = "$2a$11$uNx/XA0odP6BAp8xKqtkausOYVPqmGNmq1GYK/y0E6OgQNb/7XIfC",
+                    Gender = false,
+                    BirthDate = DateTime.Parse("1985-9-25").ToUniversalTime()
                 });
         }
     }

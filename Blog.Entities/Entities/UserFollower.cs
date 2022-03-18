@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace Blog.Entities.Entities
 {
-    public class FollowersAuthors
+    public class UserFollower
     {
         public Guid Id { get; set; }
-        public Guid UserSettingId { get; set; }
-        public UserSetting UserSetting { get; set; }
+        public Guid FollowersUserId { get; set; }
         public Guid UserId { get; set; }
         public User User { get; set; }
         public DateTime FollowedDate { get; set; }
