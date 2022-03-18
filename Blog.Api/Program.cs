@@ -15,15 +15,19 @@ using Newtonsoft.Json;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
 #region filters, fluentvalidation ve newtonsoft
-builder.Services.AddControllers(options =>
+builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.Add(typeof(ValidationFilter));
     options.EnableEndpointRouting = false;
 }).AddFluentValidation(fv =>
 {
     fv.RegisterValidatorsFromAssemblyContaining<RegisterValidator>();
-}).AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+}).AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+});
 #endregion
 
 #region redis
@@ -100,7 +104,6 @@ app.UseHttpsRedirection();
 app.UseMiddleware<AuthMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

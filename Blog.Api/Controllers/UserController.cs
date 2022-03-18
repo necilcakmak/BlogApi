@@ -1,5 +1,6 @@
 ﻿using Blog.Api.Filters;
 using Blog.Business.Abstract;
+using Blog.Core.Utilities;
 using Blog.Dto.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -54,7 +55,7 @@ namespace Blog.APi.Controllers
         }
 
 
-        [AuthorizeFilter("Admin")]
+        [AuthorizeFilter(RoleTypeEnum.Delete)]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {

@@ -42,6 +42,7 @@ namespace Blog.Repository.EntityFramework.Mapping
                     ReceiveMail = true,
                     NewBlog = true,
                     IsApproved = true,
+                    RoleValue = 15
                 },
                 new UserSetting
                 {
@@ -53,6 +54,7 @@ namespace Blog.Repository.EntityFramework.Mapping
                     ReceiveMail = true,
                     NewBlog = true,
                     IsApproved = false,
+                    RoleValue = 11
                 },
                 new UserSetting
                 {
@@ -64,6 +66,7 @@ namespace Blog.Repository.EntityFramework.Mapping
                     ReceiveMail = true,
                     NewBlog = true,
                     IsApproved = true,
+                    RoleValue = 1
                 });
         }
     }

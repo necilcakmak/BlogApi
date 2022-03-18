@@ -33,8 +33,8 @@ namespace Blog.Repository.EntityFramework.Context
             modelBuilder.ApplyConfiguration(new CommentMap());
             modelBuilder.ApplyConfiguration(new MainCategoryMap());
             modelBuilder.ApplyConfiguration(new UserSettingsMap());
-            modelBuilder.ApplyConfiguration(new FollowedAuthorsMap());
-            modelBuilder.ApplyConfiguration(new FollowersAuthorsMap());
+            modelBuilder.ApplyConfiguration(new UserFollowedMap());
+            modelBuilder.ApplyConfiguration(new UserFollowersMap());
         }
     }
 }

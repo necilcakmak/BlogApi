@@ -9,14 +9,14 @@ namespace Blog.Api.Filters
 {
     public class AuthorizeFilter : ActionFilterAttribute
     {
-        string RolName;
+        RoleTypeEnum RolValue;
         public AuthorizeFilter()
         {
 
         }
-        public AuthorizeFilter(string RolName)
+        public AuthorizeFilter(RoleTypeEnum RolValue)
         {
-           this.RolName = RolName;
+            this.RolValue = RolValue;
         }
         public override async void OnActionExecuting(ActionExecutingContext context)
         {
@@ -25,7 +25,7 @@ namespace Blog.Api.Filters
             var _redisService = service.GetService<IRedisService>();
 
             var user = await _redisService.GetAsync<User>(key);
-            if (user == null)
+            if (user == null || !((int)RolValue == (user.UserSetting.RoleValue & (int)RolValue)))
             {
                 context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.HttpContext.Response.ContentType = "application/json";

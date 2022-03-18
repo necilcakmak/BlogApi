@@ -1,5 +1,6 @@
 ﻿using Blog.Api.Filters;
 using Blog.Business.Abstract;
+using Blog.Core.Utilities;
 using Blog.Dto.MainCategory;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +30,7 @@ namespace Blog.Api.Controllers
             return Ok(res);
         }
 
-        [AuthorizeFilter("Admin")]
+        [AuthorizeFilter(RoleTypeEnum.Insert)]
         [HttpPost("add")]
         public async Task<IActionResult> Add(MainCategoryAddDto mainCategoryAddDto)
         {
@@ -52,7 +53,7 @@ namespace Blog.Api.Controllers
             return Ok(res);
         }
 
-        [AuthorizeFilter("Admin")]
+        [AuthorizeFilter(RoleTypeEnum.Delete)]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -64,7 +65,7 @@ namespace Blog.Api.Controllers
             return Ok(res);
         }
 
-        [AuthorizeFilter("Admin")]
+        [AuthorizeFilter(RoleTypeEnum.Update)]
         [HttpPut("update")]
         public async Task<IActionResult> Update(MainCategoryAddDto mainCategoryAddDto)
         {

@@ -11,5 +11,6 @@ namespace Blog.Business.Abstract.RedisCache
         Task<T?> GetAsync<T>(string key);
         Task<bool> InCache(string key);
         Task SetAsync(string key, object data);
+        Task RemoveAsync(string key);
     }
 }

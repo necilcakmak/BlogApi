@@ -1,11 +1,7 @@
 ﻿using Blog.Business.Abstract.RedisCache;
+using Blog.Core.Utilities;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Blog.Business.Concrete.RedisCache
 {
@@ -16,11 +12,13 @@ namespace Blog.Business.Concrete.RedisCache
         {
             _distributedCache = distributedCache;
         }
+
         public async Task<T?> GetAsync<T>(string key)
         {
             var jsonData = await _distributedCache.GetStringAsync(key);
             if (!string.IsNullOrEmpty(jsonData))
             {
+
                 return JsonConvert.DeserializeObject<T>(jsonData);
             }
             return default;
@@ -39,11 +37,16 @@ namespace Blog.Business.Concrete.RedisCache
 
         public async Task SetAsync(string key, object data)
         {
-            var jsonData = JsonConvert.SerializeObject(data);
+            var jsonData = ExtensionFunctions.ToJson(data);
             var options = new DistributedCacheEntryOptions()
                         .SetSlidingExpiration(TimeSpan.FromDays(1))
                         .SetAbsoluteExpiration(DateTime.Now.AddMonths(1));
             await _distributedCache.SetStringAsync(key, jsonData, options);
+        }
+
+        public async Task RemoveAsync(string key)
+        {
+            await _distributedCache.RemoveAsync(key);
         }
     }
 }

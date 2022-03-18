@@ -44,7 +44,7 @@ namespace Blog.Api.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2022, 3, 18, 10, 57, 9, 564, DateTimeKind.Utc).AddTicks(6943));
+                        .HasDefaultValue(new DateTime(2022, 3, 18, 13, 7, 35, 925, DateTimeKind.Utc).AddTicks(3265));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -73,7 +73,7 @@ namespace Blog.Api.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2022, 3, 18, 10, 57, 9, 564, DateTimeKind.Utc).AddTicks(7174));
+                        .HasDefaultValue(new DateTime(2022, 3, 18, 13, 7, 35, 925, DateTimeKind.Utc).AddTicks(3488));
 
                     b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
@@ -98,13 +98,13 @@ namespace Blog.Api.Migrations
                             CategoryId = new Guid("5533e9a6-186f-4a3d-9ef4-63a2f7c02eb2"),
                             CommentCount = 2,
                             Content = "ilk makalenin içeriği",
-                            CreatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(342),
+                            CreatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 925, DateTimeKind.Utc).AddTicks(7189),
                             Description = "ilk makale açıklaması",
                             IsActive = true,
-                            PublishedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(354),
+                            PublishedDate = new DateTime(2022, 3, 18, 13, 7, 35, 925, DateTimeKind.Utc).AddTicks(7206),
                             Thumbnail = "default.jpg",
                             Title = "ilk makale",
-                            UpdatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(350),
+                            UpdatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 925, DateTimeKind.Utc).AddTicks(7198),
                             UserId = new Guid("c91266a4-35d3-4b60-89aa-6fa26c33c908"),
                             ViewsCount = 33
                         },
@@ -114,13 +114,13 @@ namespace Blog.Api.Migrations
                             CategoryId = new Guid("5533e9a6-186f-4a3d-9ef4-63a2f7c02eb2"),
                             CommentCount = 3,
                             Content = "ikinci makalenin içeriği",
-                            CreatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(359),
+                            CreatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 925, DateTimeKind.Utc).AddTicks(7211),
                             Description = "ikinci makale açıklaması",
                             IsActive = true,
-                            PublishedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(364),
+                            PublishedDate = new DateTime(2022, 3, 18, 13, 7, 35, 925, DateTimeKind.Utc).AddTicks(7216),
                             Thumbnail = "default.jpg",
                             Title = "ikinci makale",
-                            UpdatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(360),
+                            UpdatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 925, DateTimeKind.Utc).AddTicks(7213),
                             UserId = new Guid("45b533cd-ed21-4eb7-bb90-8838b6f9486c"),
                             ViewsCount = 25
                         },
@@ -130,13 +130,13 @@ namespace Blog.Api.Migrations
                             CategoryId = new Guid("1bbc4e68-3e73-4f11-bd09-11ba71b5b582"),
                             CommentCount = 1,
                             Content = "üçüncü makalenin içeriği",
-                            CreatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(368),
+                            CreatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 925, DateTimeKind.Utc).AddTicks(7219),
                             Description = "üçüncü makale açıklaması",
                             IsActive = true,
-                            PublishedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(372),
+                            PublishedDate = new DateTime(2022, 3, 18, 13, 7, 35, 925, DateTimeKind.Utc).AddTicks(7223),
                             Thumbnail = "default.jpg",
                             Title = "üçüncü makale",
-                            UpdatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(369),
+                            UpdatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 925, DateTimeKind.Utc).AddTicks(7220),
                             UserId = new Guid("45b533cd-ed21-4eb7-bb90-8838b6f9486c"),
                             ViewsCount = 11
                         },
@@ -146,13 +146,13 @@ namespace Blog.Api.Migrations
                             CategoryId = new Guid("1bbc4e68-3e73-4f11-bd09-11ba71b5b582"),
                             CommentCount = 5,
                             Content = "dördüncü makalenin içeriği",
-                            CreatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(376),
+                            CreatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 925, DateTimeKind.Utc).AddTicks(7226),
                             Description = "dördüncü makale açıklaması",
                             IsActive = true,
-                            PublishedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(380),
+                            PublishedDate = new DateTime(2022, 3, 18, 13, 7, 35, 925, DateTimeKind.Utc).AddTicks(7230),
                             Thumbnail = "default.jpg",
                             Title = "dördüncü makale",
-                            UpdatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(377),
+                            UpdatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 925, DateTimeKind.Utc).AddTicks(7228),
                             UserId = new Guid("c91266a4-35d3-4b60-89aa-6fa26c33c908"),
                             ViewsCount = 10
                         });
@@ -173,7 +173,7 @@ namespace Blog.Api.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(1082));
+                        .HasDefaultValue(new DateTime(2022, 3, 18, 13, 7, 35, 925, DateTimeKind.Utc).AddTicks(8136));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -194,7 +194,7 @@ namespace Blog.Api.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(1278));
+                        .HasDefaultValue(new DateTime(2022, 3, 18, 13, 7, 35, 925, DateTimeKind.Utc).AddTicks(8334));
 
                     b.HasKey("Id");
 
@@ -210,23 +210,23 @@ namespace Blog.Api.Migrations
                         {
                             Id = new Guid("5533e9a6-186f-4a3d-9ef4-63a2f7c02eb2"),
                             CategoryName = "Yazılım",
-                            CreatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(3203),
+                            CreatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(434),
                             Description = "Yazılım kategorisine ait makaleler",
                             IsActive = true,
                             MainCategoryId = new Guid("eec3877e-de06-47a5-9f29-764cebf7851d"),
                             TagName = "YZL",
-                            UpdatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(3211)
+                            UpdatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(442)
                         },
                         new
                         {
                             Id = new Guid("1bbc4e68-3e73-4f11-bd09-11ba71b5b582"),
                             CategoryName = "Sinema",
-                            CreatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(3217),
+                            CreatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(450),
                             Description = "Sinema kategorisine ait makaleler",
                             IsActive = true,
                             MainCategoryId = new Guid("11070708-1c30-4967-9bcf-433e703f348a"),
                             TagName = "SİN",
-                            UpdatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(3218)
+                            UpdatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(451)
                         });
                 });
 
@@ -243,7 +243,7 @@ namespace Blog.Api.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(5982));
+                        .HasDefaultValue(new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(4280));
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -258,7 +258,7 @@ namespace Blog.Api.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(6179));
+                        .HasDefaultValue(new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(4538));
 
                     b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
@@ -278,30 +278,30 @@ namespace Blog.Api.Migrations
                         {
                             Id = new Guid("c8d2fc77-9c77-48fe-9e7b-4f47c34fe27e"),
                             ArticleId = new Guid("507462a3-5639-4573-b7d9-306d560a7ca8"),
-                            CreatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(8866),
+                            CreatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(8569),
                             IsActive = true,
                             Text = "örnek yorum 1",
-                            UpdatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(8874),
+                            UpdatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(8580),
                             UserId = new Guid("c91266a4-35d3-4b60-89aa-6fa26c33c908")
                         },
                         new
                         {
                             Id = new Guid("e8acb53c-0f5d-44c6-bc2d-14f2afce41c7"),
                             ArticleId = new Guid("15cd7fe9-3d73-4028-b3f1-0e8a09112570"),
-                            CreatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(8880),
+                            CreatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(8589),
                             IsActive = true,
                             Text = "örnek yorum 3",
-                            UpdatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(8881),
+                            UpdatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(8592),
                             UserId = new Guid("45b533cd-ed21-4eb7-bb90-8838b6f9486c")
                         },
                         new
                         {
                             Id = new Guid("fcda26c7-2469-415f-b2bf-7b2571c11e4a"),
                             ArticleId = new Guid("d1267b3b-c386-4481-804b-17c38c28d122"),
-                            CreatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(8885),
+                            CreatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(8602),
                             IsActive = true,
                             Text = "örnek yorum 2",
-                            UpdatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(8887),
+                            UpdatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(8604),
                             UserId = new Guid("c91266a4-35d3-4b60-89aa-6fa26c33c908")
                         });
                 });
@@ -316,7 +316,7 @@ namespace Blog.Api.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(9392));
+                        .HasDefaultValue(new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(9512));
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -331,7 +331,7 @@ namespace Blog.Api.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(9562));
+                        .HasDefaultValue(new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(9782));
 
                     b.HasKey("Id");
 
@@ -344,18 +344,18 @@ namespace Blog.Api.Migrations
                         new
                         {
                             Id = new Guid("eec3877e-de06-47a5-9f29-764cebf7851d"),
-                            CreatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(228),
+                            CreatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(529),
                             IsActive = true,
                             MainCategoryName = "Bilim",
-                            UpdatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(234)
+                            UpdatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(535)
                         },
                         new
                         {
                             Id = new Guid("11070708-1c30-4967-9bcf-433e703f348a"),
-                            CreatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(237),
+                            CreatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(538),
                             IsActive = true,
                             MainCategoryName = "Kültür",
-                            UpdatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(239)
+                            UpdatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(539)
                         });
                 });
 
@@ -372,7 +372,7 @@ namespace Blog.Api.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(3721));
+                        .HasDefaultValue(new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(1185));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -402,7 +402,7 @@ namespace Blog.Api.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(3931));
+                        .HasDefaultValue(new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(1435));
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -429,13 +429,13 @@ namespace Blog.Api.Migrations
                         {
                             Id = new Guid("c91266a4-35d3-4b60-89aa-6fa26c33c908"),
                             BirthDate = new DateTime(1995, 12, 27, 22, 0, 0, 0, DateTimeKind.Utc),
-                            CreatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(5296),
+                            CreatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(3415),
                             Email = "necil@necil.com",
                             Gender = true,
                             IsActive = true,
                             NickName = "necilcakmak",
                             Password = "$2a$11$wnQMJKF1vC6fAxs5IDaM1.5S3oMG.gEQMhON0bHUl5UQfe8v1AwIK",
-                            UpdatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(5302),
+                            UpdatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(3423),
                             UserName = "Necil",
                             UserSurname = "Çakmak"
                         },
@@ -443,13 +443,13 @@ namespace Blog.Api.Migrations
                         {
                             Id = new Guid("45b533cd-ed21-4eb7-bb90-8838b6f9486c"),
                             BirthDate = new DateTime(1990, 11, 17, 22, 0, 0, 0, DateTimeKind.Utc),
-                            CreatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(5374),
+                            CreatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(3540),
                             Email = "ömer@ömer.com",
                             Gender = false,
                             IsActive = true,
                             NickName = "ömergürsoy",
                             Password = "$2a$11$uNx/XA0odP6BAp8xKqtkausOYVPqmGNmq1GYK/y0E6OgQNb/7XIfC",
-                            UpdatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(5376),
+                            UpdatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(3543),
                             UserName = "Ömer",
                             UserSurname = "Gürsoy"
                         },
@@ -457,13 +457,13 @@ namespace Blog.Api.Migrations
                         {
                             Id = new Guid("30d00d67-4f1e-405f-a992-f9ef825550c8"),
                             BirthDate = new DateTime(1985, 9, 24, 21, 0, 0, 0, DateTimeKind.Utc),
-                            CreatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(5389),
+                            CreatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(3559),
                             Email = "server@dogan.com",
                             Gender = false,
                             IsActive = true,
                             NickName = "serverdogan",
                             Password = "$2a$11$uNx/XA0odP6BAp8xKqtkausOYVPqmGNmq1GYK/y0E6OgQNb/7XIfC",
-                            UpdatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 565, DateTimeKind.Utc).AddTicks(5391),
+                            UpdatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 926, DateTimeKind.Utc).AddTicks(3561),
                             UserName = "Server",
                             UserSurname = "Doğan"
                         });
@@ -479,7 +479,7 @@ namespace Blog.Api.Migrations
                     b.Property<DateTime>("FollowedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(3214));
+                        .HasDefaultValue(new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(3755));
 
                     b.Property<Guid>("FollowedUserId")
                         .HasColumnType("uuid");
@@ -497,21 +497,21 @@ namespace Blog.Api.Migrations
                         new
                         {
                             Id = new Guid("7cd06ada-c8ce-4d70-9764-d7fe138bdd9c"),
-                            FollowedDate = new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(5200),
+                            FollowedDate = new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(6253),
                             FollowedUserId = new Guid("c91266a4-35d3-4b60-89aa-6fa26c33c908"),
                             UserId = new Guid("45b533cd-ed21-4eb7-bb90-8838b6f9486c")
                         },
                         new
                         {
                             Id = new Guid("9955ae8d-c9ff-41b8-84c1-12cd18770fed"),
-                            FollowedDate = new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(5211),
+                            FollowedDate = new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(6271),
                             FollowedUserId = new Guid("c91266a4-35d3-4b60-89aa-6fa26c33c908"),
                             UserId = new Guid("30d00d67-4f1e-405f-a992-f9ef825550c8")
                         },
                         new
                         {
                             Id = new Guid("e9884b3f-6665-42b4-9b67-1555ce3b4f94"),
-                            FollowedDate = new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(5215),
+                            FollowedDate = new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(6278),
                             FollowedUserId = new Guid("45b533cd-ed21-4eb7-bb90-8838b6f9486c"),
                             UserId = new Guid("30d00d67-4f1e-405f-a992-f9ef825550c8")
                         });
@@ -527,7 +527,7 @@ namespace Blog.Api.Migrations
                     b.Property<DateTime>("FollowedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(5731));
+                        .HasDefaultValue(new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(7163));
 
                     b.Property<Guid>("FollowersUserId")
                         .HasColumnType("uuid");
@@ -545,21 +545,21 @@ namespace Blog.Api.Migrations
                         new
                         {
                             Id = new Guid("a07a6456-3576-48ad-8914-1cd5c1152904"),
-                            FollowedDate = new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(7671),
+                            FollowedDate = new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(9177),
                             FollowersUserId = new Guid("45b533cd-ed21-4eb7-bb90-8838b6f9486c"),
                             UserId = new Guid("c91266a4-35d3-4b60-89aa-6fa26c33c908")
                         },
                         new
                         {
                             Id = new Guid("1621633e-4c36-4a7e-a24c-aac0d35e4d9f"),
-                            FollowedDate = new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(7682),
+                            FollowedDate = new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(9188),
                             FollowersUserId = new Guid("30d00d67-4f1e-405f-a992-f9ef825550c8"),
                             UserId = new Guid("c91266a4-35d3-4b60-89aa-6fa26c33c908")
                         },
                         new
                         {
                             Id = new Guid("3e37ab15-45eb-44ee-940a-59f87b407a8c"),
-                            FollowedDate = new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(7687),
+                            FollowedDate = new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(9193),
                             FollowersUserId = new Guid("30d00d67-4f1e-405f-a992-f9ef825550c8"),
                             UserId = new Guid("45b533cd-ed21-4eb7-bb90-8838b6f9486c")
                         });
@@ -575,7 +575,7 @@ namespace Blog.Api.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(741));
+                        .HasDefaultValue(new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(1137));
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -597,10 +597,13 @@ namespace Blog.Api.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(true);
 
+                    b.Property<int>("RoleValue")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("UpdatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(1026));
+                        .HasDefaultValue(new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(1335));
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -616,34 +619,37 @@ namespace Blog.Api.Migrations
                         new
                         {
                             Id = new Guid("8ff845a2-ad00-4158-8b4a-061a5764c789"),
-                            CreatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(2644),
+                            CreatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(3074),
                             IsActive = true,
                             IsApproved = true,
                             NewBlog = true,
                             ReceiveMail = true,
-                            UpdatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(2652),
+                            RoleValue = 15,
+                            UpdatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(3082),
                             UserId = new Guid("c91266a4-35d3-4b60-89aa-6fa26c33c908")
                         },
                         new
                         {
                             Id = new Guid("e88c8860-4b9a-4736-9ed3-5cf23a75a86b"),
-                            CreatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(2657),
+                            CreatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(3087),
                             IsActive = true,
                             IsApproved = false,
                             NewBlog = true,
                             ReceiveMail = true,
-                            UpdatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(2659),
+                            RoleValue = 11,
+                            UpdatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(3089),
                             UserId = new Guid("45b533cd-ed21-4eb7-bb90-8838b6f9486c")
                         },
                         new
                         {
                             Id = new Guid("a6bacb41-6666-4f2c-b5c8-afdac80f2026"),
-                            CreatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(2662),
+                            CreatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(3094),
                             IsActive = true,
                             IsApproved = true,
                             NewBlog = true,
                             ReceiveMail = true,
-                            UpdatedDate = new DateTime(2022, 3, 18, 10, 57, 9, 566, DateTimeKind.Utc).AddTicks(2664),
+                            RoleValue = 1,
+                            UpdatedDate = new DateTime(2022, 3, 18, 13, 7, 35, 927, DateTimeKind.Utc).AddTicks(3096),
                             UserId = new Guid("30d00d67-4f1e-405f-a992-f9ef825550c8")
                         });
                 });

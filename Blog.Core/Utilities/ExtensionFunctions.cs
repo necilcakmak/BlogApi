@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,7 +19,14 @@ namespace Blog.Core.Utilities
 
         public static string ToJson(this object obje)
         {
-            return JsonConvert.SerializeObject(obje);
+            var settings = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Formatting = Formatting.Indented,
+                MaxDepth = 1
+            };
+            return JsonConvert.SerializeObject(obje, settings);
         }
 
     }

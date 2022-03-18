@@ -9,6 +9,7 @@ namespace Blog.Entities.Entities
 {
     public class UserSetting : EntityBase
     {
+        public int RoleValue { get; set; }
         public bool ReceiveMail { get; set; }
         public bool NewBlog { get; set; }
         public bool IsApproved { get; set; }

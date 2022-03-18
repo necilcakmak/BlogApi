@@ -38,25 +38,18 @@ namespace Blog.Business.Concrete
 
         public async Task<Result> Add(ArticleAddDto articleAddDto)
         {
-            try
+            Article article = _mapper.Map<Article>(articleAddDto);
+            await _unitOfWork.Articles.AddAsync(article);
+            await _unitOfWork.SaveAsync();
+            #region rabbitmq publisher service send mail
+            var userFollwersUser = await _unitOfWork.Users.GetFollowersMailList();
+            if (userFollwersUser.Any())
             {
-
-                Article article = _mapper.Map<Article>(articleAddDto);
-                await _unitOfWork.Articles.AddAsync(article);
-                await _unitOfWork.SaveAsync();
-                #region rabbitmq publisher service send mail
-                var userFollwersUser = await _unitOfWork.Users.GetFollowersMailList();
                 _rabbitMQPublisher.Publish(userFollwersUser);
-                #endregion
-                var articleDto = _mapper.Map<ArticleDto>(article);
-                return new DataResult<ArticleDto>(articleDto, true, _lang.Message(LangEnums.Added));
-
             }
-            catch (Exception ex)
-            {
-                var a = ex.Message;
-                throw;
-            }
+            #endregion
+            var articleDto = _mapper.Map<ArticleDto>(article);
+            return new DataResult<ArticleDto>(articleDto, true, _lang.Message(LangEnums.Added));
         }
 
         public async Task<Result> GetList()

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Repository.EntityFramework.Mapping
 {
-    class FollowedAuthorsMap : IEntityTypeConfiguration<UserFollowed>
+    class UserFollowedMap : IEntityTypeConfiguration<UserFollowed>
     {
         public void Configure(EntityTypeBuilder<UserFollowed> builder)
         {

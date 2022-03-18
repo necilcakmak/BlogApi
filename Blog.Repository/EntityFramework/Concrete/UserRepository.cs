@@ -19,10 +19,13 @@ namespace Blog.Repository.EntityFramework.Concrete
         public async Task<List<MailList>> GetFollowersMailList()
         {
             var userFollowers = await _dbContext.UserFollowers
-                 .Where(x => x.UserId == UserId).Include(x => x.User).ToArrayAsync();
-
-            var mailList = userFollowers.Select(x => new MailList { Mail = x.User.Email }).ToList();
-            return mailList;
+                 .Where(x => x.UserId == UserId).Include(x => x.User).ToListAsync();
+            if (userFollowers.Any())
+            {
+                var mailList = userFollowers.Select(x => new MailList { Mail = x.User.Email }).ToList();
+                return mailList;
+            }
+            return null;
         }
 
         public async Task<User> GetMyUserInformation()

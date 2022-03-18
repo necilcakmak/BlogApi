@@ -34,7 +34,7 @@ namespace Blog.Business.Concrete
         public async Task<Result> Login(LoginDto loginDto)
         {
 
-            var user = await _unitOfWork.Users.GetAsync(x => x.Email == loginDto.Email || x.NickName == loginDto.Email);
+            var user = await _unitOfWork.Users.GetAsync(x => x.Email == loginDto.Email || x.NickName == loginDto.Email, x => x.UserSetting);
             if (user != null && _hashManager.Verify(loginDto.Password, user.Password))
             {
                 var key = Guid.NewGuid().ToString();
