@@ -2,9 +2,10 @@
 
 namespace Blog.Entities.Entities
 {
-    public class MainCategory : EntityBase
+    public class ParentCategory : EntityBase
     {
-        public string MainCategoryName { get; set; }
+        public string Name { get; set; }
         public ICollection<Category> Categories { get; set; }
+
     }
 }

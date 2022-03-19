@@ -30,8 +30,10 @@ namespace Blog.Repository.EntityFramework.Mapping
             builder.Property(c => c.Title).HasMaxLength(50);
             builder.Property(c => c.Title).IsRequired();
 
-            builder.Property(c => c.Description).HasMaxLength(150);
-            builder.Property(c => c.Description).IsRequired();
+            builder.Property(c => c.Slug).HasMaxLength(150);
+            builder.Property(c => c.Slug).IsRequired();
+
+            builder.Property(c => c.Keywords).HasMaxLength(250);
 
             builder.Property(c => c.Content).HasMaxLength(10000);
             builder.Property(c => c.Content).IsRequired();
@@ -53,11 +55,12 @@ namespace Blog.Repository.EntityFramework.Mapping
                 CategoryId = new Guid("5533e9a6-186f-4a3d-9ef4-63a2f7c02eb2"),
                 PublishedDate = DateTime.Now.ToUniversalTime(),
                 Title = "ilk makale",
-                Description = "ilk makale açıklaması",
                 Content = "ilk makalenin içeriği",
                 Thumbnail = "default.jpg",
-                ViewsCount = 33,
+                LikeCount = 33,
                 CommentCount = 2,
+                Slug="ilk-makale",
+                Keywords = "{}"
             }, new Article
             {
                 Id = new Guid("15cd7fe9-3d73-4028-b3f1-0e8a09112570"),
@@ -68,11 +71,12 @@ namespace Blog.Repository.EntityFramework.Mapping
                 CategoryId = new Guid("5533e9a6-186f-4a3d-9ef4-63a2f7c02eb2"),
                 PublishedDate = DateTime.Now.ToUniversalTime(),
                 Title = "ikinci makale",
-                Description = "ikinci makale açıklaması",
                 Content = "ikinci makalenin içeriği",
                 Thumbnail = "default.jpg",
-                ViewsCount = 25,
+                LikeCount = 25,
                 CommentCount = 3,
+                Slug = "ikinci-makale",
+                Keywords = "{}"
             }, new Article
             {
                 Id = new Guid("d1267b3b-c386-4481-804b-17c38c28d122"),
@@ -83,11 +87,12 @@ namespace Blog.Repository.EntityFramework.Mapping
                 CategoryId = new Guid("1bbc4e68-3e73-4f11-bd09-11ba71b5b582"),
                 PublishedDate = DateTime.Now.ToUniversalTime(),
                 Title = "üçüncü makale",
-                Description = "üçüncü makale açıklaması",
                 Content = "üçüncü makalenin içeriği",
                 Thumbnail = "default.jpg",
-                ViewsCount = 11,
+                LikeCount = 11,
                 CommentCount = 1,
+                Slug = "ucuncu-makale",
+                Keywords = "{}"
             }, new Article
             {
                 Id = new Guid("ddb5c34f-518c-4189-ae3a-fe9103558500"),
@@ -98,11 +103,12 @@ namespace Blog.Repository.EntityFramework.Mapping
                 CategoryId = new Guid("1bbc4e68-3e73-4f11-bd09-11ba71b5b582"),
                 PublishedDate = DateTime.Now.ToUniversalTime(),
                 Title = "dördüncü makale",
-                Description = "dördüncü makale açıklaması",
                 Content = "dördüncü makalenin içeriği",
                 Thumbnail = "default.jpg",
-                ViewsCount = 10,
+                LikeCount = 10,
                 CommentCount = 5,
+                Slug = "dorduncu-makale",
+                Keywords = "{}"
             });
 
         }

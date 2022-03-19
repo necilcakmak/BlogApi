@@ -25,24 +25,24 @@ namespace Blog.ApiTest.ServicesTest
             //Arrange
             var user = new User
             {
-                NickName = "necilcakmak",
+                FirstName = "necil",
                 Email = "necil@necil.com",
                 Gender = true,
                 Password = "1234",
-                UserName = "necil",
-                UserSurname = "çakmak",
+                UserName = "necilcakmak",
+                LastName = "çakmak",
                 BirthDate = DateTime.Now.ToUniversalTime()
             };
             await _unitOfWork.Users.AddAsync(user);
             await _unitOfWork.SaveAsync();
             RegisterDto registerDto = new()
             {
-                NickName = user.NickName,
+                UserName = user.UserName,
                 Email = user.Email,
                 Gender = true,
                 Password = user.Password,
-                UserName = user.UserName,
-                UserSurname = user.UserSurname,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 BirthDate = user.BirthDate
             };
 

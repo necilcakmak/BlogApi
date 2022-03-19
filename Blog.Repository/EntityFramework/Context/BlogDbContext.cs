@@ -15,9 +15,7 @@ namespace Blog.Repository.EntityFramework.Context
         public DbSet<Article> Articles { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<MainCategory> MainCategories { get; set; }
-        public DbSet<UserFollowed> UserFolloweds { get; set; }
-        public DbSet<UserFollower> UserFollowers { get; set; }
+        public DbSet<ParentCategory> ParentCategories { get; set; }
 
         public override int SaveChanges()
         {
@@ -31,10 +29,8 @@ namespace Blog.Repository.EntityFramework.Context
             modelBuilder.ApplyConfiguration(new CategoryMap());
             modelBuilder.ApplyConfiguration(new UserMap());
             modelBuilder.ApplyConfiguration(new CommentMap());
-            modelBuilder.ApplyConfiguration(new MainCategoryMap());
-            modelBuilder.ApplyConfiguration(new UserSettingsMap());
-            modelBuilder.ApplyConfiguration(new UserFollowedMap());
-            modelBuilder.ApplyConfiguration(new UserFollowersMap());
+            modelBuilder.ApplyConfiguration(new ParentCategoryMap());
+            modelBuilder.ApplyConfiguration(new UserSettingMap());
         }
     }
 }

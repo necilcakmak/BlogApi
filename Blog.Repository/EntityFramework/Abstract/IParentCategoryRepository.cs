@@ -3,7 +3,7 @@ using Blog.Repository.EntityFramework.Abstract.Base;
 
 namespace Blog.Repository.EntityFramework.Abstract
 {
-    public interface IMainCategoryRepository : IEfRepositoryBase<MainCategory>
+    public interface IParentCategoryRepository : IEfRepositoryBase<ParentCategory>
     {
     }
 }

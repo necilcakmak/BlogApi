@@ -21,7 +21,7 @@ namespace Blog.Business.Concrete
         }
         public async Task<Result> Get(Guid id)
         {
-            var category = await _unitOfWork.Categories.GetAsync(x => x.Id == id, x => x.MainCategory);
+            var category = await _unitOfWork.Categories.GetAsync(x => x.Id == id, x => x.ParentCategory);
             if (category == null)
             {
                 return new Result(false, _lang.Message(LangEnums.NotFound));
@@ -32,7 +32,7 @@ namespace Blog.Business.Concrete
 
         public async Task<Result> Add(CategoryAddDto categoryAddDto)
         {
-            bool inDb = await _unitOfWork.Categories.AnyAsync(x => x.CategoryName == categoryAddDto.CategoryName);
+            bool inDb = await _unitOfWork.Categories.AnyAsync(x => x.Name == categoryAddDto.CategoryName);
             if (inDb)
             {
                 return new Result(false, _lang.Message(LangEnums.NameUsed));
@@ -46,7 +46,7 @@ namespace Blog.Business.Concrete
 
         public async Task<Result> GetList()
         {
-            var categories = await _unitOfWork.Categories.GetAllAsync(null, x => x.Articles, x => x.MainCategory);
+            var categories = await _unitOfWork.Categories.GetAllAsync(null, x => x.Articles, x => x.ParentCategory);
             if (categories.Count <= 0)
             {
                 return new Result(false, _lang.Message(LangEnums.NotFound));
@@ -69,7 +69,7 @@ namespace Blog.Business.Concrete
 
         public async Task<Result> Update(CategoryAddDto categoryAddDto)
         {
-            bool inDb = await _unitOfWork.Categories.AnyAsync(x => x.CategoryName == categoryAddDto.CategoryName);
+            bool inDb = await _unitOfWork.Categories.AnyAsync(x => x.Name == categoryAddDto.CategoryName);
             if (inDb)
             {
                 return new Result(false, _lang.Message(LangEnums.NameUsed));

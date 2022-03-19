@@ -15,8 +15,5 @@ namespace Blog.Business.Abstract
         Task<Result> Delete(Guid id);
         Task<Result> UpdateMyInformation(UserUpdateDto userUpdateDto);
         Task<Result> UpdateMySettings(UserSettingDto userSettingDto);
-        Task<Result> Follow(UserFollowDto userFollowDto);
-        Task<Result> GetFollow();
-        Task<Result> UnFollow(UserFollowDto userFollowDto);
     }
 }

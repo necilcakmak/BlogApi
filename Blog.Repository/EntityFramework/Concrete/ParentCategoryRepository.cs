@@ -5,9 +5,9 @@ using Blog.Repository.EntityFramework.Context;
 
 namespace Blog.Repository.EntityFramework.Concrete
 {
-    public class MainCategoryRepository : EfRepositoryBase<MainCategory>, IMainCategoryRepository
+    public class ParentCategoryRepository : EfRepositoryBase<ParentCategory>, IParentCategoryRepository
     {
-        public MainCategoryRepository(BlogDbContext context) : base(context)
+        public ParentCategoryRepository(BlogDbContext context) : base(context)
         {
             UserId = BlogDbContext.UserId;
         }

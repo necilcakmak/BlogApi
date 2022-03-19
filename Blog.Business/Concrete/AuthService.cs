@@ -34,7 +34,7 @@ namespace Blog.Business.Concrete
         public async Task<Result> Login(LoginDto loginDto)
         {
 
-            var user = await _unitOfWork.Users.GetAsync(x => x.Email == loginDto.Email || x.NickName == loginDto.Email, x => x.UserSetting);
+            var user = await _unitOfWork.Users.GetAsync(x => x.Email == loginDto.Email || x.UserName == loginDto.Email, x => x.UserSetting);
             if (user != null && _hashManager.Verify(loginDto.Password, user.Password))
             {
                 var key = Guid.NewGuid().ToString();
@@ -48,14 +48,14 @@ namespace Blog.Business.Concrete
 
         public async Task<Result> Register(RegisterDto registerDto)
         {
-            var userInDb = await _unitOfWork.Users.GetAsync(x => x.Email == registerDto.Email || x.NickName == registerDto.NickName);
+            var userInDb = await _unitOfWork.Users.GetAsync(x => x.Email == registerDto.Email || x.UserName == registerDto.UserName);
             if (userInDb != null)
             {
                 if (userInDb.Email == registerDto.Email)
                 {
                     return new Result(false, _lng.Message(LangEnums.EmailAvailable));
                 }
-                else if (userInDb.NickName == registerDto.NickName)
+                else if (userInDb.UserName == registerDto.UserName)
                 {
                     return new Result(false, _lng.Message(LangEnums.NicknameAvailable));
                 }
@@ -65,7 +65,7 @@ namespace Blog.Business.Concrete
             user.Password = _hashManager.Encrpt(user.Password);
             await _unitOfWork.Users.AddAsync(user);
             await _unitOfWork.SaveAsync();
-            await _unitOfWork.UserSettings.AddAsync(new UserSetting { UserId = user.Id, RoleValue = 11 });
+            await _unitOfWork.UserSettings.AddAsync(new UserSetting { UserId = user.Id });
             await _unitOfWork.SaveAsync();
             _mailService.SendMail(new MailDto { From = user.Email }, user.Id);
             return new Result(true, _lng.Message(LangEnums.MailSended));

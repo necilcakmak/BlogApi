@@ -30,7 +30,7 @@ namespace Blog.Api.Controllers
             return Ok(res);
         }
 
-        [AuthorizeFilter(RoleTypeEnum.Insert)]
+        [AuthorizeFilter("Admin")]
         [HttpPost("add")]
         public async Task<IActionResult> Add(MainCategoryAddDto mainCategoryAddDto)
         {
@@ -53,7 +53,8 @@ namespace Blog.Api.Controllers
             return Ok(res);
         }
 
-        [AuthorizeFilter(RoleTypeEnum.Delete)]
+
+        [AuthorizeFilter("Admin")]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -65,7 +66,8 @@ namespace Blog.Api.Controllers
             return Ok(res);
         }
 
-        [AuthorizeFilter(RoleTypeEnum.Update)]
+
+        [AuthorizeFilter("Admin")]
         [HttpPut("update")]
         public async Task<IActionResult> Update(MainCategoryAddDto mainCategoryAddDto)
         {

@@ -30,7 +30,7 @@ namespace Blog.Repository.EntityFramework.Concrete
         {
             var articles = await _blogDbContext.Articles.Where(x => x.UserId == UserId)
                 .Include(x => x.Category)
-                .ThenInclude(x => x.MainCategory)
+                .ThenInclude(x => x.ParentCategory)
                 .Include(x => x.Comments)
                 .ToListAsync();
             return articles;
@@ -40,7 +40,7 @@ namespace Blog.Repository.EntityFramework.Concrete
         {
             var articleInDb = await _blogDbContext.Articles.Where(x => x.Id == id && x.UserId == UserId)
                 .Include(x => x.User)
-                .Include(x => x.Category).ThenInclude(x=>x.MainCategory)
+                .Include(x => x.Category).ThenInclude(x=>x.ParentCategory)
                 .Include(x => x.Comments)
                 .FirstOrDefaultAsync();
             return articleInDb;

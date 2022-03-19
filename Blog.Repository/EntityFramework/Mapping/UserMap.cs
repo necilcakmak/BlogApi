@@ -19,15 +19,15 @@ namespace Blog.Repository.EntityFramework.Mapping
 
             builder.Property(a => a.Gender).IsRequired().HasDefaultValue(true);
 
+            builder.Property(c => c.FirstName).HasMaxLength(50);
+            builder.Property(c => c.FirstName).IsRequired();
+
+            builder.Property(c => c.LastName).HasMaxLength(50);
+            builder.Property(c => c.LastName).IsRequired();
+
             builder.Property(c => c.UserName).HasMaxLength(50);
             builder.Property(c => c.UserName).IsRequired();
-
-            builder.Property(c => c.UserSurname).HasMaxLength(50);
-            builder.Property(c => c.UserSurname).IsRequired();
-
-            builder.Property(c => c.NickName).HasMaxLength(50);
-            builder.Property(c => c.NickName).IsRequired();
-            builder.HasIndex(c => c.NickName).IsUnique();
+            builder.HasIndex(c => c.UserName).IsUnique();
 
             builder.Property(c => c.Email).HasMaxLength(50);
             builder.Property(c => c.Email).IsRequired();
@@ -45,8 +45,8 @@ namespace Blog.Repository.EntityFramework.Mapping
                 {
                     Id = new Guid("c91266a4-35d3-4b60-89aa-6fa26c33c908"),
                     UserName = "Necil",
-                    UserSurname = "Çakmak",
-                    NickName = "necilcakmak",
+                    FirstName = "Çakmak",
+                    LastName = "necilcakmak",
                     Email = "necil@necil.com",
                     Password = "$2a$11$wnQMJKF1vC6fAxs5IDaM1.5S3oMG.gEQMhON0bHUl5UQfe8v1AwIK",
                     Gender = true,
@@ -54,6 +54,8 @@ namespace Blog.Repository.EntityFramework.Mapping
                     CreatedDate = DateTime.Now.ToUniversalTime(),
                     UpdatedDate = DateTime.Now.ToUniversalTime(),
                     BirthDate = DateTime.Parse("1995-12-28").ToUniversalTime(),
+                    IsApproved = false,
+                    RoleName = "Admin"
                 },
                 new User
                 {
@@ -62,12 +64,14 @@ namespace Blog.Repository.EntityFramework.Mapping
                     UpdatedDate = DateTime.Now.ToUniversalTime(),
                     IsActive = true,
                     UserName = "Ömer",
-                    UserSurname = "Gürsoy",
-                    NickName = "ömergürsoy",
+                    FirstName = "Gürsoy",
+                    LastName = "ömergürsoy",
                     Email = "ömer@ömer.com",
                     Password = "$2a$11$uNx/XA0odP6BAp8xKqtkausOYVPqmGNmq1GYK/y0E6OgQNb/7XIfC",
                     Gender = false,
-                    BirthDate = DateTime.Parse("1990-11-18").ToUniversalTime()
+                    BirthDate = DateTime.Parse("1990-11-18").ToUniversalTime(),
+                    IsApproved = false,
+                    RoleName = "Admin"
                 }, 
                 new User
                 {
@@ -76,12 +80,14 @@ namespace Blog.Repository.EntityFramework.Mapping
                     UpdatedDate = DateTime.Now.ToUniversalTime(),
                     IsActive = true,
                     UserName = "Server",
-                    UserSurname = "Doğan",
-                    NickName = "serverdogan",
+                    FirstName = "Doğan",
+                    LastName = "serverdogan",
                     Email = "server@dogan.com",
                     Password = "$2a$11$uNx/XA0odP6BAp8xKqtkausOYVPqmGNmq1GYK/y0E6OgQNb/7XIfC",
                     Gender = false,
-                    BirthDate = DateTime.Parse("1985-9-25").ToUniversalTime()
+                    BirthDate = DateTime.Parse("1985-9-25").ToUniversalTime(),
+                    IsApproved = false,
+                    RoleName = "User"
                 });
         }
     }

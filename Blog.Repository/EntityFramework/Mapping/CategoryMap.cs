@@ -24,14 +24,11 @@ namespace Blog.Repository.EntityFramework.Mapping
 
             builder.Property(c => c.MainCategoryId).IsRequired();
 
-            builder.Property(c => c.CategoryName).HasMaxLength(50);
-            builder.Property(c => c.CategoryName).IsRequired();
-            builder.HasIndex(c => c.CategoryName).IsUnique();
+            builder.Property(c => c.Name).HasMaxLength(50);
+            builder.Property(c => c.Name).IsRequired();
+            builder.HasIndex(c => c.Name).IsUnique();
 
-            builder.Property(c => c.Description).HasMaxLength(100);
-            builder.Property(c => c.Description).IsRequired();
-
-            builder.HasOne(a => a.MainCategory).WithMany(c => c.Categories).HasForeignKey(a => a.MainCategoryId);
+            builder.HasOne(a => a.ParentCategory).WithMany(c => c.Categories).HasForeignKey(a => a.MainCategoryId);
 
             builder.ToTable("Categories");
             builder.HasData(new Category
@@ -41,8 +38,7 @@ namespace Blog.Repository.EntityFramework.Mapping
                 CreatedDate = DateTime.Now.ToUniversalTime(),
                 UpdatedDate = DateTime.Now.ToUniversalTime(),
                 MainCategoryId = new Guid("eec3877e-de06-47a5-9f29-764cebf7851d"),
-                CategoryName = "Yazılım",
-                Description = "Yazılım kategorisine ait makaleler",
+                Name = "Yazılım",
                 TagName = "YZL"
             }, new Category
             {
@@ -51,8 +47,7 @@ namespace Blog.Repository.EntityFramework.Mapping
                 CreatedDate = DateTime.Now.ToUniversalTime(),
                 UpdatedDate = DateTime.Now.ToUniversalTime(),
                 MainCategoryId = new Guid("11070708-1c30-4967-9bcf-433e703f348a"),
-                CategoryName = "Sinema",
-                Description = "Sinema kategorisine ait makaleler",
+                Name = "Sinema",
                 TagName = "SİN"
             }); ;
         }

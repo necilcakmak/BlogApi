@@ -26,7 +26,7 @@ namespace Blog.Business.Concrete
 
         public async Task<Result> Get(Guid id)
         {
-            var article = await _unitOfWork.Articles.GetAsync(x => x.Id == id, x => x.User, x => x.Category.MainCategory, x => x.Comments);
+            var article = await _unitOfWork.Articles.GetAsync(x => x.Id == id, x => x.User, x => x.Category.ParentCategory, x => x.Comments);
 
             if (article == null)
             {
@@ -42,11 +42,11 @@ namespace Blog.Business.Concrete
             await _unitOfWork.Articles.AddAsync(article);
             await _unitOfWork.SaveAsync();
             #region rabbitmq publisher service send mail
-            var userFollwersUser = await _unitOfWork.Users.GetFollowersMailList();
-            if (userFollwersUser.Any())
-            {
-                _rabbitMQPublisher.Publish(userFollwersUser);
-            }
+            //var userFollwersUser = await _unitOfWork.Users.GetFollowersMailList();
+            //if (userFollwersUser.Any())
+            //{
+            //    _rabbitMQPublisher.Publish(userFollwersUser);
+            //}
             #endregion
             var articleDto = _mapper.Map<ArticleDto>(article);
             return new DataResult<ArticleDto>(articleDto, true, _lang.Message(LangEnums.Added));
@@ -54,7 +54,7 @@ namespace Blog.Business.Concrete
 
         public async Task<Result> GetList()
         {
-            var articles = await _unitOfWork.Articles.GetAllAsync(null, x => x.Category.MainCategory, x => x.User);
+            var articles = await _unitOfWork.Articles.GetAllAsync(null, x => x.Category.ParentCategory, x => x.User);
             if (articles.Count <= 0)
             {
                 return new Result(false, _lang.Message(LangEnums.NotFound));

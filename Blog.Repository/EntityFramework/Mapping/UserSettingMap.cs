@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Repository.EntityFramework.Mapping
 {
-    class UserSettingsMap : IEntityTypeConfiguration<UserSetting>
+    class UserSettingMap : IEntityTypeConfiguration<UserSetting>
     {
         public void Configure(EntityTypeBuilder<UserSetting> builder)
         {
@@ -23,8 +23,6 @@ namespace Blog.Repository.EntityFramework.Mapping
             builder.Property(c => c.IsActive).IsRequired().HasDefaultValue(true);
 
             builder.Property(a => a.ReceiveMail).IsRequired().HasDefaultValue(true);
-
-            builder.Property(a => a.IsApproved).IsRequired().HasDefaultValue(false);
 
             builder.Property(a => a.NewBlog).IsRequired().HasDefaultValue(true);
 
@@ -40,9 +38,7 @@ namespace Blog.Repository.EntityFramework.Mapping
                     UpdatedDate = DateTime.Now.ToUniversalTime(),
                     UserId = new Guid("c91266a4-35d3-4b60-89aa-6fa26c33c908"),
                     ReceiveMail = true,
-                    NewBlog = true,
-                    IsApproved = true,
-                    RoleValue = 15
+                    NewBlog = true,              
                 },
                 new UserSetting
                 {
@@ -53,8 +49,7 @@ namespace Blog.Repository.EntityFramework.Mapping
                     UserId = new Guid("45b533cd-ed21-4eb7-bb90-8838b6f9486c"),
                     ReceiveMail = true,
                     NewBlog = true,
-                    IsApproved = false,
-                    RoleValue = 11
+
                 },
                 new UserSetting
                 {
@@ -65,8 +60,6 @@ namespace Blog.Repository.EntityFramework.Mapping
                     UserId = new Guid("30d00d67-4f1e-405f-a992-f9ef825550c8"),
                     ReceiveMail = true,
                     NewBlog = true,
-                    IsApproved = true,
-                    RoleValue = 1
                 });
         }
     }

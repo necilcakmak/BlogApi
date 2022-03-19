@@ -10,13 +10,11 @@ namespace Blog.Repository.EntityFramework.Abstract.UnitOfWork
     public interface IUnitOfWork : IAsyncDisposable
     {
         IArticleRepository Articles { get; }
-        IMainCategoryRepository MainCategories { get; }
+        IParentCategoryRepository ParentCategories { get; }
         ICategoryRepository Categories { get; }
         ICommentRepository Comments { get; }
         IUserRepository Users { get; }
         IUserSettingRepository UserSettings { get; }
-        IUserFollowerRepository UserFollower { get; }
-        IUserFollowedRepository UserFollowed { get; }
         void Save();
         Task<int> SaveAsync();
     }

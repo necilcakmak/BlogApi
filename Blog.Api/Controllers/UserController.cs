@@ -54,7 +54,7 @@ namespace Blog.APi.Controllers
         }
 
 
-        [AuthorizeFilter(RoleTypeEnum.Delete)]
+        [AuthorizeFilter("Admin")]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -66,40 +66,5 @@ namespace Blog.APi.Controllers
             return Ok(res);
         }
 
-        [AuthorizeFilter]
-        [HttpPost("follow")]
-        public async Task<IActionResult> Follow(UserFollowDto userFollowDto)
-        {
-            var res = await _userService.Follow(userFollowDto);
-            if (!res.Success)
-            {
-                return BadRequest(res);
-            }
-            return Ok(res);
-        }
-
-        [AuthorizeFilter]
-        [HttpPost("unfollow")]
-        public async Task<IActionResult> UnFollow(UserFollowDto userFollowDto)
-        {
-            var res = await _userService.UnFollow(userFollowDto);
-            if (!res.Success)
-            {
-                return BadRequest(res);
-            }
-            return Ok(res);
-        }
-
-        [AuthorizeFilter]
-        [HttpGet("getfollow")]
-        public async Task<IActionResult> GetFollow()
-        {
-            var res = await _userService.GetFollow();
-            if (!res.Success)
-            {
-                return BadRequest(res);
-            }
-            return Ok(res);
-        }
     }
 }

@@ -9,12 +9,12 @@ namespace Blog.Api.Filters
 {
     public class AuthorizeFilter : ActionFilterAttribute
     {
-        RoleTypeEnum RolValue;
+        string RolValue;
         public AuthorizeFilter()
         {
 
         }
-        public AuthorizeFilter(RoleTypeEnum RolValue)
+        public AuthorizeFilter(string RolValue)
         {
             this.RolValue = RolValue;
         }
@@ -25,7 +25,7 @@ namespace Blog.Api.Filters
             var _redisService = service.GetService<IRedisService>();
 
             var user = _redisService.Get<User>(key);
-            if (user == null || !((int)RolValue == (user.UserSetting.RoleValue & (int)RolValue)))
+            if (user == null || user.RoleName != RolValue)
             {
                 context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.HttpContext.Response.ContentType = "application/json";

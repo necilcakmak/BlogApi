@@ -28,7 +28,7 @@ namespace Blog.APi.Controllers
             return Ok(res);
         }
 
-        [AuthorizeFilter(RoleTypeEnum.Insert)]
+        [AuthorizeFilter("Admin")]
         [HttpPost("add")]
         public async Task<IActionResult> Add(CommentAddDto commentAddDto)
         {
@@ -51,7 +51,7 @@ namespace Blog.APi.Controllers
             return Ok(res);
         }
 
-        [AuthorizeFilter(RoleTypeEnum.Delete)]
+        [AuthorizeFilter("Admin")]
         [HttpDelete("delete")]
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -63,7 +63,8 @@ namespace Blog.APi.Controllers
             return Ok(res);
         }
 
-        [AuthorizeFilter(RoleTypeEnum.Update)]
+
+        [AuthorizeFilter("Admin")]
         [HttpPut("update")]
         public async Task<IActionResult> Update(CommentAddDto commentAddDto)
         {

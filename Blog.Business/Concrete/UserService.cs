@@ -84,39 +84,6 @@ namespace Blog.Business.Concrete
             var user = await _unitOfWork.Users.GetMyUserInformation();
             UserDto userDto = _mapper.Map<UserDto>(user);
             return new DataResult<UserDto>(userDto, true, _lng.Message(LangEnums.Listed));
-        }
-        public async Task<Result> Follow(UserFollowDto userFollowDto)
-        {
-            var userFollower = _mapper.Map<UserFollower>(userFollowDto);
-            var userFollowed = _mapper.Map<UserFollowed>(userFollowDto);
-            await _unitOfWork.UserFollower.AddAsync(userFollower);
-            await _unitOfWork.UserFollowed.AddAsync(userFollowed);
-            await _unitOfWork.SaveAsync();
-            return new Result(true, _lng.Message(LangEnums.Added));
-        }
-
-        public async Task<Result> UnFollow(UserFollowDto userFollowDto)
-        {
-            var userFollower = _mapper.Map<UserFollower>(userFollowDto);
-            var userFollowed = _mapper.Map<UserFollowed>(userFollowDto);
-            await _unitOfWork.UserFollower.DeleteAsync(userFollower);
-            await _unitOfWork.UserFollowed.DeleteAsync(userFollowed);
-            await _unitOfWork.SaveAsync();
-            return new Result(true, _lng.Message(LangEnums.Deleted));
-        }
-
-        public async Task<Result> GetFollow()
-        {
-            var followeds = await _unitOfWork.UserFollowed.GetMyFolloweds();
-            var followers = await _unitOfWork.UserFollower.GetMyFollowers();
-            var followersDto = _mapper.Map<List<UserFollowersDto>>(followers);
-            var followedsDto = _mapper.Map<List<UserFollowedsDto>>(followeds);
-            FollowAndFollowersDto followAndFollowersDto = new()
-            {
-                UserFollowed = followedsDto,
-                UserFollower = followersDto
-            };
-            return new DataResult<FollowAndFollowersDto>(followAndFollowersDto, true, _lng.Message(LangEnums.Listed));
-        }
+        }     
     }
 }
