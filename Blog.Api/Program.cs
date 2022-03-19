@@ -10,11 +10,17 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = new ConfigurationBuilder()
+           .SetBasePath(Directory.GetCurrentDirectory())
+           .AddJsonFile("appsettings.json")
+           .Build();
+
+#region redis conf
+builder.Services.Configure<RedisSettings>(configuration.GetSection("RedisSettings"));
+#endregion
 
 #region filters, fluentvalidation ve newtonsoft
 builder.Services.AddControllersWithViews(options =>
@@ -28,10 +34,6 @@ builder.Services.AddControllersWithViews(options =>
 {
     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 });
-#endregion
-
-#region redis
-builder.Services.RedisSettings(builder.Configuration);
 #endregion
 
 #region api versioning
@@ -99,6 +101,7 @@ app.UseCors(options => options
 .AllowCredentials()
 );
 #endregion
+
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseMiddleware<AuthMiddleware>();

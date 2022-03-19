@@ -15,6 +15,8 @@ namespace Blog.Repository.EntityFramework.Abstract.UnitOfWork
         ICommentRepository Comments { get; }
         IUserRepository Users { get; }
         IUserSettingRepository UserSettings { get; }
+        IUserFollowerRepository UserFollower { get; }
+        IUserFollowedRepository UserFollowed { get; }
         void Save();
         Task<int> SaveAsync();
     }

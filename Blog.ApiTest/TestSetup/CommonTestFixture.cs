@@ -19,7 +19,6 @@ namespace Blog.ApiTest.TestSetup
             Context = new BlogDbContext(options);
             UnitOfWork = new UnitOfWork(Context);
             Context.Database.EnsureCreated();
-
             Mapper = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfiles>(); }).CreateMapper();
         }
     }

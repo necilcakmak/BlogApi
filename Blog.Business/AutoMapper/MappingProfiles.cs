@@ -64,6 +64,18 @@ namespace Blog.Business.AutoMapper
                 .ForMember(dest => dest.Age, opt => opt.MapFrom(x => CalculateAge(x.BirthDate)))
                 .ForMember(dest => dest.UserSetting, opt => opt.MapFrom(x => x.UserSetting));
             CreateMap<UserSetting, UserSettingDto>();
+            CreateMap<UserFollowDto, UserFollower>()
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(x => x.TargetUserId))
+                .ForMember(dest => dest.FollowedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
+                .ForMember(dest => dest.FollowersUserId, opt => opt.MapFrom(x => BlogDbContext.UserId));
+            CreateMap<UserFollowDto, UserFollowed>()
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(x => BlogDbContext.UserId))
+                .ForMember(dest => dest.FollowedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
+                .ForMember(dest => dest.FollowedUserId, opt => opt.MapFrom(x => x.TargetUserId));
+            CreateMap<UserFollower, UserFollowersDto>()
+              .ForMember(dest => dest.UserDto, opt => opt.MapFrom(x => x.User));
+            CreateMap<UserFollowed, UserFollowedsDto>()
+              .ForMember(dest => dest.UserDto, opt => opt.MapFrom(x => x.User));
         }
     }
 }

@@ -15,6 +15,8 @@ namespace Blog.Repository.EntityFramework.Concrete.UnitOfWork
         private CategoryRepository _categoryRepository;
         private MainCategoryRepository _mainCategoryRepository;
         private UserSettingRepository _userSettingRepository;
+        private UserFollowerRepository _userFollowerRepository;
+        private UserFollowedRepository _userFollowedRepository;
         public UnitOfWork(BlogDbContext blogDbContext)
         {
             _blogDbContext = blogDbContext;
@@ -25,6 +27,10 @@ namespace Blog.Repository.EntityFramework.Concrete.UnitOfWork
         public ICommentRepository Comments => _commentRepository ?? new CommentRepository(_blogDbContext);
         public IUserRepository Users => _userRepository ?? new UserRepository(_blogDbContext);
         public IUserSettingRepository UserSettings => _userSettingRepository ?? new UserSettingRepository(_blogDbContext);
+
+        public IUserFollowerRepository UserFollower => _userFollowerRepository ?? new UserFollowerRepository(_blogDbContext);
+
+        public IUserFollowedRepository UserFollowed => _userFollowedRepository ?? new UserFollowedRepository(_blogDbContext);
 
         public async ValueTask DisposeAsync()
         {

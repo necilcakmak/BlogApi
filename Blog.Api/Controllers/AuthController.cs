@@ -9,7 +9,6 @@ namespace Blog.APi.Controllers
     [Route("api/[controller]")]
     [ApiVersion("1.0")]
     [ApiVersion("1.1")]
-    [AllowAnonymous]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;

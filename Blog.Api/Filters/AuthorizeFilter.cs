@@ -24,14 +24,15 @@ namespace Blog.Api.Filters
             var service = context.HttpContext.RequestServices;
             var _redisService = service.GetService<IRedisService>();
 
-            var user = await _redisService.GetAsync<User>(key);
+            var user = _redisService.Get<User>(key);
             if (user == null || !((int)RolValue == (user.UserSetting.RoleValue & (int)RolValue)))
             {
                 context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.HttpContext.Response.ContentType = "application/json";
                 await context.HttpContext.Response.WriteAsync(
-                        new Result(false, "Yetkisiz giriş...").ToJson());
+                        new Result(false, "UnAuthorizedRequest").ToJson());
             }
+
             BlogDbContext.UserId = user.Id;
             base.OnActionExecuting(context);
         }

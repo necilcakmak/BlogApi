@@ -38,7 +38,7 @@ namespace Blog.Business.Concrete
             if (user != null && _hashManager.Verify(loginDto.Password, user.Password))
             {
                 var key = Guid.NewGuid().ToString();
-                await _redisService.SetAsync(key, user);
+                _redisService.Set(key, user);
                 var userDto = _mapper.Map<UserDto>(user);
                 var token = new AccessToken { Token = key, User = userDto };
                 return new DataResult<AccessToken>(token, true, _lng.Message(LangEnums.LoginSuccess));
@@ -65,7 +65,7 @@ namespace Blog.Business.Concrete
             user.Password = _hashManager.Encrpt(user.Password);
             await _unitOfWork.Users.AddAsync(user);
             await _unitOfWork.SaveAsync();
-            await _unitOfWork.UserSettings.AddAsync(new UserSetting { UserId = user.Id });
+            await _unitOfWork.UserSettings.AddAsync(new UserSetting { UserId = user.Id, RoleValue = 11 });
             await _unitOfWork.SaveAsync();
             _mailService.SendMail(new MailDto { From = user.Email }, user.Id);
             return new Result(true, _lng.Message(LangEnums.MailSended));
