@@ -20,8 +20,9 @@ var configuration = new ConfigurationBuilder()
            .AddJsonFile("appsettings.json")
            .Build();
 
-#region redis conf
+#region app configuration
 builder.Services.Configure<RedisSettings>(configuration.GetSection("RedisSettings"));
+builder.Services.Configure<MailOptions>(builder.Configuration.GetSection("EmailSettings"));
 #endregion
 
 #region healt check
@@ -67,7 +68,6 @@ builder.Services.LoadMyServices(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(MappingProfiles));
 #endregion
 
-builder.Services.Configure<MailOptions>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;

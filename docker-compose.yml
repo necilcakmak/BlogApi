@@ -15,6 +15,15 @@ services:
       - upload_images:/BlogApi/images
     ports: 
       - 4000:80 
+      - 44322:443
+  monitoring_service:
+    container_name: monitoring_container
+    build: 
+      context: .
+      dockerfile: Blog.MonitoringService/Dockerfile   
+    ports: 
+      - 5000:80 
+      - 44323:443
   worker_service:
     container_name: worker_container
     build: 
@@ -22,6 +31,7 @@ services:
       dockerfile: Blog.WorkerService/Dockerfile  
     ports: 
       - 6000:80
+      - 44324:443
   pg_service:
     container_name: pg_container
     image: postgres:latest
@@ -31,13 +41,11 @@ services:
       - POSTGRES_DB=BlogDB
     ports:
       - 5432:5432
-    restart: always
     volumes:
       - db_volume:/var/lib/postgresql/data/
   pgadmin_service:
     container_name: pgadmin_container
     image: dpage/pgadmin4
-    restart: always
     volumes:
       - dbadmin_volume:/var/lib/pgadmin
     environment: 
@@ -45,9 +53,11 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
       - "5050:80"
+      - "5051:443"
   redis_service:
     container_name: redis_container
     image: redis:6.2-alpine
+    restart: always
     ports:
       - 6379:6379
 volumes:
