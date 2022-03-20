@@ -8,12 +8,13 @@ namespace Blog.Dto.User
 {
     public class UserDto
     {
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
         public string? UserName { get; set; }
-        public string? UserSurname { get; set; }
-        public string? NickName { get; set; }
         public string? Email { get; set; }
         public bool Gender { get; set; }
         public int Age { get; set; }
+        public string RoleName { get; set; }
         public bool IsApproved { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }

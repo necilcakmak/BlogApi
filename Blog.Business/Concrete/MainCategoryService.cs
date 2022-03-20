@@ -19,18 +19,18 @@ namespace Blog.Business.Concrete
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
-        public async Task<Result> Add(MainCategoryAddDto mainCategoryAddDto)
+        public async Task<Result> Add(ParentCategoryAddDto parentCategoryAddDto)
         {
-            bool inDb = await _unitOfWork.ParentCategories.AnyAsync(x => x.Name == mainCategoryAddDto.MainCategoryName);
+            bool inDb = await _unitOfWork.ParentCategories.AnyAsync(x => x.Name == parentCategoryAddDto.Name);
             if (inDb)
             {
                 return new Result(false, _lang.Message(LangEnums.NameUsed));
             }
-            ParentCategory mainCategory = _mapper.Map<ParentCategory>(mainCategoryAddDto);
+            ParentCategory mainCategory = _mapper.Map<ParentCategory>(parentCategoryAddDto);
             await _unitOfWork.ParentCategories.AddAsync(mainCategory);
             await _unitOfWork.SaveAsync();
-            var categoryDto = _mapper.Map<MainCategoryDto>(mainCategory);
-            return new DataResult<MainCategoryDto>(categoryDto, true, _lang.Message(LangEnums.Added));
+            var categoryDto = _mapper.Map<ParentCategoryDto>(mainCategory);
+            return new DataResult<ParentCategoryDto>(categoryDto, true, _lang.Message(LangEnums.Added));
         }
 
         public async Task<Result> Delete(Guid id)
@@ -52,8 +52,8 @@ namespace Blog.Business.Concrete
             {
                 return new Result(false, _lang.Message(LangEnums.NotFound));
             }
-            var mainCategoryDto = _mapper.Map<MainCategoryDto>(mainCategory);
-            return new DataResult<MainCategoryDto>(mainCategoryDto, true, _lang.Message(LangEnums.Listed));
+            var mainCategoryDto = _mapper.Map<ParentCategoryDto>(mainCategory);
+            return new DataResult<ParentCategoryDto>(mainCategoryDto, true, _lang.Message(LangEnums.Listed));
         }
 
         public async Task<Result> GetList()
@@ -63,23 +63,23 @@ namespace Blog.Business.Concrete
             {
                 return new Result(false, _lang.Message(LangEnums.NotFound));
             }
-            var mainCategoriesDto = _mapper.Map<List<MainCategoryDto>>(mainCategories);
-            return new DataResult<List<MainCategoryDto>>(mainCategoriesDto, true, _lang.Message(LangEnums.Listed));
+            var mainCategoriesDto = _mapper.Map<List<ParentCategoryDto>>(mainCategories);
+            return new DataResult<List<ParentCategoryDto>>(mainCategoriesDto, true, _lang.Message(LangEnums.Listed));
         }
 
-        public async Task<Result> Update(MainCategoryAddDto mainCategoryUpdateDto)
+        public async Task<Result> Update(ParentCategoryAddDto parentCategoryAddDto)
         {
-            bool inDb = await _unitOfWork.ParentCategories.AnyAsync(x => x.Name == mainCategoryUpdateDto.MainCategoryName);
+            bool inDb = await _unitOfWork.ParentCategories.AnyAsync(x => x.Name == parentCategoryAddDto.Name);
             if (inDb)
             {
                 return new Result(false, _lang.Message(LangEnums.NameUsed));
             }
 
-            ParentCategory mainCategory = _mapper.Map<ParentCategory>(mainCategoryUpdateDto);
+            ParentCategory mainCategory = _mapper.Map<ParentCategory>(parentCategoryAddDto);
             await _unitOfWork.ParentCategories.UpdateAsync(mainCategory);
             await _unitOfWork.SaveAsync();
-            var mainCategoryDto = _mapper.Map<MainCategoryDto>(mainCategory);
-            return new DataResult<MainCategoryDto>(mainCategoryDto, true, _lang.Message(LangEnums.Updated));
+            var mainCategoryDto = _mapper.Map<ParentCategoryDto>(mainCategory);
+            return new DataResult<ParentCategoryDto>(mainCategoryDto, true, _lang.Message(LangEnums.Updated));
         }
     }
 }

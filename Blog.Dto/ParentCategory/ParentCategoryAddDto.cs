@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Blog.Dto.MainCategory
 {
-    public class MainCategoryDto
+    public class ParentCategoryAddDto
     {
-        public Guid Id { get; set; }
-        public string MainCategoryName { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -7,8 +7,8 @@ namespace Blog.Business.Abstract
     {
         Task<Result> Get(Guid id);
         Task<Result> GetList();
-        Task<Result> Add(MainCategoryAddDto mainCategoryAddDto);
+        Task<Result> Add(ParentCategoryAddDto mainCategoryAddDto);
         Task<Result> Delete(Guid id);
-        Task<Result> Update(MainCategoryAddDto mainCategoryUpdateDto);
+        Task<Result> Update(ParentCategoryAddDto mainCategoryUpdateDto);
     }
 }

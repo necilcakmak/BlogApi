@@ -31,6 +31,7 @@ namespace Blog.Api.Filters
                 context.HttpContext.Response.ContentType = "application/json";
                 await context.HttpContext.Response.WriteAsync(
                         new Result(false, "UnAuthorizedRequest").ToJson());
+                return;
             }
 
             BlogDbContext.UserId = user.Id;

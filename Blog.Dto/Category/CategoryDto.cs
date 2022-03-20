@@ -12,10 +12,9 @@ namespace Blog.Dto.Category
     public class CategoryDto
     {
         public Guid Id { get; set; }
-        public string? CategoryName { get; set; }
-        public string? Description { get; set; }
+        public string? Name { get; set; }
         public string? TagName { get; set; }
-        public Guid MainCategoryId { get; set; }
-        public MainCategoryDto MainCategory { get; set; }
+        public Guid ParentCategoryId { get; set; }
+        public ParentCategoryDto ParentCategoryDto { get; set; }
     }
 }

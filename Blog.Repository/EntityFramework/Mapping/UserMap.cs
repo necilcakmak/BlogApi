@@ -22,6 +22,9 @@ namespace Blog.Repository.EntityFramework.Mapping
             builder.Property(c => c.FirstName).HasMaxLength(50);
             builder.Property(c => c.FirstName).IsRequired();
 
+            builder.Property(c => c.FirstName).HasMaxLength(25);
+            builder.Property(c => c.FirstName).IsRequired().HasDefaultValue("User");
+
             builder.Property(c => c.LastName).HasMaxLength(50);
             builder.Property(c => c.LastName).IsRequired();
 

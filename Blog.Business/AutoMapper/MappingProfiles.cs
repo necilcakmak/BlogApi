@@ -43,10 +43,10 @@ namespace Blog.Business.AutoMapper
             CreateMap<Category, CategoryDto>();
 
             //main category mappings
-            CreateMap<MainCategoryAddDto, ParentCategory>()
+            CreateMap<ParentCategoryAddDto, ParentCategory>()
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
                 .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.UtcNow));
-            CreateMap<ParentCategory, MainCategoryDto>();
+            CreateMap<ParentCategory, ParentCategoryDto>();
 
             //comment mappings
             CreateMap<CommentAddDto, Comment>()

@@ -14,24 +14,23 @@ services:
     volumes:
       - upload_images:/BlogApi/images
     ports: 
-      - 4000:80 
-      - 44322:443
+      - 44322:80 
   monitoring_service:
     container_name: monitoring_container
+    environment:
+      ConnectionStrings:ApiService: "http://localhost:44322/health"
     build: 
       context: .
       dockerfile: Blog.MonitoringService/Dockerfile   
     ports: 
-      - 5000:80 
-      - 44323:443
+      - 44395:80 
   worker_service:
     container_name: worker_container
     build: 
       context: .
       dockerfile: Blog.WorkerService/Dockerfile  
     ports: 
-      - 6000:80
-      - 44324:443
+      - 44324:80
   pg_service:
     container_name: pg_container
     image: postgres:latest
@@ -53,7 +52,6 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
       - "5050:80"
-      - "5051:443"
   redis_service:
     container_name: redis_container
     image: redis:6.2-alpine

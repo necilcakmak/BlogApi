@@ -31,12 +31,12 @@ namespace Blog.ApiTest.ServicesTest
         public async void WhenAlreadyExistCategoryNameIsGiven_MainCategoryNameUsed_ShouldBeReturn(string categoryName)
         {
             //Arrange
-            var mainCategory = new ParentCategory { Name = categoryName };
-            await _unitOfWork.ParentCategories.AddAsync(mainCategory);
+            var parentCategory = new ParentCategory { Name = categoryName };
+            await _unitOfWork.ParentCategories.AddAsync(parentCategory);
             await _unitOfWork.SaveAsync();
-            MainCategoryAddDto mainCategoryAddDto = new()
+            ParentCategoryAddDto mainCategoryAddDto = new()
             {
-                MainCategoryName = mainCategory.Name
+                Name = parentCategory.Name
             };
 
             //Act
@@ -52,20 +52,20 @@ namespace Blog.ApiTest.ServicesTest
         public async void WhenValidInputsAreGiven_MainCategory_ShouldBeCreated()
         {
             //Arrange
-            MainCategoryAddDto mainCategoryAddDto = new()
+            ParentCategoryAddDto parentCategoryAddDto = new()
             {
-                MainCategoryName = "test name"
+                Name = "test name"
             };
 
             //Act
             MainCategoryService command = new(_unitOfWork, _mapper);
-            await command.Add(mainCategoryAddDto);
+            await command.Add(parentCategoryAddDto);
 
             //Assert
             var mainCategory = await _unitOfWork.ParentCategories.GetAllAsync();
             var category = mainCategory.Last();
             category.Should().NotBeNull();
-            category.Name.Should().Be(mainCategoryAddDto.MainCategoryName);
+            category.Name.Should().Be(parentCategoryAddDto.Name);
         }
     }
 }

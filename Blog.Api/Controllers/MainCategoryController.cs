@@ -32,9 +32,9 @@ namespace Blog.Api.Controllers
 
         [AuthorizeFilter("Admin")]
         [HttpPost("add")]
-        public async Task<IActionResult> Add(MainCategoryAddDto mainCategoryAddDto)
+        public async Task<IActionResult> Add(ParentCategoryAddDto parentCategoryAddDto)
         {
-            var res = await _mainCategoryService.Add(mainCategoryAddDto);
+            var res = await _mainCategoryService.Add(parentCategoryAddDto);
             if (!res.Success)
             {
                 return BadRequest(res);
@@ -69,7 +69,7 @@ namespace Blog.Api.Controllers
 
         [AuthorizeFilter("Admin")]
         [HttpPut("update")]
-        public async Task<IActionResult> Update(MainCategoryAddDto mainCategoryAddDto)
+        public async Task<IActionResult> Update(ParentCategoryAddDto mainCategoryAddDto)
         {
             var res = await _mainCategoryService.Add(mainCategoryAddDto);
             if (!res.Success)
