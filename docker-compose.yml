@@ -58,6 +58,18 @@ services:
     restart: always
     ports:
       - 6379:6379
+  rabbitmq_service:
+    image: rabbitmq:3-management
+    container_name: rabbitmq_container
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+    - RABBITMQ_DEFAULT_USER=necil
+    - RABBITMQ_DEFAULT_PASS=1234
 volumes:
   upload_images:
   db_volume:
