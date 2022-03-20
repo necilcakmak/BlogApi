@@ -9,8 +9,7 @@ namespace Blog.Dto.Category
 {
     public class CategoryAddDto
     {
-        public string? CategoryName { get; set; }
-        public string? Description { get; set; }
-        public Guid MainCategoryId { get; set; }
+        public string? Name { get; set; }
+        public Guid parentCategoryId { get; set; }
     }
 }

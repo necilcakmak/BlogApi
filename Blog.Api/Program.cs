@@ -7,6 +7,8 @@ using Blog.Core.Utilities;
 using Blog.Dto.Validators.Auth;
 using Blog.Repository.EntityFramework.Context;
 using FluentValidation.AspNetCore;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +22,10 @@ var configuration = new ConfigurationBuilder()
 
 #region redis conf
 builder.Services.Configure<RedisSettings>(configuration.GetSection("RedisSettings"));
+#endregion
+
+#region healt check
+builder.Services.HealtCheck(builder.Configuration);
 #endregion
 
 #region filters, fluentvalidation ve newtonsoft
@@ -52,8 +58,6 @@ builder.Services.CustomSwagger();
 #endregion
 
 builder.Services.AddAuthentication();
-
-builder.Services.AddHealthChecks();
 
 #region inject my services
 builder.Services.LoadMyServices(builder.Configuration);
@@ -89,10 +93,6 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-#region healt check
-app.UseCustomHealtCheck();
-#endregion
-
 #region cors settings
 app.UseCors(options => options
 .WithOrigins(new[] { "http://20.124.207.158", "http://localhost", "http://localhost:8080", "http://localhost:5000", "http://localhost:4000", "http://localhost:3000" })
@@ -102,6 +102,10 @@ app.UseCors(options => options
 );
 #endregion
 
+app.UseHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseMiddleware<AuthMiddleware>();

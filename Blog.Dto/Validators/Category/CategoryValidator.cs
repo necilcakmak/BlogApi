@@ -12,11 +12,8 @@ namespace Blog.Dto.Validators.Category
     {
         public CategoryValidator()
         {
-            RuleFor(x => x.CategoryName)
+            RuleFor(x => x.Name)
               .Length(5, 50).WithMessage("{PropertyName} must be between {MinLength} and {MaxLength} characters")
-              .NotNull().WithMessage("{PropertyName} must not be null");
-            RuleFor(x => x.Description)
-              .Length(5, 100).WithMessage("{PropertyName} must be between {MinLength} and {MaxLength} characters")
               .NotNull().WithMessage("{PropertyName} must not be null");
         }
     }

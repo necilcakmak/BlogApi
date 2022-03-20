@@ -32,7 +32,7 @@ namespace Blog.Business.Concrete
 
         public async Task<Result> Add(CategoryAddDto categoryAddDto)
         {
-            bool inDb = await _unitOfWork.Categories.AnyAsync(x => x.Name == categoryAddDto.CategoryName);
+            bool inDb = await _unitOfWork.Categories.AnyAsync(x => x.Name == categoryAddDto.Name);
             if (inDb)
             {
                 return new Result(false, _lang.Message(LangEnums.NameUsed));
@@ -69,7 +69,7 @@ namespace Blog.Business.Concrete
 
         public async Task<Result> Update(CategoryAddDto categoryAddDto)
         {
-            bool inDb = await _unitOfWork.Categories.AnyAsync(x => x.Name == categoryAddDto.CategoryName);
+            bool inDb = await _unitOfWork.Categories.AnyAsync(x => x.Name == categoryAddDto.Name);
             if (inDb)
             {
                 return new Result(false, _lang.Message(LangEnums.NameUsed));

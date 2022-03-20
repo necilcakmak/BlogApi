@@ -14,10 +14,7 @@ namespace Blog.Dto.Validators.Article
         {
             RuleFor(x => x.Title)
               .Length(5, 50).WithMessage("{PropertyName} must be between {MinLength} and {MaxLength} characters")
-              .NotNull().WithMessage("{PropertyName} must not be null");
-            RuleFor(x => x.Description)
-              .Length(5, 150).WithMessage("{PropertyName} must be between {MinLength} and {MaxLength} characters")
-              .NotNull().WithMessage("{PropertyName} must not be null");
+              .NotNull().WithMessage("{PropertyName} must not be null");        
             RuleFor(x => x.Content)
               .Length(5, 5000).WithMessage("{PropertyName} must be between {MinLength} and {MaxLength} characters")
               .NotNull().WithMessage("{PropertyName} must not be null");
