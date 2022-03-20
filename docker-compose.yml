@@ -10,12 +10,7 @@ services:
       dockerfile: Blog.Api/Dockerfile
     environment:
       ConnectionStrings:BlogDB: "Server=pg_service;port=5432;database=BlogDB;username=root;password=1234"
-      ConnectionStrings:RedisCon: "redis_service"
-      EmailSettings:ApiUrl: "http://localhost/api/"
       RedisSettings:RedisEndPoint: "redis_service"
-      RedisSettings:RedisPort: "6379"
-      RedisSettings:EnvironmentName: "Dev"
-      RedisSettings:RedisExpireTime: "60"
     volumes:
       - upload_images:/BlogApi/images
     ports: 
