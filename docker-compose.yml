@@ -17,6 +17,7 @@ services:
       - 44322:80 
   monitoring_service:
     container_name: monitoring_container
+    image: necilcakmak/blog:monitoring
     environment:
       ConnectionStrings:ApiService: "http://api_service/health"
     build: 
@@ -26,6 +27,7 @@ services:
       - 44395:80 
   worker_service:
     container_name: worker_container
+    image: necilcakmak/blog:worker
     build: 
       context: .
       dockerfile: Blog.WorkerService/Dockerfile  
