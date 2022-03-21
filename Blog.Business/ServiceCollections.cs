@@ -27,14 +27,14 @@ namespace Blog.Business
             serviceCollection.AddScoped<IUserService, UserService>();
             serviceCollection.AddScoped<IArticleService, ArticleService>();
             serviceCollection.AddScoped<ICategoryService, CategoryService>();
-            serviceCollection.AddScoped<IMainCategoryService, MainCategoryService>();
+            serviceCollection.AddScoped<IParentCategoryService, ParentCategoryService>();
             serviceCollection.AddScoped<ICommentService, CommentService>();
             serviceCollection.AddTransient<IAuthService, AuthService>();
             serviceCollection.AddSingleton<IHashManager, HashManager>();
             serviceCollection.AddSingleton<IMailService, MailService>();
 
             serviceCollection.AddSingleton<IRedisService, RedisService>();
-            serviceCollection.AddSingleton(sp => new ConnectionFactory() { Uri = new Uri(configuration.GetConnectionString("Rabbit")), DispatchConsumersAsync = true, });
+            serviceCollection.AddSingleton(sp => new ConnectionFactory() { Uri = new Uri(configuration.GetConnectionString("RabbitMQ")), DispatchConsumersAsync = true, });
             serviceCollection.AddScoped<IRabbitMQPublisher, RabbitMQPublisher>();
             serviceCollection.AddScoped<IRabbitMQClientService, RabbitMQClientService>();
             return serviceCollection;

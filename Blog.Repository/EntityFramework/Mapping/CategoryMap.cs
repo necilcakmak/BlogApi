@@ -22,13 +22,13 @@ namespace Blog.Repository.EntityFramework.Mapping
 
             builder.Property(c => c.IsActive).IsRequired().HasDefaultValue(true);
 
-            builder.Property(c => c.MainCategoryId).IsRequired();
+            builder.Property(c => c.ParentCategoryId).IsRequired();
 
             builder.Property(c => c.Name).HasMaxLength(50);
             builder.Property(c => c.Name).IsRequired();
             builder.HasIndex(c => c.Name).IsUnique();
 
-            builder.HasOne(a => a.ParentCategory).WithMany(c => c.Categories).HasForeignKey(a => a.MainCategoryId);
+            builder.HasOne(a => a.ParentCategory).WithMany(c => c.Categories).HasForeignKey(a => a.ParentCategoryId);
 
             builder.ToTable("Categories");
             builder.HasData(new Category
@@ -37,7 +37,7 @@ namespace Blog.Repository.EntityFramework.Mapping
                 IsActive = true,
                 CreatedDate = DateTime.Now.ToUniversalTime(),
                 UpdatedDate = DateTime.Now.ToUniversalTime(),
-                MainCategoryId = new Guid("eec3877e-de06-47a5-9f29-764cebf7851d"),
+                ParentCategoryId = new Guid("eec3877e-de06-47a5-9f29-764cebf7851d"),
                 Name = "Yazılım",
                 TagName = "YZL"
             }, new Category
@@ -46,7 +46,7 @@ namespace Blog.Repository.EntityFramework.Mapping
                 IsActive = true,
                 CreatedDate = DateTime.Now.ToUniversalTime(),
                 UpdatedDate = DateTime.Now.ToUniversalTime(),
-                MainCategoryId = new Guid("11070708-1c30-4967-9bcf-433e703f348a"),
+                ParentCategoryId = new Guid("11070708-1c30-4967-9bcf-433e703f348a"),
                 Name = "Sinema",
                 TagName = "SİN"
             }); ;

@@ -62,13 +62,18 @@ namespace Blog.Business.Concrete
             return new Result(true, _lang.Message(LangEnums.Deleted));
         }
 
-        public async Task<Result> Update(CommentAddDto commentAddDto)
+        public async Task<Result> Update(CommentUpdateDto commentUpdateDto)
         {
-            Comment comment = _mapper.Map<Comment>(commentAddDto);
-            await _unitOfWork.Comments.UpdateAsync(comment);
-            await _unitOfWork.SaveAsync();
-            var commentDto = _mapper.Map<CommentDto>(comment);
-            return new DataResult<CommentDto>(commentDto, true, _lang.Message(LangEnums.Updated));
+            var comment = await _unitOfWork.Comments.GetAsync(x => x.Id == commentUpdateDto.Id);
+            if (comment != null)
+            {
+                comment.Text = commentUpdateDto.Text;
+                await _unitOfWork.Comments.UpdateAsync(comment);
+                await _unitOfWork.SaveAsync();
+                var commentDto = _mapper.Map<CommentDto>(comment);
+                return new DataResult<CommentDto>(commentDto, true, _lang.Message(LangEnums.Updated));
+            }
+            return new Result(false, _lang.Message(LangEnums.NotFound));
         }
 
         public async Task<Result> DeleteMyComment(Guid id)

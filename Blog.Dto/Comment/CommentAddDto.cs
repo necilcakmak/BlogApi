@@ -8,7 +8,7 @@ namespace Blog.Dto.Comment
 {
     public class CommentAddDto
     {
-        public int ArticleId { get; set; }
+        public Guid ArticleId { get; set; }
         public string? Text { get; set; }
     }
 }

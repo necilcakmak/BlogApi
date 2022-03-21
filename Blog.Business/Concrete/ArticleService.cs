@@ -15,13 +15,11 @@ namespace Blog.Business.Concrete
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly LangService<Article> _lang;
-        private readonly IRabbitMQPublisher _rabbitMQPublisher;
-        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper, IRabbitMQPublisher rabbitMQPublisher)
+        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _lang = new LangService<Article>();
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _rabbitMQPublisher = rabbitMQPublisher;
         }
 
         public async Task<Result> Get(Guid id)
@@ -41,13 +39,6 @@ namespace Blog.Business.Concrete
             Article article = _mapper.Map<Article>(articleAddDto);
             await _unitOfWork.Articles.AddAsync(article);
             await _unitOfWork.SaveAsync();
-            #region rabbitmq publisher service send mail
-            //var userFollwersUser = await _unitOfWork.Users.GetFollowersMailList();
-            //if (userFollwersUser.Any())
-            //{
-            //    _rabbitMQPublisher.Publish(userFollwersUser);
-            //}
-            #endregion
             var articleDto = _mapper.Map<ArticleDto>(article);
             return new DataResult<ArticleDto>(articleDto, true, _lang.Message(LangEnums.Added));
         }
@@ -75,13 +66,20 @@ namespace Blog.Business.Concrete
             return new Result(true, _lang.Message(LangEnums.Deleted));
         }
 
-        public async Task<Result> Update(ArticleAddDto articleAddDto)
+        public async Task<Result> Update(ArticleUpdateDto articleUpdateDto)
         {
-            Article article = _mapper.Map<Article>(articleAddDto);
-            await _unitOfWork.Articles.UpdateAsync(article);
-            await _unitOfWork.SaveAsync();
-            var articleDto = _mapper.Map<ArticleDto>(article);
-            return new DataResult<ArticleDto>(articleDto, true, _lang.Message(LangEnums.Updated));
+            var articleInDb = await _unitOfWork.Articles.GetAsync(x => x.Id == articleUpdateDto.Id);
+            if (articleInDb != null)
+            {
+                var jsonModel = JsonConvert.SerializeObject(articleUpdateDto);
+                JsonConvert.PopulateObject(jsonModel, articleInDb);
+                await _unitOfWork.Articles.UpdateAsync(articleInDb);
+                await _unitOfWork.SaveAsync();
+                var articleDto = _mapper.Map<ArticleDto>(articleInDb);
+                return new DataResult<ArticleDto>(articleDto, true, _lang.Message(LangEnums.Updated));
+            }
+            return new Result(false, _lang.Message(LangEnums.NotFound));
+
         }
 
         public async Task<Result> GetListMyArticle()

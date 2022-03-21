@@ -37,10 +37,11 @@ namespace Blog.WorkerService
 
         private async Task Consumer_Received(object sender, BasicDeliverEventArgs @event)
         {
-            List<MailList> mailLists = JsonConvert.DeserializeObject<List<MailList>>(Encoding.UTF8.GetString(@event.Body.ToArray()));
-            foreach (var item in mailLists)
+            List<User> users = JsonConvert.DeserializeObject<List<User>>(Encoding.UTF8.GetString(@event.Body.ToArray()));
+            foreach (var user in users)
             {
-                _logger.LogInformation($"{item.Mail} mail gönderildi...");
+                //mail service burada post aticak
+                _logger.LogInformation($"{user.FirstName} {user.LastName} adli kullanicinin {user.Email} adresine mail gönderildi...");
             }
             _channel.BasicAck(@event.DeliveryTag, false);
         }

@@ -66,9 +66,9 @@ namespace Blog.APi.Controllers
 
         [AuthorizeFilter("Admin")]
         [HttpPut("update")]
-        public async Task<IActionResult> Update(CommentAddDto commentAddDto)
+        public async Task<IActionResult> Update(CommentUpdateDto commentUpdateDto)
         {
-            var res = await _commentService.Add(commentAddDto);
+            var res = await _commentService.Update(commentUpdateDto);
             if (!res.Success)
             {
                 return BadRequest(res);

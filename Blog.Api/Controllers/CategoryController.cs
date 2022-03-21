@@ -66,9 +66,9 @@ namespace Blog.APi.Controllers
 
         [AuthorizeFilter("Admin")]
         [HttpPut("update")]
-        public async Task<IActionResult> Update(CategoryAddDto categoryAddDto)
+        public async Task<IActionResult> Update(CategoryUpdateDto categoryUpdateDto)
         {
-            var res = await _categoryService.Add(categoryAddDto);
+            var res = await _categoryService.Update(categoryUpdateDto);
             if (!res.Success)
             {
                 return BadRequest(res);

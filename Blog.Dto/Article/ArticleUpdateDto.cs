@@ -12,5 +12,8 @@ namespace Blog.Dto.Article
         public string? Title { get; set; }
         public string? Content { get; set; }
         public Guid CategoryId { get; set; }
+        public string? Thumbnail { get; set; }
+        public string Slug { get; set; }
+        public string Keywords { get; set; }
     }
 }

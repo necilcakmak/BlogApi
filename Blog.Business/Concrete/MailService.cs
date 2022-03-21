@@ -1,5 +1,6 @@
 ﻿using Blog.Business.Abstract;
 using Blog.Core.Utilities;
+using Blog.Entities.Entities;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
@@ -13,6 +14,7 @@ namespace Blog.Business.Concrete
         {
             _mailSettings = options.Value;
         }
+
         public void SendMail(MailDto mailDto, Guid id)
         {
             string uiUrl = $"{ _mailSettings.ApiUrl }Account/{id}";

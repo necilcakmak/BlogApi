@@ -16,7 +16,6 @@ namespace Blog.Dto.Article
         public Guid UserId { get; set; }
         public Guid CategoryId { get; set; }
         public string? Title { get; set; }
-        public string? Description { get; set; }
         public string? Content { get; set; }
         public string? Thumbnail { get; set; }
         public string? Slug { get; set; }

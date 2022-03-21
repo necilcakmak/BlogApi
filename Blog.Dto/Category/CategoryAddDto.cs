@@ -10,6 +10,7 @@ namespace Blog.Dto.Category
     public class CategoryAddDto
     {
         public string? Name { get; set; }
+        public string TagName { get; set; }
         public Guid parentCategoryId { get; set; }
     }
 }

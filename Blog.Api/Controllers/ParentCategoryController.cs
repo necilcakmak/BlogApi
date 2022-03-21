@@ -1,8 +1,6 @@
 ﻿using Blog.Api.Filters;
 using Blog.Business.Abstract;
-using Blog.Core.Utilities;
-using Blog.Dto.MainCategory;
-using Microsoft.AspNetCore.Authorization;
+using Blog.Dto.ParentCategory;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Api.Controllers
@@ -11,10 +9,10 @@ namespace Blog.Api.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [ApiVersion("1.0")]
-    public class MainCategoryController : ControllerBase
+    public class ParentCategoryController : ControllerBase
     {
-        private readonly IMainCategoryService _mainCategoryService;
-        public MainCategoryController(IMainCategoryService mainCategoryService)
+        private readonly IParentCategoryService _mainCategoryService;
+        public ParentCategoryController(IParentCategoryService mainCategoryService)
         {
             _mainCategoryService = mainCategoryService;
         }
@@ -69,9 +67,9 @@ namespace Blog.Api.Controllers
 
         [AuthorizeFilter("Admin")]
         [HttpPut("update")]
-        public async Task<IActionResult> Update(ParentCategoryAddDto mainCategoryAddDto)
+        public async Task<IActionResult> Update(ParentCategoryUpdateDto mainCategoryAddDto)
         {
-            var res = await _mainCategoryService.Add(mainCategoryAddDto);
+            var res = await _mainCategoryService.Update(mainCategoryAddDto);
             if (!res.Success)
             {
                 return BadRequest(res);

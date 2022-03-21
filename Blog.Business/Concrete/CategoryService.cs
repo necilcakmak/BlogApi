@@ -67,19 +67,29 @@ namespace Blog.Business.Concrete
             return new Result(true, _lang.Message(LangEnums.Deleted));
         }
 
-        public async Task<Result> Update(CategoryAddDto categoryAddDto)
+        public async Task<Result> Update(CategoryUpdateDto categoryUpdateDto)
         {
-            bool inDb = await _unitOfWork.Categories.AnyAsync(x => x.Name == categoryAddDto.Name);
-            if (inDb)
-            {
-                return new Result(false, _lang.Message(LangEnums.NameUsed));
-            }
 
-            Category category = _mapper.Map<Category>(categoryAddDto);
-            await _unitOfWork.Categories.UpdateAsync(category);
-            await _unitOfWork.SaveAsync();
-            var categoryDto = _mapper.Map<CategoryDto>(category);
-            return new DataResult<CategoryDto>(categoryDto, true, _lang.Message(LangEnums.Updated));
+            var category = await _unitOfWork.Categories.GetAsync(x => x.Id == categoryUpdateDto.Id);
+            if (category != null)
+            {
+                if (category.Name != categoryUpdateDto.Name)
+                {
+                    var inDb = await _unitOfWork.Categories.AnyAsync(x => x.Name == categoryUpdateDto.Name);
+                    if (inDb)
+                    {
+                        return new Result(false, _lang.Message(LangEnums.NameUsed));
+                    }
+                    category.Name = categoryUpdateDto.Name;
+                }
+                category.TagName = categoryUpdateDto.TagName;
+                category.ParentCategoryId = categoryUpdateDto.ParentCategoryId;
+                await _unitOfWork.Categories.UpdateAsync(category);
+                await _unitOfWork.SaveAsync();
+                var categoryDto = _mapper.Map<CategoryDto>(category);
+                return new DataResult<CategoryDto>(categoryDto, true, _lang.Message(LangEnums.Updated));
+            }
+            return new Result(false, _lang.Message(LangEnums.NotFound));
 
         }
     }

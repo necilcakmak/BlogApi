@@ -66,5 +66,16 @@ namespace Blog.APi.Controllers
             return Ok(res);
         }
 
+        [AuthorizeFilter("Admin")]
+        [HttpDelete("sendnewpostmail")]
+        public async Task<IActionResult> SendNewPostMail()
+        {
+            var res = await _userService.SendNewPostMail();
+            if (!res.Success)
+            {
+                return BadRequest(res);
+            }
+            return Ok(res);
+        }
     }
 }

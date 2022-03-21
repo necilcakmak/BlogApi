@@ -9,6 +9,6 @@ namespace Blog.Business.Abstract
         Task<Result> GetList();
         Task<Result> Add(CategoryAddDto categoryAddDto);
         Task<Result> Delete(Guid id);
-        Task<Result> Update(CategoryAddDto categoryAddDto);
+        Task<Result> Update(CategoryUpdateDto categoryUpdateDto);
     }
 }

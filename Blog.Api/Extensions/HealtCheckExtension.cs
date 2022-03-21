@@ -15,7 +15,7 @@ namespace Blog.Api.Extensions
                     failureStatus: HealthStatus.Unhealthy | HealthStatus.Degraded,
                     tags: new string[] { "redis" })
                     .AddRabbitMQ(
-                    rabbitConnectionString: configuration.GetConnectionString("Rabbit"),
+                    rabbitConnectionString: configuration.GetConnectionString("RabbitMQ"),
                     name: "RabbitMQ Check",
                     failureStatus: HealthStatus.Unhealthy | HealthStatus.Degraded,
                     tags: new string[] { "rabbitMq" })

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Blog.WorkerService
 {
-    public class MailList
+    public class User
     {
-        public string Mail { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
     }
 }

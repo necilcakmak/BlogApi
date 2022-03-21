@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blog.Dto.ParentCategory
+namespace Blog.Dto.Comment
 {
-    public class ParentCategoryDto
+    public class CommentUpdateDto
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Text { get; set; }
     }
 }

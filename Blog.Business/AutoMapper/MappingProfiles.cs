@@ -3,7 +3,7 @@ using Blog.Dto.Article;
 using Blog.Dto.Auth;
 using Blog.Dto.Category;
 using Blog.Dto.Comment;
-using Blog.Dto.MainCategory;
+using Blog.Dto.ParentCategory;
 using Blog.Dto.User;
 using Blog.Entities.Entities;
 using Blog.Repository.EntityFramework.Context;
@@ -63,7 +63,7 @@ namespace Blog.Business.AutoMapper
             CreateMap<User, UserDto>()
                 .ForMember(dest => dest.Age, opt => opt.MapFrom(x => CalculateAge(x.BirthDate)))
                 .ForMember(dest => dest.UserSetting, opt => opt.MapFrom(x => x.UserSetting));
-            CreateMap<UserSetting, UserSettingDto>();         
+            CreateMap<UserSetting, UserSettingDto>();
         }
     }
 }

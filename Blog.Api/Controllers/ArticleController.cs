@@ -66,9 +66,9 @@ namespace Blog.APi.Controllers
 
         [AuthorizeFilter("Admin")]
         [HttpPut("update")]
-        public async Task<IActionResult> Update(ArticleAddDto articleAddDto)
+        public async Task<IActionResult> Update(ArticleUpdateDto articleUpdateDto)
         {
-            var res = await _articleService.Update(articleAddDto);
+            var res = await _articleService.Update(articleUpdateDto);
             if (!res.Success)
             {
                 return BadRequest(res);

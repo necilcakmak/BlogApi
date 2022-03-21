@@ -5,7 +5,7 @@ using Blog.ApiTest.TestSetup;
 using Blog.Business.Concrete;
 using Blog.Core.Results;
 using Blog.Dto.Category;
-using Blog.Dto.MainCategory;
+using Blog.Dto.ParentCategory;
 using Blog.Entities.Entities;
 using Blog.Repository.EntityFramework.Abstract.UnitOfWork;
 using FluentAssertions;
@@ -40,7 +40,7 @@ namespace Blog.ApiTest.ServicesTest
             };
 
             //Act
-            MainCategoryService command = new(_unitOfWork, _mapper);
+            ParentCategoryService command = new(_unitOfWork, _mapper);
             var res = await command.Add(mainCategoryAddDto);
 
             //Assert
@@ -58,7 +58,7 @@ namespace Blog.ApiTest.ServicesTest
             };
 
             //Act
-            MainCategoryService command = new(_unitOfWork, _mapper);
+            ParentCategoryService command = new(_unitOfWork, _mapper);
             await command.Add(parentCategoryAddDto);
 
             //Assert

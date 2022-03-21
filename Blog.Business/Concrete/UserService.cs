@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Blog.Business.Abstract;
+using Blog.Business.Abstract.RabbitMQ;
 using Blog.Business.Lang;
 using Blog.Core.Results;
 using Blog.Core.Utilities.Abstract;
@@ -16,8 +17,10 @@ namespace Blog.Business.Concrete
         private readonly IMapper _mapper;
         private readonly LangService<User> _lng;
         private readonly IHashManager _hashManager;
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IHashManager hashManager)
+        private readonly IRabbitMQPublisher _rabbitMQPublisher;
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IHashManager hashManager, IRabbitMQPublisher rabbitMQPublisher)
         {
+            _rabbitMQPublisher = rabbitMQPublisher;
             _hashManager = hashManager;
             _lng = new LangService<User>();
             _mapper = mapper;
@@ -37,7 +40,7 @@ namespace Blog.Business.Concrete
 
         public async Task<Result> Get(Guid id)
         {
-            var user = await _unitOfWork.Users.GetAsync(x => x.Id == id);
+            var user = await _unitOfWork.Users.GetAsync(x => x.Id == id, x => x.UserSetting);
             if (user == null)
             {
                 return new Result(false, _lng.Message(LangEnums.NotFound));
@@ -84,6 +87,17 @@ namespace Blog.Business.Concrete
             var user = await _unitOfWork.Users.GetMyUserInformation();
             UserDto userDto = _mapper.Map<UserDto>(user);
             return new DataResult<UserDto>(userDto, true, _lng.Message(LangEnums.Listed));
-        }     
+        }
+
+        public async Task<Result> SendNewPostMail()
+        {
+            var users = await _unitOfWork.Users.GetAllAsync(x => x.UserSetting.NewBlog == true);
+            if (users.Count > 0)
+            {
+                _rabbitMQPublisher.Publish(users);
+                return new Result(true, _lng.Message(LangEnums.MailSended));
+            }
+            return new Result(true, _lng.Message(LangEnums.Error));
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace Blog.Business.Abstract
         Task<Result> GetList();
         Task<Result> Add(CommentAddDto commentAddDto);
         Task<Result> Delete(Guid id);
-        Task<Result> Update(CommentAddDto commentAddDto);
+        Task<Result> Update(CommentUpdateDto commentUpdateDto);
         Task<Result> DeleteMyComment(Guid id);
 
     }
