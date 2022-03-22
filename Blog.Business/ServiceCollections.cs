@@ -21,7 +21,6 @@ namespace Blog.Business
     {
         public static IServiceCollection LoadMyServices(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
-
             serviceCollection.AddDbContext<BlogDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("BlogDB"), b => b.MigrationsAssembly("Blog.Api")));
             serviceCollection.AddScoped<IUnitOfWork, UnitOfWork>();
             serviceCollection.AddScoped<IUserService, UserService>();

@@ -15,14 +15,18 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
-var configuration = new ConfigurationBuilder()
-           .SetBasePath(Directory.GetCurrentDirectory())
-           .AddJsonFile("appsettings.json")
-           .Build();
+var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", false)
+    .AddJsonFile($"appsettings.{environmentName}.json", true)
+    .AddEnvironmentVariables()
+    .Build();
+Console.WriteLine("env name:" + environmentName);
 #region app configuration
 builder.Services.Configure<RedisSettings>(configuration.GetSection("RedisSettings"));
-builder.Services.Configure<MailOptions>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.Configure<MailOptions>(configuration.GetSection("EmailSettings"));
 #endregion
 
 #region healt check
@@ -61,7 +65,7 @@ builder.Services.CustomSwagger();
 builder.Services.AddAuthentication();
 
 #region inject my services
-builder.Services.LoadMyServices(builder.Configuration);
+builder.Services.LoadMyServices(configuration);
 #endregion
 
 #region add auto mapper

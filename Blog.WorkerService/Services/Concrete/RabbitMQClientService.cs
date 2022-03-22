@@ -29,6 +29,7 @@ namespace Blog.WorkerService.Services.Concrete
             {
                 return _channel;
             }
+
             _channel = _connection.CreateModel();
             _logger.LogInformation("Rabbit MQ ile bağlantı kuruldu...");
             return _channel;

@@ -6,11 +6,11 @@ namespace Blog.Api.Extensions
     {
         public static IServiceCollection HealtCheck(this IServiceCollection service, IConfiguration configuration)
         {
-            var redisEndPoint = configuration.GetValue<string>("RedisSettings:RedisEndPoint");
-            var redisPort = configuration.GetValue<string>("RedisSettings:RedisPort");
+            var redisHost = configuration.GetValue<string>("RedisSettings:Host");
+            var redisPort = configuration.GetValue<string>("RedisSettings:Port");
             service.AddHealthChecks()
                     .AddRedis(
-                    redisConnectionString: redisEndPoint + ":" + redisPort,
+                    redisConnectionString: redisHost + ":" + redisPort,
                     name: "Redis Check",
                     failureStatus: HealthStatus.Unhealthy | HealthStatus.Degraded,
                     tags: new string[] { "redis" })

@@ -8,8 +8,8 @@ namespace Blog.Core.Utilities
 {
     public class RedisSettings
     {
-        public string RedisEndPoint { get; set; }
-        public string RedisPort { get; set; }
+        public string Host { get; set; }
+        public string Port { get; set; }
         public string RedisPassword { get; set; }
         public int RedisExpireTime { get; set; }
         public string EnvironmentName { get; set; }

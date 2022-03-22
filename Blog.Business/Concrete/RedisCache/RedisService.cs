@@ -10,13 +10,14 @@ namespace Blog.Business.Concrete.RedisCache
 {
     public class RedisService : IRedisService
     {
-        public readonly IOptions<RedisSettings> _config;
+        public readonly RedisSettings _config;
         private readonly RedisEndpoint conf = null;
 
         public RedisService(IOptions<RedisSettings> config)
         {
-            _config = config;
-            conf = new RedisEndpoint { Host = _config.Value.RedisEndPoint, Port = Convert.ToInt32(_config.Value.RedisPort) };
+            _config = config.Value;
+            conf = new RedisEndpoint { Host = _config.Host, Port = Convert.ToInt32(_config.Port) };
+            
         }
         public T Get<T>(string key)
         {
@@ -53,7 +54,7 @@ namespace Blog.Business.Concrete.RedisCache
 
         public void Set(string key, object data)
         {
-            Set(key, data, DateTime.Now.AddMinutes(_config.Value.RedisExpireTime));
+            Set(key, data, DateTime.Now.AddMinutes(_config.RedisExpireTime));
         }
 
         public void Set(string key, object data, DateTime time)

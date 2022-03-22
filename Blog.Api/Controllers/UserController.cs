@@ -67,7 +67,7 @@ namespace Blog.APi.Controllers
         }
 
         [AuthorizeFilter("Admin")]
-        [HttpDelete("sendnewpostmail")]
+        [HttpGet("sendnewpostmail")]
         public async Task<IActionResult> SendNewPostMail()
         {
             var res = await _userService.SendNewPostMail();
