@@ -12,6 +12,7 @@ namespace Blog.APi.Controllers
     [ApiVersion("1.0")]
     public class ArticleController : ControllerBase
     {
+        //test
         private readonly IArticleService _articleService;
         public ArticleController(IArticleService articleService)
         {
