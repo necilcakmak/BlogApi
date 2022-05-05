@@ -1,6 +1,7 @@
 ﻿using Blog.Entities.Entities;
 using Blog.Repository.EntityFramework.Mapping;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Blog.Repository.EntityFramework.Context
 {
@@ -25,12 +26,13 @@ namespace Blog.Repository.EntityFramework.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasPostgresExtension("uuid-ossp");
-            modelBuilder.ApplyConfiguration(new ArticleMap());
-            modelBuilder.ApplyConfiguration(new CategoryMap());
-            modelBuilder.ApplyConfiguration(new UserMap());
-            modelBuilder.ApplyConfiguration(new CommentMap());
-            modelBuilder.ApplyConfiguration(new ParentCategoryMap());
-            modelBuilder.ApplyConfiguration(new UserSettingMap());
+            //modelBuilder.ApplyConfiguration(new ArticleMap());
+            //modelBuilder.ApplyConfiguration(new CategoryMap());
+            //modelBuilder.ApplyConfiguration(new UserMap());
+            //modelBuilder.ApplyConfiguration(new CommentMap());
+            //modelBuilder.ApplyConfiguration(new ParentCategoryMap());
+            //modelBuilder.ApplyConfiguration(new UserSettingMap());
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }

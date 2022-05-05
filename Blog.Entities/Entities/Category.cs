@@ -7,7 +7,7 @@ namespace Blog.Entities.Entities
         public string? Name { get; set; }
         public string? TagName { get; set; }
         public Guid ParentCategoryId { get; set; }
-        public ParentCategory ParentCategory { get; set; }
-        public ICollection<Article> Articles { get; set; }
+        public virtual ParentCategory ParentCategory { get; set; }
+        public virtual ICollection<Article> Articles { get; set; }
     }
 }

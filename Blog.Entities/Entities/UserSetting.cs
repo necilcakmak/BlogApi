@@ -6,7 +6,7 @@ namespace Blog.Entities.Entities
     {
         public bool ReceiveMail { get; set; }
         public bool NewBlog { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
         public Guid UserId { get; set; }
     }
 }

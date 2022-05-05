@@ -14,8 +14,8 @@ namespace Blog.Entities.Entities
         public int LikeCount { get; set; } = 0;
         public int CommentCount { get; set; } = 0;
         public DateTime PublishedDate { get; set; }
-        public User User { get; set; }
-        public Category Category { get; set; }
-        public ICollection<Comment> Comments { get; set; }
+        public virtual User User { get; set; }
+        public virtual Category Category { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

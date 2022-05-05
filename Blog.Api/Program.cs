@@ -44,6 +44,7 @@ builder.Services.AddControllersWithViews(options =>
 }).AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+    options.SerializerSettings.Formatting = Formatting.Indented;
 });
 #endregion
 

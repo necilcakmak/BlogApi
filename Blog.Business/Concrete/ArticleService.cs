@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Blog.Business.Abstract;
-using Blog.Business.Abstract.RabbitMQ;
 using Blog.Business.Lang;
 using Blog.Core.Results;
 using Blog.Dto.Article;

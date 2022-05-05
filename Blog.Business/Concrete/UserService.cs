@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Blog.Business.Abstract;
-using Blog.Business.Abstract.RabbitMQ;
 using Blog.Business.Lang;
+using Blog.Core.RabbitMQ;
 using Blog.Core.Results;
 using Blog.Core.Utilities.Abstract;
 using Blog.Dto.User;
@@ -17,8 +17,8 @@ namespace Blog.Business.Concrete
         private readonly IMapper _mapper;
         private readonly LangService<User> _lng;
         private readonly IHashManager _hashManager;
-        private readonly IRabbitMQPublisher _rabbitMQPublisher;
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IHashManager hashManager, IRabbitMQPublisher rabbitMQPublisher)
+        private readonly QueueFactory _rabbitMQPublisher;
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IHashManager hashManager, QueueFactory rabbitMQPublisher)
         {
             _rabbitMQPublisher = rabbitMQPublisher;
             _hashManager = hashManager;

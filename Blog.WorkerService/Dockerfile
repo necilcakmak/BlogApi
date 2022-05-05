@@ -4,6 +4,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["Blog.WorkerService/Blog.WorkerService.csproj", "Blog.WorkerService/"]
+COPY ["Blog.Core/Blog.Core.csproj", "Blog.Core/"]
 RUN dotnet restore "Blog.WorkerService/Blog.WorkerService.csproj"
 COPY . .
 WORKDIR "/src/Blog.WorkerService"

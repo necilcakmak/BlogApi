@@ -19,9 +19,9 @@ namespace Blog.Entities.Entities
         public bool IsApproved { get; set; }
         public string RoleName { get; set; }
         public DateTime BirthDate { get; set; }
-        public UserSetting UserSetting { get; set; }
-        public ICollection<Article>? Articles { get; set; }
-        public ICollection<Comment>? Comments { get; set; }
+        public virtual UserSetting UserSetting { get; set; }
+        public virtual ICollection<Article>? Articles { get; set; }
+        public virtual ICollection<Comment>? Comments { get; set; }
 
     }
 }

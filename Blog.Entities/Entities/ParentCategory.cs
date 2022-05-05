@@ -5,7 +5,7 @@ namespace Blog.Entities.Entities
     public class ParentCategory : EntityBase
     {
         public string Name { get; set; }
-        public ICollection<Category> Categories { get; set; }
+        public virtual ICollection<Category> Categories { get; set; }
 
     }
 }

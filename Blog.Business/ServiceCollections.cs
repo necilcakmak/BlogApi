@@ -1,10 +1,8 @@
 ﻿using Blog.Business.Abstract;
-using Blog.Business.Abstract.RabbitMQ;
 using Blog.Business.Abstract.RedisCache;
 using Blog.Business.Concrete;
-using Blog.Business.Concrete.RabbitMQ;
 using Blog.Business.Concrete.RedisCache;
-using Blog.Core.Utilities;
+using Blog.Core.RabbitMQ;
 using Blog.Core.Utilities.Abstract;
 using Blog.Core.Utilities.Concrete;
 using Blog.Repository.EntityFramework.Abstract.UnitOfWork;
@@ -34,8 +32,7 @@ namespace Blog.Business
 
             serviceCollection.AddSingleton<IRedisService, RedisService>();
             serviceCollection.AddSingleton(sp => new ConnectionFactory() { Uri = new Uri(configuration.GetConnectionString("RabbitMQ")), DispatchConsumersAsync = true, });
-            serviceCollection.AddScoped<IRabbitMQPublisher, RabbitMQPublisher>();
-            serviceCollection.AddScoped<IRabbitMQClientService, RabbitMQClientService>();
+            serviceCollection.AddSingleton<QueueFactory>();
             return serviceCollection;
         }
 

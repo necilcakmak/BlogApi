@@ -1,4 +1,4 @@
-using Blog.WorkerService.Services.Abstract;
+using Blog.Core.RabbitMQ;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -9,9 +9,9 @@ namespace Blog.WorkerService
     public class MailWorker : BackgroundService
     {
         private readonly ILogger<MailWorker> _logger;
-        private readonly IRabbitMQClientService _rabbitMQClientService;
+        private readonly QueueFactory _rabbitMQClientService;
         private IModel _channel;
-        public MailWorker(ILogger<MailWorker> logger, IRabbitMQClientService rabbitMQClientService)
+        public MailWorker(ILogger<MailWorker> logger, QueueFactory rabbitMQClientService)
         {
             _rabbitMQClientService = rabbitMQClientService;
             _logger = logger;
@@ -29,7 +29,7 @@ namespace Blog.WorkerService
         {
             var consumer = new AsyncEventingBasicConsumer(_channel);//channel verelim
             //ilgili kuyruðu dinle,mesaj geldiginde silme ben haber vericem(false)
-            _channel.BasicConsume("blogque", false, consumer);
+            _channel.BasicConsume(RabbitMQConst.MailQueue, false, consumer);
             //mesaj geldiginde calissin
             consumer.Received += Consumer_Received;//received cagiralim (lamba yerine ayrý methodta temiz yazdýk)
             return Task.CompletedTask;//iþlemin bittiðini dönelim.
@@ -37,12 +37,11 @@ namespace Blog.WorkerService
 
         private async Task Consumer_Received(object sender, BasicDeliverEventArgs @event)
         {
-            List<User> users = JsonConvert.DeserializeObject<List<User>>(Encoding.UTF8.GetString(@event.Body.ToArray()));
-            foreach (var user in users)
-            {
-                //mail service burada post aticak
-                _logger.LogInformation($"{user.FirstName} {user.LastName} adli kullanicinin {user.Email} adresine mail gönderildi...");
-            }
+            User user = JsonConvert.DeserializeObject<User>(Encoding.UTF8.GetString(@event.Body.ToArray()));
+
+            //mail service burada post aticak
+            _logger.LogInformation($"{user.FirstName} {user.LastName} adli kullanicinin {user.Email} adresine mail gönderildi...");
+
             _channel.BasicAck(@event.DeliveryTag, false);
         }
     }
