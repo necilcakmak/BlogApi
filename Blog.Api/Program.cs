@@ -23,7 +23,6 @@ var configuration = new ConfigurationBuilder()
     .AddJsonFile($"appsettings.{environmentName}.json", true)
     .AddEnvironmentVariables()
     .Build();
-Console.WriteLine("env name:" + environmentName);
 #region app configuration
 builder.Services.Configure<RedisSettings>(configuration.GetSection("RedisSettings"));
 builder.Services.Configure<MailOptions>(configuration.GetSection("EmailSettings"));

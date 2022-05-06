@@ -1,4 +1,5 @@
 using Blog.Core.RabbitMQ;
+using Blog.Core.RabbitMQ.Models;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -37,7 +38,7 @@ namespace Blog.WorkerService
 
         private async Task Consumer_Received(object sender, BasicDeliverEventArgs @event)
         {
-            User user = JsonConvert.DeserializeObject<User>(Encoding.UTF8.GetString(@event.Body.ToArray()));
+            MailConfirmation user = JsonConvert.DeserializeObject<MailConfirmation>(Encoding.UTF8.GetString(@event.Body.ToArray()));
 
             //mail service burada post aticak
             _logger.LogInformation($"{user.FirstName} {user.LastName} adli kullanicinin {user.Email} adresine mail gönderildi...");

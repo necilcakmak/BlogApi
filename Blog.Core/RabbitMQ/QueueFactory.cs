@@ -16,12 +16,7 @@ namespace Blog.Core.RabbitMQ
         public void Publish<T>(T data, string queueName = RabbitMQConst.MailQueue)
         {
             var channel = Connect(queueName);
-            var settings = new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                Formatting = Formatting.Indented
-            };
-            var bodyString = JsonConvert.SerializeObject(data, settings);
+            var bodyString = JsonConvert.SerializeObject(data);
             var bodyByte = Encoding.UTF8.GetBytes(bodyString);
 
             var properties = channel.CreateBasicProperties();

@@ -3,6 +3,7 @@ using Blog.Business.Abstract;
 using Blog.Business.Abstract.RedisCache;
 using Blog.Business.Lang;
 using Blog.Core.RabbitMQ;
+using Blog.Core.RabbitMQ.Models;
 using Blog.Core.Results;
 using Blog.Core.Utilities;
 using Blog.Core.Utilities.Abstract;
@@ -65,10 +66,9 @@ namespace Blog.Business.Concrete
             User user = _mapper.Map<User>(registerDto);
             user.Password = _hashManager.Encrpt(user.Password);
             await _unitOfWork.Users.AddAsync(user);
+            user.UserSetting = new() { UserId = user.Id };
             await _unitOfWork.SaveAsync();
-            await _unitOfWork.UserSettings.AddAsync(new UserSetting { UserId = user.Id });
-            await _unitOfWork.SaveAsync();
-            _rabbitMq.Publish(user);
+            _rabbitMq.Publish(new MailConfirmation { Email = user.Email, FirstName = user.FirstName, LastName = user.LastName });
             return new Result(true, _lng.Message(LangEnums.RegisterSuccess));
 
         }

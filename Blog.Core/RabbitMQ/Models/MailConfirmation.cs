@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blog.WorkerService
+namespace Blog.Core.RabbitMQ.Models
 {
-    public class User
+    public class MailConfirmation
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
