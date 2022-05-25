@@ -1,4 +1,4 @@
-using Blog.Api.Extensions;
+﻿using Blog.Api.Extensions;
 using Blog.APi.Filters;
 using Blog.APi.Middlewares;
 using Blog.Business;
@@ -96,7 +96,7 @@ if (app.Environment.IsDevelopment())
         options.DocumentTitle = "Blog Api UI";
     });
 }
-
+app.UseRouting();
 #region cors settings
 app.UseCors(options => options
 .WithOrigins(new[] { "http://20.124.207.158", "http://localhost", "http://localhost:8080", "http://localhost:5000", "http://localhost:4000", "http://localhost:3000" })
@@ -110,11 +110,27 @@ app.UseHealthChecks("/health", new HealthCheckOptions
 {
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
+
 app.UseStaticFiles();
 app.UseHttpsRedirection();
-app.UseMiddleware<AuthMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapControllers();
+
+//eger api ile ilgili bir istek gelirse api icin yazdigim middleware devreye girecek
+app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder => appBuilder.UseMiddleware<AuthMiddleware>());
+//route mekanizmasini belirtiyorum. Admin ve Api 2 ayri proje gibi calisacak
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapAreaControllerRoute(
+        name: "Admin",
+        areaName: "Admin",
+        pattern: "Admin/{controller=Home}/{action=Index}"
+    );
+
+    endpoints.MapControllerRoute(
+        name: "Api",
+        pattern: "Api/{controller=Home}/{action=Index}/{id?}"
+    );
+});
 
 app.Run();

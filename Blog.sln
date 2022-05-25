@@ -19,7 +19,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.ApiTest", "Blog.ApiTes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.WorkerService", "Blog.WorkerService\Blog.WorkerService.csproj", "{A2F14152-6794-4ABC-8D86-B9ABE4F1EDB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.MonitoringService", "Blog.MonitoringService\Blog.MonitoringService.csproj", "{0060F967-7132-4553-AD91-C3AF47F7BB97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.MonitoringService", "Blog.MonitoringService\Blog.MonitoringService.csproj", "{0060F967-7132-4553-AD91-C3AF47F7BB97}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{87A64350-06D9-4F5A-9213-71B6D1C43BE7}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

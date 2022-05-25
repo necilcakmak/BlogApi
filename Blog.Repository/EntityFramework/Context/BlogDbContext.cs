@@ -11,12 +11,12 @@ namespace Blog.Repository.EntityFramework.Context
         public BlogDbContext(DbContextOptions<BlogDbContext> options) : base(options)
         {
         }
-        public DbSet<User> Users { get; set; }
-        public DbSet<UserSetting> UserSettings { get; set; }
-        public DbSet<Article> Articles { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Comment> Comments { get; set; }
-        public DbSet<ParentCategory> ParentCategories { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserSetting> UserSettings { get; set; }
+        public virtual DbSet<Article> Articles { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<ParentCategory> ParentCategories { get; set; }
 
         public override int SaveChanges()
         {
