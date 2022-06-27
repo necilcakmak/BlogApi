@@ -1,0 +1,27 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+<CustomButton Text="ChangedTitle" OnClick="ChangedTitle" />
+<CustomButton Text="ShowConfirmation" OnClick="ShowConfirmation" Color="danger" />
+
+@*<SurveyPrompt Title="How is Blazor working for you?" />*@
+@code {
+    [CascadingParameter]
+    IModalService Modal { get; set; }
+
+    [Inject]
+    ModalManager ModalManager { get; set; }
+
+    private String title = "";
+
+    public async Task ChangedTitle()
+    {
+        await ModalManager.ShowMessageAsync("Show Message Title", "Kayıt Silindi", 3000);
+    }
+
+    async Task ShowConfirmation()
+    {
+        var res = await ModalManager.ConfirmationAsync("Onay", "Kayıt Silinecek ?");
+        if (res) title = "Evete Tıklandı"; else title = "Hayıra Tıklandı";
+    }
+}

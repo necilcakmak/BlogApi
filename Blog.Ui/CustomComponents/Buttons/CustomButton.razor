@@ -1,0 +1,35 @@
+﻿<button class="btn btn-@Color"
+        disabled="@IsBusy"
+        type="@Type"
+        onclick="@OnClick">
+
+    @if (@IsBusy)
+    {
+        <span class="spinner-border spinner-border-sm mr-1"></span>
+        @IsBusyCaption
+    }
+    else
+    {
+        <span class="fa fa-@Icon"></span>
+        @Text
+    }
+
+</button>
+
+@code {
+    [Parameter]
+    public string Text { get; set; } = "Ekle";
+    [Parameter]
+    public string Type { get; set; } = "button";
+    [Parameter]
+    public string Icon { get; set; } = "plus";
+    [Parameter]
+    public string Color { get; set; } = "primary";
+    [Parameter]
+    public bool IsBusy { get; set; } = false;
+    [Parameter]
+    public String IsBusyCaption { get; set; } = "Çalışıyor...";
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+}
