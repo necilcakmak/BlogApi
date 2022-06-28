@@ -19,5 +19,6 @@ builder.Services.UiServiceRegistration();
 builder.Services.AddBlazoredModal();
 builder.Services.AddBlazoredLocalStorage();
 
-builder.Services.AddScoped<ModalManager>();
+builder.Services.AddAuthorizationCore();
+
 await builder.Build().RunAsync();
