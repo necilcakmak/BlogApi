@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using static Blog.Core.Utilities.TokenHelper;
 
 var builder = WebApplication.CreateBuilder(args);
 var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
@@ -24,6 +25,7 @@ var configuration = new ConfigurationBuilder()
     .AddEnvironmentVariables()
     .Build();
 #region app configuration
+configuration.GetSection("TokenOptions").Bind(TokenHelper.TokenSettings);
 builder.Services.Configure<RedisSettings>(configuration.GetSection("RedisSettings"));
 builder.Services.Configure<MailOptions>(configuration.GetSection("EmailSettings"));
 #endregion

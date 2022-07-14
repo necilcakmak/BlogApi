@@ -24,7 +24,7 @@ namespace Blog.Api.Filters
             var service = context.HttpContext.RequestServices;
             var _redisService = service.GetService<IRedisService>();
 
-            var user = _redisService.Get<User>(key);
+            var user = _redisService.Get<User>(key.TokenToRedisId().ToString());
             if (user == null || user.RoleName != RolValue)
             {
                 context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;

@@ -40,10 +40,11 @@ namespace Blog.Business.Concrete
             if (user != null && _hashManager.Verify(loginDto.Password, user.Password))
             {
                 var key = Guid.NewGuid().ToString();
+                AccessToken accessToken = user.CreateTokenUye(key);
                 _redisService.Set(key, user);
                 var userDto = _mapper.Map<UserDto>(user);
-                var token = new AccessToken { Token = key, User = userDto };
-                return new DataResult<AccessToken>(token, true, _lng.Message(LangEnums.LoginSuccess));
+                accessToken.User = userDto;
+                return new DataResult<AccessToken>(accessToken, true, _lng.Message(LangEnums.LoginSuccess));
             }
             return new Result(false, _lng.Message(LangEnums.AccountNotFound));
         }
