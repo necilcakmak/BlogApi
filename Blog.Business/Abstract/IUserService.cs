@@ -12,6 +12,7 @@ namespace Blog.Business.Abstract
     {
         Task<Result> UserInformation();
         Task<Result> Get(Guid id);
+        Task<Result> GetList();
         Task<Result> Delete(Guid id);
         Task<Result> UpdateMyInformation(UserUpdateDto userUpdateDto);
         Task<Result> UpdateMySettings(UserSettingDto userSettingDto);

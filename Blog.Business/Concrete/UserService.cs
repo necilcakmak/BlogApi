@@ -99,5 +99,16 @@ namespace Blog.Business.Concrete
             }
             return new Result(true, _lng.Message(LangEnums.Error));
         }
+
+        public async Task<Result> GetList()
+        {
+            var user = await _unitOfWork.Users.GetAllAsync();
+            if (user == null)
+            {
+                return new Result(false, _lng.Message(LangEnums.NotFound));
+            }
+            var userDto = _mapper.Map<List<UserDto>>(user);
+            return new DataResult<List<UserDto>>(userDto, true, _lng.Message(LangEnums.Listed));
+        }
     }
 }

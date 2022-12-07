@@ -53,6 +53,16 @@ namespace Blog.APi.Controllers
             return Ok(res);
         }
 
+        [HttpGet("getlist")]
+        public async Task<IActionResult> GetList()
+        {
+            var res = await _userService.GetList();
+            if (!res.Success)
+            {
+                return BadRequest(res);
+            }
+            return Ok(res);
+        }
 
         [AuthorizeFilter("Admin")]
         [HttpDelete("delete/{id}")]
