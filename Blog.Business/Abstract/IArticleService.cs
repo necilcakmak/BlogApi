@@ -14,6 +14,7 @@ namespace Blog.Business.Abstract
         Task<Result> GetList(); 
          Task<Result> Add(ArticleAddDto articleAddDto);
         Task<Result> Delete(Guid id);
+        Task<Result> DeleteList(List<Guid> idList);
         Task<Result> Update(ArticleUpdateDto articleUpdateDto);
         Task<Result> UpdateMyArticle(ArticleUpdateDto articleUpdateDto);
         Task<Result> GetListMyArticle();

@@ -66,6 +66,18 @@ namespace Blog.APi.Controllers
         }
 
         [AuthorizeFilter("Admin")]
+        [HttpDelete("deleteList/{id}")]
+        public async Task<IActionResult> DeleteList(List<Guid> idList)
+        {
+            var res = await _articleService.DeleteList(idList);
+            if (!res.Success)
+            {
+                return BadRequest(res);
+            }
+            return Ok(res);
+        }
+
+        [AuthorizeFilter("Admin")]
         [HttpPut("update")]
         public async Task<IActionResult> Update(ArticleUpdateDto articleUpdateDto)
         {

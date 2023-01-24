@@ -1,4 +1,5 @@
-﻿using Blog.Repository.EntityFramework.Abstract.Base;
+﻿using Blog.Entities.Entities.Base;
+using Blog.Repository.EntityFramework.Abstract.Base;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -68,6 +69,11 @@ namespace Blog.Repository.EntityFramework.Concrete.Base
                 }
             }
             return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task DeleteListAsync(List<TEntity> entitities)
+        {
+            await Task.Run(() => { _context.Set<TEntity>().RemoveRange(entitities); });
         }
     }
 }

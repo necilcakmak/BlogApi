@@ -6,6 +6,7 @@ using Blog.Dto.Article;
 using Blog.Entities.Entities;
 using Blog.Repository.EntityFramework.Abstract.UnitOfWork;
 using Newtonsoft.Json;
+using ServiceStack;
 
 namespace Blog.Business.Concrete
 {
@@ -117,6 +118,18 @@ namespace Blog.Business.Concrete
             await _unitOfWork.SaveAsync();
             var articleDto = _mapper.Map<ArticleDto>(articleInDb);
             return new DataResult<ArticleDto>(articleDto, true, _lang.Message(LangEnums.Updated));
+        }
+
+        public async Task<Result> DeleteList(List<Guid> idList)
+        {
+            var articles = await _unitOfWork.Articles.GetAllAsync(x => idList.Contains(x.Id));
+            if (articles == null)
+            {
+                return new Result(false, _lang.Message(LangEnums.NotFound));
+            }
+            await _unitOfWork.Articles.DeleteListAsync(articles);
+            await _unitOfWork.SaveAsync();
+            return new Result(true, _lang.Message(LangEnums.Deleted));
         }
     }
 }
