@@ -1,9 +1,14 @@
 ﻿using Blog.Api.Filters;
 using Blog.Business.Abstract;
+using Blog.Core.Results;
 using Blog.Core.Utilities;
+using Blog.Dto.Auth;
 using Blog.Dto.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Blog.APi.Controllers
 {
@@ -13,9 +18,11 @@ namespace Blog.APi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly IWebHostEnvironment _environment;
+        public UserController(IUserService userService, IWebHostEnvironment environment)
         {
             _userService = userService;
+            _environment = environment;
         }
 
         [AuthorizeFilter]
@@ -28,6 +35,56 @@ namespace Blog.APi.Controllers
                 return BadRequest(res);
             }
             return Ok(res);
+        }
+
+
+        [AuthorizeFilter]
+        [HttpPost("updateuserimage")]
+        public async Task<IActionResult> UpdateUserImage()
+        {
+            var _uploadFiles = Request.Form.Files;
+            foreach (var item in _uploadFiles)
+            {
+                string FileName = item.FileName;
+                string FilePath = GetFilePath(FileName);
+                if (!System.IO.File.Exists(FilePath))
+                {
+                    Directory.CreateDirectory(FilePath);
+                }
+                string imagePath = FilePath + "\\image.png";
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+                using FileStream stream = System.IO.File.Create(imagePath);
+                await item.CopyToAsync(stream);
+            }
+            return Ok(new Result(true, "ImageUploadSuccess"));
+        }
+
+
+        [NonAction]
+        private string GetFilePath(string imageCode)
+        {
+            return _environment.WebRootPath + "\\Uploads\\Users\\" + imageCode;
+        }
+        [NonAction]
+        private string GetImageByUser(string imageCode)
+        {
+            string ImageUrl = string.Empty;
+            string HostUrl = "https://localhost:44322/";
+            string FilePath = GetFilePath(imageCode);
+            string ImagePath = FilePath + "\\image.png";
+            if (!System.IO.File.Exists(FilePath))
+            {
+                ImageUrl = HostUrl + "/Uploads/Common/noimage.png";
+
+            }
+            else
+            {
+                ImageUrl = HostUrl + "/Uploads/Users/" + imageCode + "/image.png";
+            }
+            return ImageUrl;
         }
 
         [AuthorizeFilter]
@@ -87,5 +144,9 @@ namespace Blog.APi.Controllers
             }
             return Ok(res);
         }
+
     }
+
 }
+
+

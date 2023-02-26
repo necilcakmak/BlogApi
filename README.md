@@ -16,7 +16,7 @@ docker-compose up
 Localde çalıştırmak için makinanızda Postgres, .Net Core 6.0, Redis ve RabbitMQ paketlerinin kurulu olması gerekmektedir. Redis için Docker, RabbitMQ için cloud kullanabilirsiniz.
 
 # Kullanılan Teknolojiler
-- .Net Core 6.0
+- .Net Core 7.0
 - Postgres Database
 - Docker & Docker-Compose
 - RabbitMQ

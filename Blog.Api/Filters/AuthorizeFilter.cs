@@ -12,7 +12,7 @@ namespace Blog.Api.Filters
         string RolValue;
         public AuthorizeFilter()
         {
-
+            RolValue = "User";
         }
         public AuthorizeFilter(string RolValue)
         {
@@ -25,7 +25,7 @@ namespace Blog.Api.Filters
             var _redisService = service.GetService<IRedisService>();
 
             var user = _redisService.Get<User>(key.TokenToRedisId().ToString());
-            if (user == null || user.RoleName != RolValue)
+            if (user == null || user.RoleName != "Admin" && user.RoleName != RolValue)
             {
                 context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.HttpContext.Response.ContentType = "application/json";

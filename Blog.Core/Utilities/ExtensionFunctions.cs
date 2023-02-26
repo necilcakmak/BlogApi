@@ -28,6 +28,16 @@ namespace Blog.Core.Utilities
             };
             return JsonConvert.SerializeObject(obje, settings);
         }
-
+        public static T ToObject<T>(this string obje)
+        {
+            var settings = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Formatting = Formatting.Indented,
+                MaxDepth = 1
+            };
+            return JsonConvert.DeserializeObject<T>(obje, settings);
+        }
     }
 }
