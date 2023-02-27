@@ -6,12 +6,14 @@ using Blog.Dto.Auth;
 using Blog.Dto.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Newtonsoft.Json;
 using System.Drawing;
 using System.Drawing.Imaging;
 
 namespace Blog.APi.Controllers
 {
+    [EnableRateLimiting("Api")]
     [ApiController]
     [Route("api/[controller]")]
     [ApiVersion("1.0")]
@@ -42,49 +44,32 @@ namespace Blog.APi.Controllers
         [HttpPost("updateuserimage")]
         public async Task<IActionResult> UpdateUserImage()
         {
-            var _uploadFiles = Request.Form.Files;
-            foreach (var item in _uploadFiles)
-            {
-                string FileName = item.FileName;
-                string FilePath = GetFilePath(FileName);
-                if (!System.IO.File.Exists(FilePath))
-                {
-                    Directory.CreateDirectory(FilePath);
-                }
-                string imagePath = FilePath + "\\image.png";
-                if (System.IO.File.Exists(imagePath))
-                {
-                    System.IO.File.Delete(imagePath);
-                }
-                using FileStream stream = System.IO.File.Create(imagePath);
-                await item.CopyToAsync(stream);
-            }
-            return Ok(new Result(true, "ImageUploadSuccess"));
-        }
-
-
-        [NonAction]
-        private string GetFilePath(string imageCode)
-        {
-            return _environment.WebRootPath + "\\Uploads\\Users\\" + imageCode;
-        }
-        [NonAction]
-        private string GetImageByUser(string imageCode)
-        {
-            string ImageUrl = string.Empty;
-            string HostUrl = "https://localhost:44322/";
-            string FilePath = GetFilePath(imageCode);
-            string ImagePath = FilePath + "\\image.png";
+            var item = Request.Form.Files[0];
+            var dict = Request.Form.ToDictionary(x => x.Key, x => x.Value.ToString());
+            string userName = dict["userName"];
+            string FileName = item.FileName;
+            string FilePath = _environment.WebRootPath + "\\images\\users";
             if (!System.IO.File.Exists(FilePath))
             {
-                ImageUrl = HostUrl + "/Uploads/Common/noimage.png";
-
+                Directory.CreateDirectory(FilePath);
             }
-            else
+            string imagePath = FilePath + "\\" + userName + FileName;
+            if (System.IO.File.Exists(imagePath))
             {
-                ImageUrl = HostUrl + "/Uploads/Users/" + imageCode + "/image.png";
+                System.IO.File.Delete(imagePath);
             }
-            return ImageUrl;
+            using FileStream stream = System.IO.File.Create(imagePath);
+            await item.CopyToAsync(stream);
+            var res = await _userService.UpdateUserImage(userName, FileName);
+
+            return Ok(res);
+        }
+
+
+        [NonAction]
+        private string GetFilePath()
+        {
+            return _environment.WebRootPath + "\\images\\users";
         }
 
         [AuthorizeFilter]

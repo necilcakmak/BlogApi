@@ -20,5 +20,6 @@ namespace Blog.Dto.User
         public DateTime UpdatedDate { get; set; }
         public bool IsActive { get; set; }
         public UserSettingDto UserSetting { get; set; }
+        public string ImagePath { get; set; }
     }
 }

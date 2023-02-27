@@ -41,6 +41,9 @@ namespace Blog.Repository.EntityFramework.Mapping
 
             builder.Property(c => c.BirthDate).IsRequired();
 
+            builder.Property(c => c.ImagePath).HasMaxLength(100);
+            builder.Property(c => c.ImagePath).HasDefaultValue("DefaultUser.jpg");
+
             builder.ToTable("Users");
 
             builder.HasData(
@@ -58,7 +61,8 @@ namespace Blog.Repository.EntityFramework.Mapping
                     UpdatedDate = DateTime.Now.ToUniversalTime(),
                     BirthDate = DateTime.Parse("1995-12-28").ToUniversalTime(),
                     IsApproved = false,
-                    RoleName = "Admin"
+                    RoleName = "Admin",
+                    ImagePath = "DefaultUser.jpg",
                 },
                 new User
                 {
@@ -74,7 +78,8 @@ namespace Blog.Repository.EntityFramework.Mapping
                     Gender = false,
                     BirthDate = DateTime.Parse("1990-11-18").ToUniversalTime(),
                     IsApproved = false,
-                    RoleName = "Admin"
+                    RoleName = "Admin",
+                    ImagePath = "DefaultUser.jpg",
                 },
                 new User
                 {
@@ -90,8 +95,9 @@ namespace Blog.Repository.EntityFramework.Mapping
                     Gender = false,
                     BirthDate = DateTime.Parse("1985-9-25").ToUniversalTime(),
                     IsApproved = false,
-                    RoleName = "User"
-                });
+                    RoleName = "User",
+                    ImagePath = "DefaultUser.jpg",
+                }); ;
         }
     }
 }

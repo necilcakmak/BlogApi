@@ -4,9 +4,11 @@ using Blog.Core.Utilities;
 using Blog.Dto.Category;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Blog.APi.Controllers
 {
+    [EnableRateLimiting("Api")]
     [ApiController]
     [Route("api/[controller]")]
     [ApiVersion("1.0")]

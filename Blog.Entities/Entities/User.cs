@@ -18,6 +18,7 @@ namespace Blog.Entities.Entities
         public bool Gender { get; set; }
         public bool IsApproved { get; set; }
         public string RoleName { get; set; }
+        public string ImagePath { get; set; }
         public DateTime BirthDate { get; set; }
         public virtual UserSetting UserSetting { get; set; }
         public virtual ICollection<Article>? Articles { get; set; }

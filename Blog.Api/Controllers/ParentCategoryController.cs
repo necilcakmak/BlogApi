@@ -2,10 +2,11 @@
 using Blog.Business.Abstract;
 using Blog.Dto.ParentCategory;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Blog.Api.Controllers
 {
-
+    [EnableRateLimiting("Api")]
     [ApiController]
     [Route("api/[controller]")]
     [ApiVersion("1.0")]

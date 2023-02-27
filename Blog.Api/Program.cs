@@ -1,4 +1,5 @@
 ﻿using Blog.Api.Extensions;
+using Blog.Api.Middlewares;
 using Blog.APi.Filters;
 using Blog.APi.Middlewares;
 using Blog.Business;
@@ -28,6 +29,10 @@ var configuration = new ConfigurationBuilder()
 configuration.GetSection("TokenOptions").Bind(TokenHelper.TokenSettings);
 builder.Services.Configure<RedisSettings>(configuration.GetSection("RedisSettings"));
 builder.Services.Configure<MailOptions>(configuration.GetSection("EmailSettings"));
+#endregion
+
+#region rate limiter
+builder.Services.RateLimiter();
 #endregion
 
 #region healt check
@@ -98,6 +103,10 @@ if (app.Environment.IsDevelopment())
         options.DocumentTitle = "Blog Api UI";
     });
 }
+#region rate limiter
+app.UseRateLimiter();
+#endregion
+
 app.UseRouting();
 #region cors settings
 app.UseCors(options => options

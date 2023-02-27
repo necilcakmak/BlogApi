@@ -17,5 +17,6 @@ namespace Blog.Business.Abstract
         Task<Result> UpdateMyInformation(UserUpdateDto userUpdateDto);
         Task<Result> UpdateMySettings(UserSettingDto userSettingDto);
         Task<Result> SendNewPostMail();
+        Task<Result> UpdateUserImage(string userName,string imageName);
     }
 }

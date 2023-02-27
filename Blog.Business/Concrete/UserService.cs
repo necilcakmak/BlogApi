@@ -110,5 +110,18 @@ namespace Blog.Business.Concrete
             var userDto = _mapper.Map<List<UserDto>>(user);
             return new DataResult<List<UserDto>>(userDto, true, _lng.Message(LangEnums.Listed));
         }
+
+        public async Task<Result> UpdateUserImage(string userName, string imageName)
+        {
+            var user = await _unitOfWork.Users.GetAsync(x => x.UserName == userName);
+            if (user == null)
+            {
+                return new Result(false, _lng.Message(LangEnums.NotFound));
+            }
+            user.ImagePath = imageName;
+            await _unitOfWork.Users.UpdateAsync(user);
+            await _unitOfWork.SaveAsync();
+            return new Result(true, _lng.Message(LangEnums.Updated));
+        }
     }
 }
