@@ -27,6 +27,11 @@ namespace Blog.Business.AutoMapper
                 .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
                 .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(x => x.BirthDate.ToUniversalTime()));
 
+            //auth mappings.
+            CreateMap<UserUpdateDto, User>()
+                .ForMember(dest => dest.Password, act => act.Ignore())
+                .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.UtcNow));
+
             //article mappings
             CreateMap<ArticleAddDto, Article>()
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))

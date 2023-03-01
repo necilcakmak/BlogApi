@@ -29,58 +29,34 @@ namespace Blog.APi.Controllers
 
         [AuthorizeFilter]
         [HttpPut("updatemyinformation")]
-        public async Task<IActionResult> UpdateMyInformation(UserUpdateDto userUpdateDto)
+        public async Task<IActionResult> UpdateMyInformation([FromForm] UserUpdateDto userUpdateDto)
         {
+            if (userUpdateDto.ImageFile != null)
+            {
+                userUpdateDto.ImageName = await SaveImage(userUpdateDto.ImageFile, userUpdateDto.ImageName);
+            }
             var res = await _userService.UpdateMyInformation(userUpdateDto);
             if (!res.Success)
             {
+
                 return BadRequest(res);
             }
-            return Ok(res);
-        }
-
-
-        [AuthorizeFilter]
-        [HttpPost("updateuserimage")]
-        public async Task<IActionResult> UpdateUserImage()
-        {
-            var item = Request.Form.Files[0];
-            var dict = Request.Form.ToDictionary(x => x.Key, x => x.Value.ToString());
-            string userName = dict["userName"];
-            string FileName = item.FileName;
-            string FilePath = _environment.WebRootPath + "\\images\\users";
-            if (!System.IO.File.Exists(FilePath))
-            {
-                Directory.CreateDirectory(FilePath);
-            }
-            string imagePath = FilePath + "\\" + userName + FileName;
-            if (System.IO.File.Exists(imagePath))
-            {
-                System.IO.File.Delete(imagePath);
-            }
-            using FileStream stream = System.IO.File.Create(imagePath);
-            await item.CopyToAsync(stream);
-            var res = await _userService.UpdateUserImage(userName, FileName);
 
             return Ok(res);
         }
 
-
-        [NonAction]
-        private string GetFilePath()
-        {
-            return _environment.WebRootPath + "\\images\\users";
-        }
 
         [AuthorizeFilter]
         [HttpGet("getmyinformation")]
         public async Task<IActionResult> UserInformation()
         {
-            var res = await _userService.UserInformation();
+            var res = await _userService.UserInformation() as DataResult<UserDto>;
             if (!res.Success)
             {
                 return BadRequest(res);
             }
+            res.Data.ImageSrc = String.Format("{0}://{1}{2}/images/users/{3}", Request.Scheme, Request.Host, Request.PathBase, res.Data.ImageName);
+
             return Ok(res);
         }
 
@@ -130,6 +106,25 @@ namespace Blog.APi.Controllers
             return Ok(res);
         }
 
+        [NonAction]
+        public async Task<string> SaveImage(IFormFile imageFile, string deletedName)
+        {
+            string imageName = new string(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
+            imageName = imageName + DateTime.Now.ToString("yyyymmssfff") + Path.GetExtension(imageFile.FileName);
+            string FilePath = _environment.WebRootPath + "\\images\\users";
+            if (!System.IO.File.Exists(FilePath))
+            {
+                Directory.CreateDirectory(FilePath);
+            }
+            string imagePath = FilePath + "\\" + imageName;
+            if (System.IO.File.Exists(imagePath) && deletedName != "DefaultUser.jpg")
+            {
+                System.IO.File.Delete(deletedName);
+            }
+            using FileStream stream = System.IO.File.Create(imagePath);
+            await imageFile.CopyToAsync(stream);
+            return imageName;
+        }
     }
 
 }

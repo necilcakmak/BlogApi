@@ -3,6 +3,7 @@ using Blog.Business.Abstract;
 using Blog.Business.Lang;
 using Blog.Core.RabbitMQ;
 using Blog.Core.Results;
+using Blog.Core.Utilities;
 using Blog.Core.Utilities.Abstract;
 using Blog.Dto.User;
 using Blog.Entities.Entities;
@@ -51,12 +52,16 @@ namespace Blog.Business.Concrete
 
         public async Task<Result> UpdateMyInformation(UserUpdateDto userUpdateDto)
         {
+
             var user = await _unitOfWork.Users.GetMyUserInformation();
             //password change is true and new password and old password is equal ?
             if (userUpdateDto.PasswordIsChange && !_hashManager.Verify(userUpdateDto.OldPassword, user.Password))
             {
                 return new Result(false, _lng.Message(LangEnums.PasswordsDoNotMatch));
             }
+
+
+            user = _mapper.Map<User>(userUpdateDto);
 
             var jsonModel = JsonConvert.SerializeObject(userUpdateDto);
             JsonConvert.PopulateObject(jsonModel, user);
@@ -69,7 +74,7 @@ namespace Blog.Business.Concrete
             var updatedUser = await _unitOfWork.Users.UpdateAsync(user);
             await _unitOfWork.SaveAsync();
             UserDto userDto = _mapper.Map<UserDto>(updatedUser);
-            return new DataResult<UserDto>(userDto, true, _lng.Message(LangEnums.Listed));
+            return new DataResult<UserDto>(userDto, true, _lng.Message(LangEnums.Updated));
         }
 
         public async Task<Result> UpdateMySettings(UserSettingDto userSettingDto)
@@ -118,7 +123,7 @@ namespace Blog.Business.Concrete
             {
                 return new Result(false, _lng.Message(LangEnums.NotFound));
             }
-            user.ImagePath = imageName;
+            user.ImageName = imageName;
             await _unitOfWork.Users.UpdateAsync(user);
             await _unitOfWork.SaveAsync();
             return new Result(true, _lng.Message(LangEnums.Updated));

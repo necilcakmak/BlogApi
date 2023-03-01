@@ -32,7 +32,7 @@ builder.Services.Configure<MailOptions>(configuration.GetSection("EmailSettings"
 #endregion
 
 #region rate limiter
-builder.Services.RateLimiter();
+//builder.Services.RateLimiter();
 #endregion
 
 #region healt check
@@ -104,7 +104,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 #region rate limiter
-app.UseRateLimiter();
+//app.UseRateLimiter();
 #endregion
 
 app.UseRouting();

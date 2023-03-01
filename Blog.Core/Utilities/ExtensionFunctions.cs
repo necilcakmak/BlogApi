@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Blog.Dto.User;
+using Blog.Entities.Entities;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -27,17 +29,6 @@ namespace Blog.Core.Utilities
                 MaxDepth = 1
             };
             return JsonConvert.SerializeObject(obje, settings);
-        }
-        public static T ToObject<T>(this string obje)
-        {
-            var settings = new JsonSerializerSettings
-            {
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                Formatting = Formatting.Indented,
-                MaxDepth = 1
-            };
-            return JsonConvert.DeserializeObject<T>(obje, settings);
         }
     }
 }
