@@ -31,11 +31,8 @@ namespace Blog.APi.Controllers
         [HttpPut("updatemyinformation")]
         public async Task<IActionResult> UpdateMyInformation([FromForm] UserUpdateDto userUpdateDto)
         {
-            if (userUpdateDto.ImageFile != null)
-            {
-                userUpdateDto.ImageName = await SaveImage(userUpdateDto.ImageFile, userUpdateDto.ImageName);
-            }
-            var res = await _userService.UpdateMyInformation(userUpdateDto);
+
+            var res = await _userService.UpdateMyInformation(userUpdateDto, userUpdateDto.ImageFile, _environment.WebRootPath);
             if (!res.Success)
             {
 
@@ -107,7 +104,7 @@ namespace Blog.APi.Controllers
         }
 
         [NonAction]
-        public async Task<string> SaveImage(IFormFile imageFile, string deletedName)
+        public async Task<string> SaveImage(IFormFile imageFile)
         {
             string imageName = new string(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
             imageName = imageName + DateTime.Now.ToString("yyyymmssfff") + Path.GetExtension(imageFile.FileName);
@@ -117,10 +114,6 @@ namespace Blog.APi.Controllers
                 Directory.CreateDirectory(FilePath);
             }
             string imagePath = FilePath + "\\" + imageName;
-            if (System.IO.File.Exists(imagePath) && deletedName != "DefaultUser.jpg")
-            {
-                System.IO.File.Delete(deletedName);
-            }
             using FileStream stream = System.IO.File.Create(imagePath);
             await imageFile.CopyToAsync(stream);
             return imageName;

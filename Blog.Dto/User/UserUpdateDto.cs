@@ -6,8 +6,8 @@ namespace Blog.Dto.User
 {
     public class UserUpdateDto
     {
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public bool Gender { get; set; }
         public bool PasswordIsChange { get; set; }
         public string? OldPassword { get; set; }
@@ -15,6 +15,5 @@ namespace Blog.Dto.User
         public string? PasswordRepeat { get; set; }
       
         public IFormFile? ImageFile { get; set; }
-        public string? ImageName { get; set; }
     }
 }

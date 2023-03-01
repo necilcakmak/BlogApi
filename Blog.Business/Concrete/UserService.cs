@@ -8,7 +8,10 @@ using Blog.Core.Utilities.Abstract;
 using Blog.Dto.User;
 using Blog.Entities.Entities;
 using Blog.Repository.EntityFramework.Abstract.UnitOfWork;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using ServiceStack;
+using System;
 
 namespace Blog.Business.Concrete
 {
@@ -50,30 +53,29 @@ namespace Blog.Business.Concrete
             return new DataResult<UserDto>(userDto, true, _lng.Message(LangEnums.Listed));
         }
 
-        public async Task<Result> UpdateMyInformation(UserUpdateDto userUpdateDto)
+        public async Task<Result> UpdateMyInformation(UserUpdateDto userUpdateDto, IFormFile imageFile, string webRootPath)
         {
-
             var user = await _unitOfWork.Users.GetMyUserInformation();
-            //password change is true and new password and old password is equal ?
             if (userUpdateDto.PasswordIsChange && !_hashManager.Verify(userUpdateDto.OldPassword, user.Password))
-            {
                 return new Result(false, _lng.Message(LangEnums.PasswordsDoNotMatch));
-            }
 
 
-            user = _mapper.Map<User>(userUpdateDto);
 
-            var jsonModel = JsonConvert.SerializeObject(userUpdateDto);
-            JsonConvert.PopulateObject(jsonModel, user);
-
+            user.FirstName = userUpdateDto.FirstName;
+            user.LastName = userUpdateDto.LastName;
+            user.Gender = userUpdateDto.Gender;
             if (userUpdateDto.PasswordIsChange)
-            {
                 user.Password = _hashManager.Encrpt(userUpdateDto.Password);
+
+            if (imageFile != null)
+            {
+                Delete(user.ImageName, webRootPath);
+                user.ImageName = await SaveImage(imageFile, webRootPath);
             }
 
-            var updatedUser = await _unitOfWork.Users.UpdateAsync(user);
+            var res = await _unitOfWork.Users.UpdateAsync(user);
             await _unitOfWork.SaveAsync();
-            UserDto userDto = _mapper.Map<UserDto>(updatedUser);
+            UserDto userDto = _mapper.Map<UserDto>(res);
             return new DataResult<UserDto>(userDto, true, _lng.Message(LangEnums.Updated));
         }
 
@@ -86,6 +88,8 @@ namespace Blog.Business.Concrete
             await _unitOfWork.SaveAsync();
             return new Result(true, _lng.Message(LangEnums.Updated));
         }
+
+
 
         public async Task<Result> UserInformation()
         {
@@ -116,17 +120,25 @@ namespace Blog.Business.Concrete
             return new DataResult<List<UserDto>>(userDto, true, _lng.Message(LangEnums.Listed));
         }
 
-        public async Task<Result> UpdateUserImage(string userName, string imageName)
+        public static async Task<string> SaveImage(IFormFile imageFile, string webRootPath)
         {
-            var user = await _unitOfWork.Users.GetAsync(x => x.UserName == userName);
-            if (user == null)
+            string imageName = new string(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
+            imageName = imageName + DateTime.Now.ToString("yyyymmssfff") + Path.GetExtension(imageFile.FileName);
+            string FilePath = webRootPath + "\\images\\users";
+            if (File.Exists(FilePath))
             {
-                return new Result(false, _lng.Message(LangEnums.NotFound));
+                Directory.CreateDirectory(FilePath);
             }
-            user.ImageName = imageName;
-            await _unitOfWork.Users.UpdateAsync(user);
-            await _unitOfWork.SaveAsync();
-            return new Result(true, _lng.Message(LangEnums.Updated));
+            string imagePath = FilePath + "\\" + imageName;
+            using FileStream stream = System.IO.File.Create(imagePath);
+            await imageFile.CopyToAsync(stream);
+            return imageName;
+        }
+        public static void Delete(string imageName, string webRootPath)
+        {
+            string FilePath = webRootPath + "\\images\\users\\" + imageName;
+            if (File.Exists(FilePath))
+                File.Delete(FilePath);
         }
     }
 }

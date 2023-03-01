@@ -1,5 +1,6 @@
 ﻿using Blog.Core.Results;
 using Blog.Dto.User;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,8 @@ namespace Blog.Business.Abstract
         Task<Result> Get(Guid id);
         Task<Result> GetList();
         Task<Result> Delete(Guid id);
-        Task<Result> UpdateMyInformation(UserUpdateDto userUpdateDto);
+        Task<Result> UpdateMyInformation(UserUpdateDto userUpdateDto, IFormFile imageFile, string webRootPage);
         Task<Result> UpdateMySettings(UserSettingDto userSettingDto);
         Task<Result> SendNewPostMail();
-        Task<Result> UpdateUserImage(string userName,string imageName);
     }
 }
