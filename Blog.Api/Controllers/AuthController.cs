@@ -46,6 +46,7 @@ namespace Blog.APi.Controllers
             {
                 return BadRequest(res);
             }
+            
             return Ok(res);
         }
 

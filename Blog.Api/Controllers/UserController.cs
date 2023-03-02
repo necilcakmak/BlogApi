@@ -32,7 +32,7 @@ namespace Blog.APi.Controllers
         public async Task<IActionResult> UpdateMyInformation([FromForm] UserUpdateDto userUpdateDto)
         {
 
-            var res = await _userService.UpdateMyInformation(userUpdateDto, userUpdateDto.ImageFile, _environment.WebRootPath);
+            var res = await _userService.UpdateMyInformation(userUpdateDto, _environment.WebRootPath);
             if (!res.Success)
             {
 

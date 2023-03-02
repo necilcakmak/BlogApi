@@ -73,14 +73,23 @@ namespace Blog.Core.Utilities
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(TokenSettings.SecurityKey))
             };
         }
-        public static Guid TokenToRedisId(this string tokenStr)
+        public static Guid? TokenToRedisId(this string tokenStr)
         {
-            var jwt = tokenStr.Replace("Bearer ", string.Empty);
-            var handler = new JwtSecurityTokenHandler();
-            var token = handler.ReadJwtToken(jwt);
-            var AuthenticationClaim = token.Claims.ToList();
-            string userId = token.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-            return new Guid(userId);
+            try
+            {
+                var jwt = tokenStr.Replace("Bearer ", string.Empty);
+                var handler = new JwtSecurityTokenHandler();
+                var token = handler.ReadJwtToken(jwt);
+                var AuthenticationClaim = token.Claims.ToList();
+                string userId = token.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+                return new Guid(userId);
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+
         }
 
         //private IEnumerable<Claim> SetClaimsUye(User user)

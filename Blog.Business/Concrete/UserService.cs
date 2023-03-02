@@ -53,30 +53,29 @@ namespace Blog.Business.Concrete
             return new DataResult<UserDto>(userDto, true, _lng.Message(LangEnums.Listed));
         }
 
-        public async Task<Result> UpdateMyInformation(UserUpdateDto userUpdateDto, IFormFile imageFile, string webRootPath)
+        public async Task<Result> UpdateMyInformation(UserUpdateDto userUpdateDto, string webRootPath)
         {
             var user = await _unitOfWork.Users.GetMyUserInformation();
             if (userUpdateDto.PasswordIsChange && !_hashManager.Verify(userUpdateDto.OldPassword, user.Password))
                 return new Result(false, _lng.Message(LangEnums.PasswordsDoNotMatch));
 
-
-
             user.FirstName = userUpdateDto.FirstName;
             user.LastName = userUpdateDto.LastName;
             user.Gender = userUpdateDto.Gender;
+            user.UserSetting.NewBlog = userUpdateDto.NewBlog;
             if (userUpdateDto.PasswordIsChange)
                 user.Password = _hashManager.Encrpt(userUpdateDto.Password);
 
-            if (imageFile != null)
+            if (userUpdateDto.ImageFile != null)
             {
                 Delete(user.ImageName, webRootPath);
-                user.ImageName = await SaveImage(imageFile, webRootPath);
+                user.ImageName = await SaveImage(userUpdateDto.ImageFile, webRootPath);
             }
 
             var res = await _unitOfWork.Users.UpdateAsync(user);
             await _unitOfWork.SaveAsync();
             UserDto userDto = _mapper.Map<UserDto>(res);
-            return new DataResult<UserDto>(userDto, true, _lng.Message(LangEnums.Updated));
+            return new Result(true, _lng.Message(LangEnums.Updated));
         }
 
         public async Task<Result> UpdateMySettings(UserSettingDto userSettingDto)

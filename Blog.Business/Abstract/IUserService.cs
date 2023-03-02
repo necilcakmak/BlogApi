@@ -15,7 +15,7 @@ namespace Blog.Business.Abstract
         Task<Result> Get(Guid id);
         Task<Result> GetList();
         Task<Result> Delete(Guid id);
-        Task<Result> UpdateMyInformation(UserUpdateDto userUpdateDto, IFormFile imageFile, string webRootPage);
+        Task<Result> UpdateMyInformation(UserUpdateDto userUpdateDto, string webRootPage);
         Task<Result> UpdateMySettings(UserSettingDto userSettingDto);
         Task<Result> SendNewPostMail();
     }

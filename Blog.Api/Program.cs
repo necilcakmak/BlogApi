@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using static Blog.Core.Utilities.TokenHelper;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,6 +50,8 @@ builder.Services.AddControllersWithViews(options =>
     fv.RegisterValidatorsFromAssemblyContaining<RegisterValidator>();
 }).AddNewtonsoftJson(options =>
 {
+    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();//api response value camelCase(ex:FirstName to firstName)
+    options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     options.SerializerSettings.Formatting = Formatting.Indented;
 });

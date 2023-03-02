@@ -3,6 +3,7 @@ using Blog.Core.Results;
 using Blog.Core.Utilities;
 using Blog.Entities.Entities;
 using Blog.Repository.EntityFramework.Context;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Blog.APi.Middlewares
 {
@@ -20,18 +21,19 @@ namespace Blog.APi.Middlewares
         {
             try
             {
-                //var token = context.Request.Headers["Authorization"].ToString();
-                //if (!string.IsNullOrEmpty(token))
-                //{
-                //    if (!token.ValidateToken())
-                //    {
-                //        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                //        context.Response.ContentType = "application/json";
-                //        await context.Response.WriteAsync(
-                //                new Result(false, "TokenNotValid").ToJson());
-                //        return;
-                //    }
-                //}
+                var token = context.Request.Headers["Authorization"].ToString();
+                if (!string.IsNullOrEmpty(token))
+                {
+                    if (!token.ValidateToken())
+                    {
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        context.Response.ContentType = "application/json";
+                        await context.Response.WriteAsync(
+                                new Result(false, "TokenNotValid").ToJson());
+                        return;
+                    }
+                }
+               
                 await _next.Invoke(context);
             }
             catch (Exception ex)
