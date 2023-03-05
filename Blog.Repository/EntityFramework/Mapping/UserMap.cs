@@ -59,7 +59,7 @@ namespace Blog.Repository.EntityFramework.Mapping
                     CreatedDate = DateTime.Now.ToUniversalTime(),
                     UpdatedDate = DateTime.Now.ToUniversalTime(),
                     BirthDate = DateTime.Parse("1995-12-28").ToUniversalTime(),
-                    IsApproved = false,
+                    IsApproved = true,
                     RoleName = "Admin",
                     ImageName = "DefaultUser.jpg",
                 },

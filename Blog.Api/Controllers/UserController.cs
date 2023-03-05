@@ -1,5 +1,6 @@
 ﻿using Blog.Api.Filters;
 using Blog.Business.Abstract;
+using Blog.Business.Concrete;
 using Blog.Core.Results;
 using Blog.Core.Utilities;
 using Blog.Dto.Auth;
@@ -90,7 +91,17 @@ namespace Blog.APi.Controllers
             }
             return Ok(res);
         }
-
+        [AuthorizeFilter("Admin")]
+        [HttpPost("deleteList")]
+        public async Task<IActionResult> DeleteList(List<Guid> idList)
+        {
+            var res = await _userService.DeleteList(idList);
+            if (!res.Success)
+            {
+                return BadRequest(res);
+            }
+            return Ok(res);
+        }
         [AuthorizeFilter("Admin")]
         [HttpGet("sendnewpostmail")]
         public async Task<IActionResult> SendNewPostMail()

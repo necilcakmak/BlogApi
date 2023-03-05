@@ -139,5 +139,10 @@ namespace Blog.Business.Concrete
             if (File.Exists(FilePath))
                 File.Delete(FilePath);
         }
+
+        public Task<Result> DeleteList(List<Guid> idList)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

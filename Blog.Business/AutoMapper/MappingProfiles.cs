@@ -25,6 +25,7 @@ namespace Blog.Business.AutoMapper
             CreateMap<RegisterDto, User>()
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
                 .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
+                .ForMember(dest => dest.ImageName, opt => opt.MapFrom(x => "DefaultUser.jpg"))
                 .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(x => x.BirthDate.ToUniversalTime()));
 
             //auth mappings.

@@ -69,7 +69,7 @@ namespace Blog.Business.Concrete
             await _unitOfWork.Users.AddAsync(user);
             user.UserSetting = new() { UserId = user.Id };
             await _unitOfWork.SaveAsync();
-            _rabbitMq.Publish(new MailConfirmation { Email = user.Email, FirstName = user.FirstName, LastName = user.LastName });
+            //_rabbitMq.Publish(new MailConfirmation { Email = user.Email, FirstName = user.FirstName, LastName = user.LastName });
             return new Result(true, _lng.Message(LangEnums.RegisterSuccess));
 
         }

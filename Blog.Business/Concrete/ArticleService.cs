@@ -46,10 +46,7 @@ namespace Blog.Business.Concrete
         public async Task<Result> GetList()
         {
             var articles = await _unitOfWork.Articles.GetAllAsync(null, x => x.Category.ParentCategory, x => x.User);
-            if (articles.Count <= 0)
-            {
-                return new Result(false, _lang.Message(LangEnums.NotFound));
-            }
+          
             var articlesDto = _mapper.Map<List<ArticleDto>>(articles);
             return new DataResult<List<ArticleDto>>(articlesDto, true, _lang.Message(LangEnums.Listed));
         }

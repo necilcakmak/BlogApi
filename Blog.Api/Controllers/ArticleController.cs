@@ -68,7 +68,7 @@ namespace Blog.APi.Controllers
         }
 
         [AuthorizeFilter("Admin")]
-        [HttpDelete("deleteList/{id}")]
+        [HttpPost("deleteList")]
         public async Task<IActionResult> DeleteList(List<Guid> idList)
         {
             var res = await _articleService.DeleteList(idList);
