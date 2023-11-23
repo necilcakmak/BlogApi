@@ -1,4 +1,5 @@
-﻿using Blog.Api.Filters;
+﻿using Asp.Versioning;
+using Blog.Api.Filters;
 using Blog.Business.Abstract;
 using Blog.Dto.ParentCategory;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ namespace Blog.Api.Controllers
     [EnableRateLimiting("Api")]
     [ApiController]
     [Route("api/[controller]")]
-    [ApiVersion("1.0")]
+    [ApiVersion(1.0)]
     public class ParentCategoryController : ControllerBase
     {
         private readonly IParentCategoryService _mainCategoryService;

@@ -1,4 +1,5 @@
-﻿using Blog.Api.Filters;
+﻿using Asp.Versioning;
+using Blog.Api.Filters;
 using Blog.Business.Abstract;
 using Blog.Core.Utilities;
 using Blog.Dto.Article;
@@ -11,7 +12,7 @@ namespace Blog.APi.Controllers
     [EnableRateLimiting("Api")]
     [ApiController]
     [Route("api/[controller]")]
-    [ApiVersion("1.0")]
+    [ApiVersion(1.0)]
     public class ArticleController : ControllerBase
     {
         //test

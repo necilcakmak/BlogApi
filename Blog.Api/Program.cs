@@ -1,4 +1,5 @@
-﻿using Blog.Api.Extensions;
+﻿using Asp.Versioning;
+using Blog.Api.Extensions;
 using Blog.Api.Middlewares;
 using Blog.APi.Filters;
 using Blog.APi.Middlewares;
@@ -11,11 +12,11 @@ using FluentValidation.AspNetCore;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using static Blog.Core.Utilities.TokenHelper;
+
 
 var builder = WebApplication.CreateBuilder(args);
 var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");

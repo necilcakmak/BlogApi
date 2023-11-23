@@ -1,5 +1,4 @@
 ﻿
-using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Blog.Dto.User
@@ -14,7 +13,6 @@ namespace Blog.Dto.User
         public string? OldPassword { get; set; }
         public string? Password { get; set; }
         public string? PasswordRepeat { get; set; }
-      
-        public IFormFile? ImageFile { get; set; }
+
     }
 }

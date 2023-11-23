@@ -1,4 +1,5 @@
-﻿using Blog.Api.Filters;
+﻿using Asp.Versioning;
+using Blog.Api.Filters;
 using Blog.Business.Abstract;
 using Blog.Core.Utilities;
 using Blog.Dto.Comment;
@@ -11,7 +12,7 @@ namespace Blog.APi.Controllers
     [EnableRateLimiting("Api")]
     [ApiController]
     [Route("api/[controller]")]
-    [ApiVersion("1.0")]
+    [ApiVersion(1.0)]
     public class CommentController : ControllerBase
     {
         private readonly ICommentService _commentService;

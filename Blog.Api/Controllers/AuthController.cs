@@ -1,4 +1,5 @@
-﻿using Blog.Business.Abstract;
+﻿using Asp.Versioning;
+using Blog.Business.Abstract;
 using Blog.Dto.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +10,8 @@ namespace Blog.APi.Controllers
     [EnableRateLimiting("Api")]
     [ApiController]
     [Route("api/[controller]")]
-    [ApiVersion("1.0")]
-    [ApiVersion("1.1")]
+    [ApiVersion(1.0)]
+    [ApiVersion(1.1)]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;

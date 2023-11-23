@@ -8,7 +8,6 @@ using Blog.Core.Utilities.Abstract;
 using Blog.Dto.User;
 using Blog.Entities.Entities;
 using Blog.Repository.EntityFramework.Abstract.UnitOfWork;
-using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using ServiceStack;
 using System;
@@ -66,11 +65,7 @@ namespace Blog.Business.Concrete
             if (userUpdateDto.PasswordIsChange)
                 user.Password = _hashManager.Encrpt(userUpdateDto.Password);
 
-            if (userUpdateDto.ImageFile != null)
-            {
-                Delete(user.ImageName, webRootPath);
-                user.ImageName = await SaveImage(userUpdateDto.ImageFile, webRootPath);
-            }
+          
 
             var res = await _unitOfWork.Users.UpdateAsync(user);
             await _unitOfWork.SaveAsync();
@@ -119,20 +114,7 @@ namespace Blog.Business.Concrete
             return new DataResult<List<UserDto>>(userDto, true, _lng.Message(LangEnums.Listed));
         }
 
-        public static async Task<string> SaveImage(IFormFile imageFile, string webRootPath)
-        {
-            string imageName = new string(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
-            imageName = imageName + DateTime.Now.ToString("yyyymmssfff") + Path.GetExtension(imageFile.FileName);
-            string FilePath = webRootPath + "\\images\\users";
-            if (File.Exists(FilePath))
-            {
-                Directory.CreateDirectory(FilePath);
-            }
-            string imagePath = FilePath + "\\" + imageName;
-            using FileStream stream = System.IO.File.Create(imagePath);
-            await imageFile.CopyToAsync(stream);
-            return imageName;
-        }
+     
         public static void Delete(string imageName, string webRootPath)
         {
             string FilePath = webRootPath + "\\images\\users\\" + imageName;

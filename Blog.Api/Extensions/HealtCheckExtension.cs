@@ -20,7 +20,7 @@ namespace Blog.Api.Extensions
                     failureStatus: HealthStatus.Unhealthy | HealthStatus.Degraded,
                     tags: new string[] { "rabbitMq" })
                      .AddNpgSql(
-                    npgsqlConnectionString: configuration.GetConnectionString("BlogDB"),
+                    connectionString: configuration.GetConnectionString("BlogDB"),
                     name: "DataBase Check",
                     failureStatus: HealthStatus.Unhealthy | HealthStatus.Degraded,
                     tags: new string[] { "Postgres" });
