@@ -70,7 +70,17 @@ services:
     environment:
     - RABBITMQ_DEFAULT_USER=necil
     - RABBITMQ_DEFAULT_PASS=1234
+  jenkins:
+    container_name: jenkins
+    image: jenkins/jenkins:lts
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    restart: always
 volumes:
   upload_images:
   db_volume:
   dbadmin_volume:
+  jenkins_home:

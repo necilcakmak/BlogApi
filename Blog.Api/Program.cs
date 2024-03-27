@@ -99,14 +99,14 @@ using (var serviceScope = app.Services.CreateScope())
         context.Database.Migrate();
     }
 }
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
         options.DocumentTitle = "Blog Api UI";
     });
-}
+//}
 #region rate limiter
 app.UseRateLimiter();
 #endregion
