@@ -37,6 +37,7 @@ namespace Blog.Business.AutoMapper
             CreateMap<ArticleAddDto, Article>()
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
                 .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
+                .ForMember(dest => dest.PublishedDate, opt => opt.MapFrom(x => DateTime.UtcNow))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(x => BlogDbContext.UserId));
             CreateMap<ArticleUpdateDto, Article>()
                 .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(x => DateTime.UtcNow));

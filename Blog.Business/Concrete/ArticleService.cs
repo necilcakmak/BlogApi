@@ -39,14 +39,16 @@ namespace Blog.Business.Concrete
             Article article = _mapper.Map<Article>(articleAddDto);
             await _unitOfWork.Articles.AddAsync(article);
             await _unitOfWork.SaveAsync();
-            var articleDto = _mapper.Map<ArticleDto>(article);
+
+            var addedArticle = await _unitOfWork.Articles.GetAsync(x => x.Id == article.Id, x => x.Category.ParentCategory, x => x.User);
+            var articleDto = _mapper.Map<ArticleDto>(addedArticle);
             return new DataResult<ArticleDto>(articleDto, true, _lang.Message(LangEnums.Added));
         }
 
         public async Task<Result> GetList()
         {
             var articles = await _unitOfWork.Articles.GetAllAsync(null, x => x.Category.ParentCategory, x => x.User);
-          
+
             var articlesDto = _mapper.Map<List<ArticleDto>>(articles);
             return new DataResult<List<ArticleDto>>(articlesDto, true, _lang.Message(LangEnums.Listed));
         }
