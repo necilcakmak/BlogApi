@@ -8,119 +8,115 @@ using Blog.Business.AutoMapper;
 using Blog.Core.Utilities;
 using Blog.Dto.Validators.Auth;
 using Blog.Repository.EntityFramework.Context;
-using FluentValidation.AspNetCore;
+using FluentValidation;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using static Blog.Core.Utilities.TokenHelper;
 
 
 var builder = WebApplication.CreateBuilder(args);
-var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+var configuration = builder.Configuration;
 
-var configuration = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", false)
-    .AddJsonFile($"appsettings.{environmentName}.json", true)
-    .AddEnvironmentVariables()
-    .Build();
-#region app configuration
+
+#region App Configuration
 configuration.GetSection("TokenOptions").Bind(TokenHelper.TokenSettings);
 builder.Services.Configure<RedisSettings>(configuration.GetSection("RedisSettings"));
 builder.Services.Configure<MailOptions>(configuration.GetSection("EmailSettings"));
 #endregion
 
-#region rate limiter
+#region Rate Limiter & Health Check
 builder.Services.RateLimiter();
+builder.Services.AddProjectHealthChecks(configuration);
 #endregion
 
-#region healt check
-builder.Services.HealtCheck(builder.Configuration);
-#endregion
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterValidator>();
 
-#region filters, fluentvalidation ve newtonsoft
+#region Filters, Controllers ve Newtonsoft
 builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.Add(typeof(ValidationFilter));
-    options.EnableEndpointRouting = false;
-}).AddFluentValidation(fv =>
+    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+})
+.AddNewtonsoftJson(options =>
 {
-    fv.RegisterValidatorsFromAssemblyContaining<RegisterValidator>();
-}).AddNewtonsoftJson(options =>
-{
-    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();//api response value camelCase(ex:FirstName to firstName)
+    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
     options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     options.SerializerSettings.Formatting = Formatting.Indented;
 });
 #endregion
 
-#region api versioning
+#region API Versioning
 builder.Services.AddApiVersioning(v =>
 {
-    v.DefaultApiVersion = new ApiVersion(1, 0);//default version
+    v.DefaultApiVersion = new ApiVersion(1, 0);
     v.AssumeDefaultVersionWhenUnspecified = true;
-    v.ReportApiVersions = true;//notify client of versions 
+    v.ReportApiVersions = true;
     v.ApiVersionReader = new HeaderApiVersionReader("api-version");
 });
 builder.Services.AddEndpointsApiExplorer();
 #endregion
 
-#region swagger settings
+#region Swagger Settings
 builder.Services.CustomSwagger();
 #endregion
 
 builder.Services.AddAuthentication();
 
-#region inject my services
+#region Inject My Services
 builder.Services.LoadMyServices(configuration);
 #endregion
 
-#region add auto mapper
-builder.Services.AddAutoMapper(typeof(MappingProfiles));
+#region Add AutoMapper
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddMaps(typeof(MappingProfiles).Assembly);
+});
 #endregion
 
-builder.Services.Configure<ApiBehaviorOptions>(options =>
-{
-    options.SuppressModelStateInvalidFilter = true;
-});
-
-//////////////////////////////////  APP   ///////////////////////////////////////////////////////////////
-
 var app = builder.Build();
+
 using (var serviceScope = app.Services.CreateScope())
 {
     var context = serviceScope.ServiceProvider.GetRequiredService<BlogDbContext>();
-    if (context.Database.GetPendingMigrations().Any())
+    try
     {
-        context.Database.Migrate();
+        if (context.Database.GetPendingMigrations().Any())
+        {
+            context.Database.Migrate();
+            Console.WriteLine("Database migrations applied successfully.");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"An error occurred while applying migrations: {ex.Message}");
     }
 }
-//if (app.Environment.IsDevelopment())
-//{
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        options.DocumentTitle = "Blog Api UI";
-    });
-//}
-#region rate limiter
+
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+{
+    options.DocumentTitle = "Blog Api UI";
+});
+
+#region Rate Limiter
 app.UseRateLimiter();
 #endregion
 
 app.UseRouting();
-#region cors settings
+
+#region CORS Settings
 app.UseCors(options => options
-.WithOrigins(new[] { "http://20.124.207.158", "http://localhost", "https://localhost:7064", "http://localhost:8080", "http://localhost:5000", "http://localhost:4000", "http://localhost:3000" })
+.WithOrigins("http://20.124.207.158", "http://localhost", "https://localhost:7064", "http://localhost:8080", "http://localhost:5000", "http://localhost:4000", "http://localhost:3000")
 .AllowAnyHeader()
 .AllowAnyMethod()
 .AllowCredentials()
 );
 #endregion
 
+// Health Checks
 app.UseHealthChecks("/health", new HealthCheckOptions
 {
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
@@ -131,9 +127,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-//eger api ile ilgili bir istek gelirse api icin yazdigim middleware devreye girecek
 app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder => appBuilder.UseMiddleware<AuthMiddleware>());
-//route mekanizmasini belirtiyorum. Admin ve Api 2 ayri proje gibi calisacak
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapAreaControllerRoute(
@@ -141,7 +136,6 @@ app.UseEndpoints(endpoints =>
         areaName: "Admin",
         pattern: "Admin/{controller=Home}/{action=Index}"
     );
-
     endpoints.MapControllerRoute(
         name: "Api",
         pattern: "Api/{controller=Home}/{action=Index}/{id?}"

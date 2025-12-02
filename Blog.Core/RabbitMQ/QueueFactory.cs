@@ -1,54 +1,91 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text;
 using RabbitMQ.Client;
-using System.Text;
-namespace Blog.Core.RabbitMQ
+using Newtonsoft.Json;
+
+public class QueueFactory : IAsyncDisposable
 {
-    public class QueueFactory
+    private readonly ConnectionFactory _connectionFactory;
+    private IConnection? _connection;
+    private IChannel? _channel;
+
+    private const string DefaultQueueName = "MailQueue";
+    private const string ExchangeName = "DirectExchange";
+
+    public QueueFactory(ConnectionFactory connectionFactory)
     {
-        private readonly ConnectionFactory _connectionFactory;
-        private IConnection _connection;
-        private IModel _channel;
+        _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
+    }
 
-        public QueueFactory(ConnectionFactory connectionFactory)
-        {
-            _connectionFactory = connectionFactory;
-        }
-        public void Publish<T>(T data, string queueName = RabbitMQConst.MailQueue)
-        {
-            var channel = Connect(queueName);
-            var bodyString = JsonConvert.SerializeObject(data);
-            var bodyByte = Encoding.UTF8.GetBytes(bodyString);
-
-            var properties = channel.CreateBasicProperties();
-            properties.Persistent = true;
-
-            channel.BasicPublish(exchange: RabbitMQConst.ExchangeName, routingKey: queueName, false, basicProperties: properties, body: bodyByte);
-        }
-        public IModel Connect(string queueName = RabbitMQConst.MailQueue)
-        {
-            _connection = _connectionFactory.CreateConnection();
-            if (_channel is { IsOpen: true })
-            {
-                return _channel;
-            }
-            _channel = _connection.CreateModel();
-            _channel.ExchangeDeclare(RabbitMQConst.ExchangeName, type: ExchangeType.Direct, true, false);
-            //kuyruk tanımlıyorum(kuyruk adı,rabitmqresetolursaverisilinmesin,farklı kanallardan baglanilsin, kuyruğa bagli olan son subcriberda baglanti kopartırsa kuyurk silinmesin)
-            _channel.QueueDeclare(queueName, true, false, false, null);
-            _channel.QueueBind(exchange: RabbitMQConst.ExchangeName, queue: queueName, routingKey: queueName);
-            Console.WriteLine("RabbitMQ Connection Success");
+    public async Task<IChannel> ConnectAsync(string queueName)
+    {
+        if (_channel is { IsOpen: true })
             return _channel;
-        }
 
-        public void Dispose()
+        if (_connection is null || !_connection.IsOpen)
+            _connection = await _connectionFactory.CreateConnectionAsync();
+
+        _channel = await _connection.CreateChannelAsync();
+
+        await _channel.ExchangeDeclareAsync(ExchangeName, ExchangeType.Direct, durable: true, autoDelete: false);
+        await _channel.QueueDeclareAsync(queueName, durable: true, exclusive: false, autoDelete: false);
+        await _channel.QueueBindAsync(ExchangeName, queueName, routingKey: queueName);
+
+        Console.WriteLine("RabbitMQ Connection Success");
+
+        return _channel;
+    }
+
+    public async Task PublishAsync<T>(T data, string queueName = DefaultQueueName)
+    {
+        var channel = await ConnectAsync(queueName);
+
+        var bodyString = JsonConvert.SerializeObject(data);
+        var bodyByte = Encoding.UTF8.GetBytes(bodyString);
+
+        var properties = new BasicProperties
         {
-            _channel?.Close();
-            _channel?.Dispose();
+            Persistent = true,
+            ContentType = "application/json"
+        };
 
-            _connection?.Close();
-            _connection?.Dispose();
-            Console.WriteLine("RabbitMQ Connection Fail");
+        await channel.BasicPublishAsync(
+            exchange: ExchangeName,
+            routingKey: queueName,
+            mandatory: false,
+            basicProperties: properties,
+            body: bodyByte);
+    }
 
+    public async ValueTask DisposeAsync()
+    {
+        if (_channel is not null)
+        {
+            if (_channel.IsOpen)
+            {
+                if (_channel.GetType().GetMethod("CloseAsync") is not null)
+                    await _channel.CloseAsync();
+            }
+
+            _channel.Dispose();
+            _channel = null;
         }
+
+        if (_connection is not null)
+        {
+            if (_connection.IsOpen)
+            {
+                if (_connection.GetType().GetMethod("CloseAsync") is not null)
+                    await _connection.CloseAsync();
+                else
+                    _connection.Dispose();
+            }
+
+            _connection.Dispose();
+            _connection = null;
+        }
+
+        Console.WriteLine("RabbitMQ Disposed Successfully");
+
+        GC.SuppressFinalize(this);
     }
 }

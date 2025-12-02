@@ -8,8 +8,7 @@ using Blog.Core.Utilities.Abstract;
 using Blog.Dto.User;
 using Blog.Entities.Entities;
 using Blog.Repository.EntityFramework.Abstract.UnitOfWork;
-using Newtonsoft.Json;
-using ServiceStack;
+
 using System;
 
 namespace Blog.Business.Concrete
@@ -65,7 +64,7 @@ namespace Blog.Business.Concrete
             if (userUpdateDto.PasswordIsChange)
                 user.Password = _hashManager.Encrpt(userUpdateDto.Password);
 
-          
+
 
             var res = await _unitOfWork.Users.UpdateAsync(user);
             await _unitOfWork.SaveAsync();
@@ -97,7 +96,7 @@ namespace Blog.Business.Concrete
             var users = await _unitOfWork.Users.GetAllAsync(x => x.UserSetting.NewBlog == true);
             if (users.Count > 0)
             {
-                _rabbitMQPublisher.Publish(users);
+                await _rabbitMQPublisher.PublishAsync(users);
                 return new Result(true, _lng.Message(LangEnums.MailSended));
             }
             return new Result(true, _lng.Message(LangEnums.Error));
@@ -114,7 +113,7 @@ namespace Blog.Business.Concrete
             return new DataResult<List<UserDto>>(userDto, true, _lng.Message(LangEnums.Listed));
         }
 
-     
+
         public static void Delete(string imageName, string webRootPath)
         {
             string FilePath = webRootPath + "\\images\\users\\" + imageName;

@@ -31,7 +31,7 @@ namespace Blog.Business
             serviceCollection.AddSingleton<IMailService, MailService>();
 
             serviceCollection.AddSingleton<IRedisService, RedisService>();
-            serviceCollection.AddSingleton(sp => new ConnectionFactory() { Uri = new Uri(configuration.GetConnectionString("RabbitMQ")), DispatchConsumersAsync = true, });
+            serviceCollection.AddSingleton(sp => new ConnectionFactory() { Uri = new Uri(configuration.GetConnectionString("RabbitMQ")), ConsumerDispatchConcurrency = 10, });
             serviceCollection.AddSingleton<QueueFactory>();
             return serviceCollection;
         }

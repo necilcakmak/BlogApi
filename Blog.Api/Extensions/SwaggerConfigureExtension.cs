@@ -1,45 +1,38 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi;
 
 namespace Blog.Api.Extensions
 {
     public static class SwaggerConfigureExtension
     {
-        public static IServiceCollection CustomSwagger(this IServiceCollection service)
+        public static IServiceCollection CustomSwagger(this IServiceCollection services)
         {
-            service.AddSwaggerGen(swagger =>
+            services.AddSwaggerGen(options =>
             {
-                swagger.SwaggerDoc("v1", new OpenApiInfo
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Version = "V1",
-                    Title = "Blog Api",
-                    Description = "ASP.NET Core 6.0 Web API"
+                    Version = "v1",
+                    Title = "Blog API",
+                    Description = ".NET 10 Web API"
                 });
-                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+
+                var securityScheme = new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
                     Type = SecuritySchemeType.Http,
-                    Scheme = "Bearer",
+                    Scheme = "bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer eyabcdef\"",
-                });
+                    Description = "JWT Bearer authentication"
+                };
 
-                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
+                options.AddSecurityDefinition("Bearer", securityScheme);
+                options.AddSecurityRequirement((document) => new OpenApiSecurityRequirement()
                 {
-                    {
-                          new OpenApiSecurityScheme
-                            {
-                                Reference = new OpenApiReference
-                                {
-                                    Type = ReferenceType.SecurityScheme,
-                                    Id = "Bearer"
-                                }
-                            },
-                            Array.Empty<string>()
-                    }
+                    [new OpenApiSecuritySchemeReference("Bearer", document)] = ["readAccess", "writeAccess"]
                 });
             });
-            return service;
+
+            return services;
         }
     }
 }
