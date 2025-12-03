@@ -1,12 +1,17 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-preview AS base
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0-preview AS build
 WORKDIR /src
-COPY ["Blog.MonitoringService/Blog.MonitoringService.csproj", "Blog.MonitoringService/"]
-RUN dotnet restore "Blog.MonitoringService/Blog.MonitoringService.csproj"
+
+COPY ./Blog.MonitoringService/Blog.MonitoringService.csproj ./Blog.MonitoringService/
+
+RUN dotnet restore "./Blog.MonitoringService/Blog.MonitoringService.csproj"
+
 COPY . .
+
 WORKDIR "/src/Blog.MonitoringService"
+
 RUN dotnet build "Blog.MonitoringService.csproj" -c Release -o /app/build
 
 FROM build AS publish

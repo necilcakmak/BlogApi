@@ -1,13 +1,18 @@
-FROM mcr.microsoft.com/dotnet/runtime:8.0 AS base
+FROM mcr.microsoft.com/dotnet/runtime:10.0-preview AS base
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0-preview AS build
 WORKDIR /src
+
 COPY ["Blog.WorkerService/Blog.WorkerService.csproj", "Blog.WorkerService/"]
 COPY ["Blog.Core/Blog.Core.csproj", "Blog.Core/"]
+
 RUN dotnet restore "Blog.WorkerService/Blog.WorkerService.csproj"
+
 COPY . .
+
 WORKDIR "/src/Blog.WorkerService"
+
 RUN dotnet build "Blog.WorkerService.csproj" -c Release -o /app/build
 
 FROM build AS publish

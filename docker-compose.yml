@@ -1,17 +1,20 @@
-version: "3.3"
+version: "3.9"
+
 services: 
   api_service:
     container_name: api_container
     image: necilcakmak/blog:api
-    depends_on:
-      - pg_service
     build: 
       context: .
       dockerfile: Blog.Api/Dockerfile
+    depends_on:
+      - pg_service
     volumes:
       - upload_images:/BlogApi/images
     ports: 
-      - 44322:80 
+      - "44322:80"
+    restart: always
+
   monitoring_service:
     container_name: monitoring_container
     image: necilcakmak/blog:monitoring
@@ -19,68 +22,80 @@ services:
       context: .
       dockerfile: Blog.MonitoringService/Dockerfile   
     ports: 
-      - 44395:80 
+      - "44395:80"
+    restart: always
+
   worker_service:
     container_name: worker_container
     image: necilcakmak/blog:worker
-    depends_on:
-      - rabbitmq_service
     build: 
       context: .
       dockerfile: Blog.WorkerService/Dockerfile  
+    depends_on:
+      - rabbitmq_service
     ports: 
-      - 44324:80
+      - "44324:80"
+    restart: always
+
   pg_service:
     container_name: pg_container
     image: postgres:latest
     environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=1234
-      - POSTGRES_DB=BlogDB
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: BlogDB
     ports:
-      - 5432:5432
+      - "5432:5432"
     volumes:
-      - db_volume:/var/lib/postgresql/data/
+      - db_volume:/var/lib/postgresql
+    restart: always
+
   pgadmin_service:
     container_name: pgadmin_container
     image: dpage/pgadmin4
-    volumes:
-      - dbadmin_volume:/var/lib/pgadmin
     environment: 
       PGADMIN_DEFAULT_EMAIL: root@root.com
       PGADMIN_DEFAULT_PASSWORD: root
+    volumes:
+      - dbadmin_volume:/var/lib/pgadmin
     ports:
       - "5050:80"
+    restart: always
+
   redis_service:
     container_name: redis_container
     image: redis:6.2-alpine
-    restart: always
     ports:
-      - 6379:6379
+      - "6379:6379"
+    restart: always
+
   rabbitmq_service:
-    image: rabbitmq:3-management
     container_name: rabbitmq_container
+    image: rabbitmq:3-management
     hostname: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: necil
+      RABBITMQ_DEFAULT_PASS: 1234
     volumes:
       - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
       - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
     ports:
-      - 5672:5672
-      - 15672:15672
-    environment:
-    - RABBITMQ_DEFAULT_USER=necil
-    - RABBITMQ_DEFAULT_PASS=1234
+      - "5672:5672"
+      - "15672:15672"
+    restart: always
+
   jenkins:
     container_name: jenkins
     image: jenkins/jenkins:lts
-    privileged: true
     user: root
+    privileged: true
     ports:
       - "8080:8080"
       - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
     restart: always
+
 volumes:
   upload_images:
   db_volume:

@@ -35,7 +35,6 @@ namespace Blog.Business.Concrete
 
         public async Task<Result> Login(LoginDto loginDto)
         {
-
             var user = await _unitOfWork.Users.GetAsync(x => x.Email == loginDto.Email || x.UserName == loginDto.Email, x => x.UserSetting);
             if (user != null && _hashManager.Verify(loginDto.Password, user.Password))
             {

@@ -9,6 +9,7 @@ using Blog.Repository.EntityFramework.Abstract.UnitOfWork;
 using Blog.Repository.EntityFramework.Concrete.UnitOfWork;
 using Blog.Repository.EntityFramework.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
@@ -19,7 +20,10 @@ namespace Blog.Business
     {
         public static IServiceCollection LoadMyServices(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
-            serviceCollection.AddDbContext<BlogDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("BlogDB"), b => b.MigrationsAssembly("Blog.Api")));
+            serviceCollection.AddDbContext<BlogDbContext>(options =>
+                options.UseNpgsql(configuration.GetConnectionString("BlogDB"), b => b.MigrationsAssembly("Blog.Api"))
+                       .ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning))
+            );
             serviceCollection.AddScoped<IUnitOfWork, UnitOfWork>();
             serviceCollection.AddScoped<IUserService, UserService>();
             serviceCollection.AddScoped<IArticleService, ArticleService>();
