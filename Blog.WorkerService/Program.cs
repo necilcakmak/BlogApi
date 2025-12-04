@@ -1,3 +1,4 @@
+using Blog.Core.RabbitMQ;
 using Blog.WorkerService;
 using RabbitMQ.Client;
 

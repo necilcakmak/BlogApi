@@ -1,16 +1,13 @@
-﻿using Blog.Dto.Article;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
-namespace Blog.Dto.Category
+public class CategoryAddDto
 {
-    public class CategoryAddDto
-    {
-        public string? Name { get; set; }
-        public string TagName { get; set; }
-        public Guid parentCategoryId { get; set; }
-    }
+    [Required(ErrorMessage = "Kategori adı boş olamaz.")]
+    [StringLength(50, MinimumLength = 5, ErrorMessage = "Kategori adı uzunluğu 5 ile 50 karakter arasında olmalıdır.")]
+    public string? Name { get; set; }
+
+    public string TagName { get; set; }
+
+    public Guid ParentCategoryId { get; set; }
 }

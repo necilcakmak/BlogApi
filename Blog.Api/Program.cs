@@ -1,23 +1,24 @@
 ﻿using Asp.Versioning;
 using Blog.Api.Extensions;
 using Blog.Api.Middlewares;
-using Blog.APi.Filters;
 using Blog.APi.Middlewares;
 using Blog.Business;
 using Blog.Business.AutoMapper;
 using Blog.Core.Utilities;
-using Blog.Dto.Validators.Auth;
 using Blog.Repository.EntityFramework.Context;
-using FluentValidation;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 
 var builder = WebApplication.CreateBuilder(args);
-var configuration = builder.Configuration;
+var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile($"appsettings.{environmentName}.json", true)
+    .AddEnvironmentVariables()
+    .Build();
 
 
 #region App Configuration
@@ -25,27 +26,14 @@ configuration.GetSection("TokenOptions").Bind(TokenHelper.TokenSettings);
 builder.Services.Configure<RedisSettings>(configuration.GetSection("RedisSettings"));
 builder.Services.Configure<MailOptions>(configuration.GetSection("EmailSettings"));
 #endregion
-
+builder.Services.AddValidation();
 #region Rate Limiter & Health Check
 builder.Services.RateLimiter();
 builder.Services.AddProjectHealthChecks(configuration);
 #endregion
 
-builder.Services.AddValidatorsFromAssemblyContaining<RegisterValidator>();
-
 #region Filters, Controllers ve Newtonsoft
-builder.Services.AddControllersWithViews(options =>
-{
-    options.Filters.Add(typeof(ValidationFilter));
-    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
-})
-.AddNewtonsoftJson(options =>
-{
-    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-    options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-    options.SerializerSettings.Formatting = Formatting.Indented;
-});
+builder.Services.AddCustomControllers();
 #endregion
 
 #region API Versioning
@@ -57,6 +45,8 @@ builder.Services.AddApiVersioning(v =>
     v.ApiVersionReader = new HeaderApiVersionReader("api-version");
 });
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 #endregion
 
 #region Swagger Settings
@@ -78,22 +68,41 @@ builder.Services.AddAutoMapper(cfg =>
 
 var app = builder.Build();
 
+
 using (var serviceScope = app.Services.CreateScope())
 {
     var context = serviceScope.ServiceProvider.GetRequiredService<BlogDbContext>();
-    try
+    int retries = 5;
+    int delay = 5000;
+
+    while (retries > 0)
     {
-        if (context.Database.GetPendingMigrations().Any())
+        try
         {
-            context.Database.Migrate();
-            Console.WriteLine("Database migrations applied successfully.");
+            if (context.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
+                Console.WriteLine("Database migrations applied successfully.");
+            }
+            break;
+        }
+        catch (Exception ex)
+        {
+            retries--;
+            Console.WriteLine($"Database migrations error: {ex.Message}. Retries left: {retries}");
+            if (retries > 0)
+            {
+                Thread.Sleep(delay);
+            }
+            else
+            {
+                Console.WriteLine("All retries exhausted. Migration failed.");
+                throw; // Son denemede hata fırlat
+            }
         }
     }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"An error occurred while applying migrations: {ex.Message}");
-    }
 }
+
 
 app.UseSwagger();
 app.UseSwaggerUI(options =>
@@ -123,9 +132,9 @@ app.UseHealthChecks("/health", new HealthCheckOptions
 });
 
 app.UseStaticFiles();
-app.UseHttpsRedirection();
-app.UseAuthentication();
-app.UseAuthorization();
+//app.UseHttpsRedirection();
+//app.UseAuthentication();
+//app.UseAuthorization();
 
 app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder => appBuilder.UseMiddleware<AuthMiddleware>());
 
@@ -141,5 +150,6 @@ app.UseEndpoints(endpoints =>
         pattern: "Api/{controller=Home}/{action=Index}/{id?}"
     );
 });
+
 
 app.Run();

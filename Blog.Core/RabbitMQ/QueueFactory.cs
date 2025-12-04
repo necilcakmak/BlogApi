@@ -1,40 +1,30 @@
-﻿using System.Text;
+﻿using Newtonsoft.Json;
 using RabbitMQ.Client;
-using Newtonsoft.Json;
+using System.Text;
 
-public class QueueFactory : IAsyncDisposable
+namespace Blog.Core.RabbitMQ;
+
+public class QueueFactory
 {
-    private readonly ConnectionFactory _connectionFactory;
-    private IConnection? _connection;
-    private IChannel? _channel;
-
+    private readonly ConnectionFactory _factory;
     private const string DefaultQueueName = "MailQueue";
     private const string ExchangeName = "DirectExchange";
-
-    public QueueFactory(ConnectionFactory connectionFactory)
+    public QueueFactory(ConnectionFactory factory)
     {
-        _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
+        _factory = factory;
     }
-
     public async Task<IChannel> ConnectAsync(string queueName)
     {
-        if (_channel is { IsOpen: true })
-            return _channel;
 
-        if (_connection is null || !_connection.IsOpen)
-            _connection = await _connectionFactory.CreateConnectionAsync();
+        var connection = await _factory.CreateConnectionAsync();
+        var channel = await connection.CreateChannelAsync();
 
-        _channel = await _connection.CreateChannelAsync();
+        await channel.ExchangeDeclareAsync(ExchangeName, ExchangeType.Direct, durable: true);
+        await channel.QueueDeclareAsync(queueName, durable: true, exclusive: false, autoDelete: false);
+        await channel.QueueBindAsync(queueName, ExchangeName, queueName);
 
-        await _channel.ExchangeDeclareAsync(ExchangeName, ExchangeType.Direct, durable: true, autoDelete: false);
-        await _channel.QueueDeclareAsync(queueName, durable: true, exclusive: false, autoDelete: false);
-        await _channel.QueueBindAsync(ExchangeName, queueName, routingKey: queueName);
-
-        Console.WriteLine("RabbitMQ Connection Success");
-
-        return _channel;
+        return channel;
     }
-
     public async Task PublishAsync<T>(T data, string queueName = DefaultQueueName)
     {
         var channel = await ConnectAsync(queueName);
@@ -54,38 +44,5 @@ public class QueueFactory : IAsyncDisposable
             mandatory: false,
             basicProperties: properties,
             body: bodyByte);
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (_channel is not null)
-        {
-            if (_channel.IsOpen)
-            {
-                if (_channel.GetType().GetMethod("CloseAsync") is not null)
-                    await _channel.CloseAsync();
-            }
-
-            _channel.Dispose();
-            _channel = null;
-        }
-
-        if (_connection is not null)
-        {
-            if (_connection.IsOpen)
-            {
-                if (_connection.GetType().GetMethod("CloseAsync") is not null)
-                    await _connection.CloseAsync();
-                else
-                    _connection.Dispose();
-            }
-
-            _connection.Dispose();
-            _connection = null;
-        }
-
-        Console.WriteLine("RabbitMQ Disposed Successfully");
-
-        GC.SuppressFinalize(this);
     }
 }

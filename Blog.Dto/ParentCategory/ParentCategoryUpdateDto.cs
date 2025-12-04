@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
-namespace Blog.Dto.ParentCategory
+public class ParentCategoryUpdateDto
 {
-    public class ParentCategoryUpdateDto
-    {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-    }
+    [Required(ErrorMessage = "Kategori Id alanı boş olamaz.")]
+    public Guid Id { get; set; }
+
+    [Required(ErrorMessage = "Kategori adı boş olamaz.")]
+    [StringLength(50, MinimumLength = 5, ErrorMessage = "Kategori adı uzunluğu 5 ile 50 karakter arasında olmalıdır.")]
+    public string Name { get; set; }
 }

@@ -22,6 +22,7 @@ namespace Blog.WorkerService
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
             _channel = await _rabbitMQClientService.ConnectAsync("MailQueue");
+
             await _channel.BasicQosAsync(prefetchSize: 0, prefetchCount: 1, global: false);
 
             await base.StartAsync(cancellationToken);
@@ -32,24 +33,29 @@ namespace Blog.WorkerService
             var consumer = new AsyncEventingBasicConsumer(_channel);
 
             _channel!.BasicConsumeAsync(
-                queue: RabbitMQConst.MailQueue,
+                queue: "MailQueue",
                 autoAck: false,
                 consumer: consumer);
 
-            consumer.ReceivedAsync += Consumer_Received;
+            consumer.ReceivedAsync += async (sender, @event) =>
+            {
+                try
+                {
+                    var json = Encoding.UTF8.GetString(@event.Body.ToArray());
+                    var userList = JsonConvert.DeserializeObject<List<MailConfirmation>>(json);
+                    var user = userList.FirstOrDefault();
+
+                    _logger.LogInformation($"{user?.FirstName} {user?.LastName} adlı kullanıcının {user?.Email} adresine mail gönderildi...");
+
+                    await _channel!.BasicAckAsync(@event.DeliveryTag, multiple: false);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Mail gönderim hatası.");
+                }
+            };
 
             return Task.CompletedTask;
-        }
-
-
-        private async Task Consumer_Received(object sender, BasicDeliverEventArgs @event)
-        {
-            var json = Encoding.UTF8.GetString(@event.Body.ToArray());
-            var user = JsonConvert.DeserializeObject<MailConfirmation>(json);
-
-            _logger.LogInformation(
-                $"{user.FirstName} {user.LastName} adlı kullanıcının {user.Email} adresine mail gönderildi...");
-            await _channel!.BasicAckAsync(@event.DeliveryTag, multiple: false);
         }
     }
 }

@@ -7,8 +7,12 @@ services:
     build: 
       context: .
       dockerfile: Blog.Api/Dockerfile
+    environment:
+     - ASPNETCORE_ENVIRONMENT=Docker
+     - ASPNETCORE_URLS=http://+:80
     depends_on:
       - pg_service
+      - pgadmin_service
     volumes:
       - upload_images:/BlogApi/images
     ports: 
@@ -21,6 +25,9 @@ services:
     build: 
       context: .
       dockerfile: Blog.MonitoringService/Dockerfile   
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:80
     ports: 
       - "44395:80"
     restart: always
@@ -84,20 +91,7 @@ services:
       - "15672:15672"
     restart: always
 
-  jenkins:
-    container_name: jenkins
-    image: jenkins/jenkins:lts
-    user: root
-    privileged: true
-    ports:
-      - "8080:8080"
-      - "50000:50000"
-    volumes:
-      - jenkins_home:/var/jenkins_home
-    restart: always
-
 volumes:
   upload_images:
   db_volume:
   dbadmin_volume:
-  jenkins_home:
