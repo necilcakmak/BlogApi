@@ -35,9 +35,8 @@ pipeline {
             steps {
                 script {
                     dir('.') {
-                        echo "Testler çalıştırılıyor..."
-                        // Testleri çalıştır, başarısız olursa pipeline fail olur
-                        sh 'dotnet test'
+                        echo "Testler container içinde çalıştırılıyor..."
+                        sh 'docker-compose run --rm api_service dotnet test'
                     }
                 }
             }
@@ -46,7 +45,7 @@ pipeline {
         stage('Build & Deploy') {
             when {
                 expression {
-                    // Test aşamasının başarılı olduğunu kontrol eder
+                    // Test aşaması başarılıysa çalışır
                     return currentBuild.result == null || currentBuild.result == 'SUCCESS'
                 }
             }
@@ -64,7 +63,7 @@ pipeline {
 
     post {
         failure {
-            echo "Pipeline başarısız oldu!"
+            echo "Pipeline başarısız oldu! Testler veya deploy başarısız olabilir."
         }
         success {
             echo "Pipeline başarıyla tamamlandı!"
