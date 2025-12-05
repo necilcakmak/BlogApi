@@ -18,6 +18,16 @@ Jenkins compose
 ```
 docker-compose -f jenkins-compose.yml up -d
 ```
+Uygulama http://localhost:8080 üzerinde ayağa kalkacaktır. ilk şifrenizi alarak 
+```
+docker exec jenkins_container cat /var/jenkins_home/secrets/initialAdminPassword
+```
+pipeline oluşturup sırasıyla;
+-GitHub hook trigger for GITScm polling (seçili olur commit push sonrası oto build başlar)
+-Pipeline script from SCM
+-repository adresiniz .git
+-seçilmek istenen branch
+-script path olarak Jenkinsfile kullanılabilir
 
 ngrok için
 ```

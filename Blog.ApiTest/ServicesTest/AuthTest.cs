@@ -27,7 +27,7 @@ namespace Blog.ApiTest.ServicesTest
         private readonly Mock<IRedisService> _redisServiceMock;
         private readonly Mock<IMapper> _mapperMock;
         private readonly Mock<IMailService> _mailServiceMock;
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
 
         public AuthServiceTests()
         {
@@ -49,16 +49,25 @@ namespace Blog.ApiTest.ServicesTest
         [Fact]
         public async Task Login_WithValidCredentials_ReturnsAccessToken()
         {
+            TokenHelper.TokenSettings.SecurityKey = "BuCokGizliVeUzunBirAnahtar123456!";
+            TokenHelper.TokenSettings.AccessTokenExpiration = 60;
             // Arrange
             var loginDto = new LoginDto { Email = "test@test.com", Password = "password" };
             var user = new User { Email = "test@test.com", Password = "hashedPassword" };
-            _redisServiceMock.Setup(r => r.Set(It.IsAny<string>(), It.IsAny<User>()));
 
-            _unitOfWorkMock.Setup(u => u.Users.GetAsync(It.IsAny<Expression<Func<User, bool>>>(), null))
-                           .ReturnsAsync(user);
-            _hashManagerMock.Setup(h => h.Verify("password", "hashedPassword")).Returns(true);
+            _unitOfWorkMock
+                .Setup(u => u.Users.GetAsync(
+                    It.Is<Expression<Func<User, bool>>>(expr => expr.Compile()(user)),
+                    It.IsAny<Expression<Func<User, object>>[]>()
+                ))
+                .ReturnsAsync(user);
+
+            _hashManagerMock.Setup(h => h.Verify(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+
             _mapperMock.Setup(m => m.Map<UserDto>(It.IsAny<User>()))
-              .Returns((User u) => new UserDto { Email = u.Email });
+                       .Returns((User u) => new UserDto { Email = u.Email });
+
+            _redisServiceMock.Setup(r => r.Set(It.IsAny<string>(), It.IsAny<User>()));
 
             // Act
             var result = await _authService.Login(loginDto);
@@ -69,6 +78,7 @@ namespace Blog.ApiTest.ServicesTest
             Assert.NotNull(dataResult.Data);
             Assert.Equal(user.Email, dataResult.Data.User.Email);
         }
+
 
         [Fact]
         public async Task Login_WithInvalidCredentials_ReturnsFailure()

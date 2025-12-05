@@ -15,7 +15,6 @@ pipeline {
         stage('Install Docker Compose') {
             steps {
                 script {
-                    // Docker Compose yüklü değilse kur
                     sh '''
                         if ! command -v docker-compose &> /dev/null
                         then
@@ -32,11 +31,29 @@ pipeline {
             }
         }
 
-        stage('Build & Deploy') {
+        stage('Test') {
             steps {
                 script {
                     dir('.') {
-                        // Mevcut container'ları yeniden build edip restart eder
+                        echo "Testler çalıştırılıyor..."
+                        // Testleri çalıştır, başarısız olursa pipeline fail olur
+                        sh 'dotnet test'
+                    }
+                }
+            }
+        }
+
+        stage('Build & Deploy') {
+            when {
+                expression {
+                    // Test aşamasının başarılı olduğunu kontrol eder
+                    return currentBuild.result == null || currentBuild.result == 'SUCCESS'
+                }
+            }
+            steps {
+                script {
+                    dir('.') {
+                        echo "Build ve Deploy aşaması başlıyor..."
                         sh 'docker-compose build'
                         sh 'docker-compose up -d'
                     }
@@ -47,10 +64,10 @@ pipeline {
 
     post {
         failure {
-            echo "Deployment failed!"
+            echo "Pipeline başarısız oldu!"
         }
         success {
-            echo "Deployment succeeded!"
+            echo "Pipeline başarıyla tamamlandı!"
         }
     }
 }
