@@ -1,5 +1,5 @@
 # Proje Hakkında
-Güncel .Net Core versionu ve paketleri ile temel olması açısından bir çok yaklaşımı ele alarak hazırlanmış bir Rest APİ.
+Güncel .Net versionu ve paketleri ile temel olması açısından bir çok yaklaşımı ele alarak hazırlanmış bir Rest APİ.
 Uygulama olarak Blog uygulaması üzerine code first yaklaşımı ile postgres db kullanılmıştır. Ön yüz olarak [React](https://github.com/necilcakmak/blogui) ile çalışması devam etmektedir.
 
 # Uygulamayı Başlatmak
@@ -12,15 +12,17 @@ docker-compose build
 docker-compose up
 ```
 
+## Jenkins
+Ek olarak Jenkins ile CI/CD pipeline hazırlanmıştır. İstenir ise Jenkins compose çalıştırılarak ilgili ayarlar yapıldıktan sonra ngrok ile public ip ile github webhook sağlanabilir
+
 ## Local
-Localde çalıştırmak için makinanızda Postgres, .Net 8.0, Redis ve RabbitMQ paketlerinin kurulu olması gerekmektedir. Redis için Docker, RabbitMQ için cloud kullanabilirsiniz.
+Localde çalıştırmak için makinanızda Postgres, .Net10, Redis ve RabbitMQ paketlerinin kurulu olması gerekmektedir. Redis için Docker, RabbitMQ için cloud kullanabilirsiniz.
 
 # Kullanılan Teknolojiler
-- .Net Core 8.0
+- .Net10
 - Postgres Database
 - Docker & Docker-Compose
 - RabbitMQ
 - Redis
-- Fluent Validation
 - AutoMapper
 
