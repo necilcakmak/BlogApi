@@ -11,8 +11,8 @@ public class RegisterDto
     [StringLength(50, MinimumLength = 5, ErrorMessage = "Kullanıcı adı uzunluğu 5 ile 50 karakter arasında olmalıdır.")]
     public required string UserName { get; set; }
 
-    //[Required(ErrorMessage = "Ad alanı boş olamaz.")]
-    //[StringLength(50, MinimumLength = 3, ErrorMessage = "Ad uzunluğu 3 ile 50 karakter arasında olmalıdır.")]
+    [Required(ErrorMessage = "Ad alanı boş olamaz.")]
+    [StringLength(50, MinimumLength = 3, ErrorMessage = "Ad uzunluğu 3 ile 50 karakter arasında olmalıdır.")]
     public required string FirstName { get; set; }
 
     [Required(ErrorMessage = "Soyad alanı boş olamaz.")]
