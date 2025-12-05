@@ -15,9 +15,11 @@ pipeline {
         stage('Build & Deploy') {
             steps {
                 script {
-                    // Host Docker kullanımı için docker.sock mount edilmiş olmalı
-                    sh 'docker-compose build'
-                    sh 'docker-compose up -d'
+                    dir('.') {
+                        // Mevcut container'ları yeniden build edip restart eder
+                        sh 'docker-compose build'
+                        sh 'docker-compose up -d'
+                    }
                 }
             }
         }
@@ -25,11 +27,7 @@ pipeline {
 
     post {
         failure {
-            script {
-                echo "Deployment failed!"
-                // Opsiyonel: failure durumunda kapatma
-                // sh 'docker-compose down'
-            }
+            echo "Deployment failed!"
         }
         success {
             echo "Deployment succeeded!"
