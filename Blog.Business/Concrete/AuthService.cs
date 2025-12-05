@@ -14,21 +14,14 @@ using Blog.Repository.EntityFramework.Abstract.UnitOfWork;
 
 namespace Blog.Business.Concrete
 {
-    public class AuthService : IAuthService
+    public class AuthService(IUnitOfWork unitOfWork, IMapper mapper, IHashManager hashManager, IRedisService redisService, IMailService mailService) : IAuthService
     {
-        private IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly IHashManager _hashManager;
-        private readonly LangService<User> _lng;
-        private readonly IRedisService _redisService;
-        public AuthService(IUnitOfWork unitOfWork, IMapper mapper, IHashManager hashManager, IRedisService redisService, QueueFactory queueFactory)
-        {
-            _redisService = redisService;
-            _lng = new LangService<User>();
-            _hashManager = hashManager;
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
-        }
+        private IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly IMapper _mapper = mapper;
+        private readonly IHashManager _hashManager = hashManager;
+        private readonly LangService<User> _lng = new LangService<User>();
+        private readonly IRedisService _redisService = redisService;
+        private readonly IMailService _mailService = mailService;
 
         public async Task<Result> Login(LoginDto loginDto)
         {
@@ -65,8 +58,17 @@ namespace Blog.Business.Concrete
             await _unitOfWork.Users.AddAsync(user);
             user.UserSetting = new() { UserId = user.Id };
             await _unitOfWork.SaveAsync();
-            return new Result(true, _lng.Message(LangEnums.RegisterSuccess));
+            MailDto mail = new()
+            {
+                From = "necilcakmak@gmail.com",
+                FromName = "Necil Blog",
+                To = registerDto.Email,
+                ToName = registerDto.UserName,
+                Subject = "E-Posta doğrulama"
+            };
 
+            _mailService.SenConfirmationMail(mail, user.Id);
+            return new Result(true, _lng.Message(LangEnums.RegisterSuccess));
         }
 
         public async Task<Result> AccountConfirm(Guid id)

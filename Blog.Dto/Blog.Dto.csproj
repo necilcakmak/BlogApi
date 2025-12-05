@@ -5,9 +5,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="12.1.0" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Blog.Entities\Blog.Entities.csproj" />
   </ItemGroup>
 </Project>

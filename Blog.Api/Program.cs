@@ -126,10 +126,12 @@ app.UseCors(options => options
 #endregion
 
 // Health Checks
-app.UseHealthChecks("/health", new HealthCheckOptions
+app.MapHealthChecks("/health", new HealthCheckOptions
 {
+    Predicate = _ => true,
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
+
 
 app.UseStaticFiles();
 //app.UseHttpsRedirection();

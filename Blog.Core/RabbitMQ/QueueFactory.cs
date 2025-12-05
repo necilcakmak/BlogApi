@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Blog.Core.RabbitMQ;
 
-public class QueueFactory
+public class QueueFactory : IQueueFactory
 {
     private readonly ConnectionFactory _factory;
     private const string DefaultQueueName = "MailQueue";
@@ -45,4 +45,5 @@ public class QueueFactory
             basicProperties: properties,
             body: bodyByte);
     }
+
 }

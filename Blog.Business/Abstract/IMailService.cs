@@ -5,6 +5,8 @@ namespace Blog.Business.Abstract
 {
     public interface IMailService
     {
-        void SendMail(MailDto mailDto, Guid id);
+        void SenConfirmationMail(MailDto mailDto, Guid id);
+        void SendMail(MailDto mailDto);
+
     }
 }

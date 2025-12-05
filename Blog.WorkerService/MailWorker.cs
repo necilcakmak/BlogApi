@@ -1,5 +1,6 @@
 ﻿using Blog.Core.RabbitMQ;
 using Blog.Core.RabbitMQ.Models;
+using Blog.Entities.Entities;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -7,17 +8,11 @@ using System.Text;
 
 namespace Blog.WorkerService
 {
-    public class MailWorker : BackgroundService
+    public class MailWorker(ILogger<MailWorker> logger, QueueFactory rabbitMQClientService) : BackgroundService
     {
-        private readonly ILogger<MailWorker> _logger;
-        private readonly QueueFactory _rabbitMQClientService;
+        private readonly ILogger<MailWorker> _logger = logger;
+        private readonly QueueFactory _rabbitMQClientService = rabbitMQClientService;
         private IChannel? _channel;
-
-        public MailWorker(ILogger<MailWorker> logger, QueueFactory rabbitMQClientService)
-        {
-            _logger = logger;
-            _rabbitMQClientService = rabbitMQClientService;
-        }
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
@@ -43,9 +38,10 @@ namespace Blog.WorkerService
                 {
                     var json = Encoding.UTF8.GetString(@event.Body.ToArray());
                     var userList = JsonConvert.DeserializeObject<List<MailConfirmation>>(json);
-                    var user = userList.FirstOrDefault();
-
-                    _logger.LogInformation($"{user?.FirstName} {user?.LastName} adlı kullanıcının {user?.Email} adresine mail gönderildi...");
+                    foreach (var user in userList)
+                    {
+                        _logger.LogInformation($"{user.FirstName} {user.LastName} adlı kullanıcının {user.Email} adresine mail gönderildi...");
+                    }
 
                     await _channel!.BasicAckAsync(@event.DeliveryTag, multiple: false);
                 }
