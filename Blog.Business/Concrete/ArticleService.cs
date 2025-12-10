@@ -2,6 +2,7 @@
 using Blog.Business.Abstract;
 using Blog.Business.Lang;
 using Blog.Core.Results;
+using Blog.Core.Utilities;
 using Blog.Dto.Article;
 using Blog.Entities.Entities;
 using Blog.Repository.EntityFramework.Abstract.UnitOfWork;
@@ -36,9 +37,11 @@ namespace Blog.Business.Concrete
 
         public async Task<Result> Add(ArticleAddDto articleAddDto)
         {
+            articleAddDto.Thumbnail = articleAddDto.ThumbnailBase64.ToWriteImage("wwwroot/images/articles");
             Article article = _mapper.Map<Article>(articleAddDto);
             await _unitOfWork.Articles.AddAsync(article);
             await _unitOfWork.SaveAsync();
+
 
             var addedArticle = await _unitOfWork.Articles.GetAsync(x => x.Id == article.Id, x => x.Category.ParentCategory, x => x.User);
             var articleDto = _mapper.Map<ArticleDto>(addedArticle);

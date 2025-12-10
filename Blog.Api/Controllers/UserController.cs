@@ -69,7 +69,7 @@ namespace Blog.APi.Controllers
             }
             return Ok(res);
         }
-
+        [AuthorizeFilter("Admin")]
         [HttpGet("getlist")]
         public async Task<IActionResult> GetList()
         {

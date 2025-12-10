@@ -55,7 +55,7 @@ namespace Blog.APi.Controllers
         }
 
         [AuthorizeFilter("Admin")]
-        [HttpDelete("delete")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var res = await _commentService.Delete(id);

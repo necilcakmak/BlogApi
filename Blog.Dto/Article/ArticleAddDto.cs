@@ -12,6 +12,7 @@ public class ArticleAddDto
     public required string Content { get; set; }
 
     public required string Thumbnail { get; set; }
+    public required string ThumbnailBase64 { get; set; }
 
     public DateTime PublishedDate { get; set; }
 

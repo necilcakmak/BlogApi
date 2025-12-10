@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Blog.Api.Filters;
 using Blog.Business.Abstract;
+using Blog.Core.Results;
 using Blog.Core.Utilities;
 using Blog.Dto.Article;
 using Microsoft.AspNetCore.Authorization;
@@ -29,6 +30,11 @@ namespace Blog.APi.Controllers
             if (!res.Success)
             {
                 return BadRequest(res);
+            }
+            var articleDto = res as DataResult<ArticleDto>;
+            if (!string.IsNullOrEmpty(articleDto.Data.Thumbnail))
+            {
+                articleDto.Data.ImageUrl = $"{Request.Scheme}://{Request.Host}/images/articles/{articleDto.Data.Thumbnail}";
             }
             return Ok(res);
         }

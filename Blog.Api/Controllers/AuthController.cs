@@ -1,6 +1,8 @@
 ﻿using Asp.Versioning;
 using Blog.Business.Abstract;
+using Blog.Core.Results;
 using Blog.Dto.Auth;
+using Blog.Dto.Token;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -29,6 +31,16 @@ namespace Blog.APi.Controllers
             {
                 return BadRequest(res);
             }
+            var token = res as DataResult<AccessToken>;
+            Response.Cookies.Append("authToken", token.Data.Token, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,                // HTTPS için true
+                SameSite = SameSiteMode.None, // Cross-origin izin
+                Expires = token.Data.Expiration,
+                Path = "/"
+            });
+
             return Ok(res);
         }
 
@@ -47,7 +59,7 @@ namespace Blog.APi.Controllers
             {
                 return BadRequest(res);
             }
-            
+
             return Ok(res);
         }
 

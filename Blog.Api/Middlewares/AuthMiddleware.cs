@@ -21,7 +21,8 @@ namespace Blog.APi.Middlewares
         {
             try
             {
-                var token = context.Request.Headers["Authorization"].ToString();
+                var token = context.Request.Cookies["authToken"] ?? context.Request.Headers.Authorization.ToString();
+                ;
                 if (!string.IsNullOrEmpty(token))
                 {
                     if (!token.ValidateToken())
@@ -33,7 +34,7 @@ namespace Blog.APi.Middlewares
                         return;
                     }
                 }
-               
+
                 await _next.Invoke(context);
             }
             catch (Exception ex)

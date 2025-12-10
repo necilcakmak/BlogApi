@@ -1,6 +1,6 @@
 # Proje Hakkında
 Güncel .Net versionu ve paketleri ile temel olması açısından bir çok yaklaşımı ele alarak hazırlanmış bir Rest APİ.
-Uygulama olarak Blog uygulaması üzerine code first yaklaşımı ile postgres db kullanılmıştır. Ön yüz olarak [React](https://github.com/necilcakmak/blogui) ile çalışması devam etmektedir.
+Uygulama olarak Blog uygulaması üzerine code first yaklaşımı ile postgres db kullanılmıştır. Ön yüz olarak [React](https://github.com/necilcakmak/blog.ui) ile çalışması devam etmektedir.
 
 # Uygulamayı Başlatmak
 

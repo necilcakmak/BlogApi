@@ -5,6 +5,7 @@ using Blog.Entities.Entities;
 using Blog.Repository.EntityFramework.Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NuGet.Common;
 using System.Net;
 
@@ -22,18 +23,19 @@ namespace Blog.Api.Filters
             this.RolValue = RolValue;
         }
 
-        public override async void OnActionExecuting(ActionExecutingContext context)
+        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var key = context.HttpContext.Request.Headers.Authorization.ToString();
-            if (string.IsNullOrEmpty(key))
+            var token = context.HttpContext.Request.Cookies["authToken"] ?? context.HttpContext.Request.Headers.Authorization.ToString();
+            ;
+            if (string.IsNullOrEmpty(token))
             {
                 context.Result = new UnauthorizedObjectResult(new Result(false, "UnAuthorizedRequest"));
                 return;
             }
-            var service = context.HttpContext.RequestServices;
-            var _redisService = service.GetService<IRedisService>();
 
-            var redisKey = key.TokenToRedisId().ToString();
+            var _redisService = context.HttpContext.RequestServices.GetService<IRedisService>();
+
+            var redisKey = token.TokenToRedisId().ToString();
             var user = _redisService.Get<User>(redisKey);
             if (user == null || user.RoleName != "Admin" && user.RoleName != RolValue)
             {
@@ -42,7 +44,8 @@ namespace Blog.Api.Filters
             }
 
             BlogDbContext.UserId = user.Id;
-            base.OnActionExecuting(context);
+            await next();
         }
+
     }
 }

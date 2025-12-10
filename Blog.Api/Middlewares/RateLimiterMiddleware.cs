@@ -15,7 +15,7 @@ namespace Blog.Api.Middlewares
                  factory: partition => new FixedWindowRateLimiterOptions
                  {
                      AutoReplenishment = true,
-                     PermitLimit = 20,
+                     PermitLimit = 50,
                      QueueLimit = 2,
                      QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
                      Window = TimeSpan.FromMinutes(1)//1 dk da 5 requeste izin verdim(PermitLimit)

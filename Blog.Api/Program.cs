@@ -116,6 +116,14 @@ app.UseRateLimiter();
 
 app.UseRouting();
 
+
+
+
+
+
+app.UseHttpsRedirection();
+
+
 #region CORS Settings
 app.UseCors(options => options
 .WithOrigins("http://20.124.207.158", "http://localhost", "https://localhost:7064", "http://localhost:8080", "http://localhost:5000", "http://localhost:4000", "http://localhost:3000")
@@ -125,20 +133,19 @@ app.UseCors(options => options
 );
 #endregion
 
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder => appBuilder.UseMiddleware<AuthMiddleware>());
+
+app.UseStaticFiles();
+
 // Health Checks
 app.MapHealthChecks("/health", new HealthCheckOptions
 {
     Predicate = _ => true,
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
-
-
-app.UseStaticFiles();
-//app.UseHttpsRedirection();
-//app.UseAuthentication();
-//app.UseAuthorization();
-
-app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder => appBuilder.UseMiddleware<AuthMiddleware>());
 
 app.UseEndpoints(endpoints =>
 {

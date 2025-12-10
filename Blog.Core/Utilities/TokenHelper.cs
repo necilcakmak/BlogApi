@@ -39,7 +39,10 @@ namespace Blog.Core.Utilities
                 audience: tokenOptions.Audience,
                 expires: DateTime.Now.AddMinutes(TokenSettings.AccessTokenExpiration),
                 notBefore: DateTime.Now,
-                claims: new List<Claim> { new Claim(type: ClaimTypes.NameIdentifier, value: redisKey) },
+                claims: [
+                    new(type: "RedisKey", value: redisKey) ,
+                    new(type: "Role", value: user.RoleName) ,
+                ],
                 signingCredentials: signingCredentials
                 );
             return jwt;
@@ -81,7 +84,7 @@ namespace Blog.Core.Utilities
                 var handler = new JwtSecurityTokenHandler();
                 var token = handler.ReadJwtToken(jwt);
                 var AuthenticationClaim = token.Claims.ToList();
-                string userId = token.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+                string userId = token.Claims.First(x => x.Type == "RedisKey").Value;
                 return new Guid(userId);
             }
             catch (Exception)

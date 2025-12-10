@@ -30,5 +30,20 @@ namespace Blog.Core.Utilities
             };
             return JsonConvert.SerializeObject(obje, settings);
         }
+        public static string ToWriteImage(this string value, string pathName)
+        {
+            if (string.IsNullOrEmpty(value))
+                return "default.jpg";
+
+            var bytes = Convert.FromBase64String(value
+                .Replace("data:image/jpeg;base64,", "")
+                .Replace("data:image/png;base64,", ""));
+
+            var fileName = Guid.NewGuid() + ".jpg";
+            var filePath = Path.Combine(pathName, fileName);
+            File.WriteAllBytes(filePath, bytes);
+            return fileName;
+
+        }
     }
 }
