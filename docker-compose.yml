@@ -1,11 +1,15 @@
 version: "3.9"
 
+networks:
+  app-network:
+    driver: bridge
+
 services: 
   api_service:
     container_name: api_container
     image: necilcakmak/blog:api
     build: 
-      context: .
+      context: .  
       dockerfile: Blog.Api/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
@@ -17,31 +21,54 @@ services:
       - upload_images:/BlogApi/images
     ports: 
       - "44322:80"
+    networks:
+      - app-network
+    restart: always
+
+  blog_ui:
+    container_name: ui_container
+    image: necilcakmak/blog:ui
+    build:
+      context: ./Blog.ui          
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=https://necilcakmak.com/api
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    depends_on:
+      - api_service
     restart: always
 
   monitoring_service:
     container_name: monitoring_container
     image: necilcakmak/blog:monitoring
     build: 
-      context: .
+      context: .  
       dockerfile: Blog.MonitoringService/Dockerfile   
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:80
     ports: 
       - "44395:80"
+    networks:
+      - app-network
     restart: always
 
   worker_service:
     container_name: worker_container
     image: necilcakmak/blog:worker
     build: 
-      context: .
+      context: .  
       dockerfile: Blog.WorkerService/Dockerfile  
     depends_on:
       - rabbitmq_service
     ports: 
       - "44324:80"
+    networks:
+      - app-network
     restart: always
 
   pg_service:
@@ -55,6 +82,8 @@ services:
       - "5432:5432"
     volumes:
       - db_volume:/var/lib/postgresql
+    networks:
+      - app-network
     restart: always
 
   pgadmin_service:
@@ -67,6 +96,8 @@ services:
       - dbadmin_volume:/var/lib/pgadmin
     ports:
       - "5050:80"
+    networks:
+      - app-network
     restart: always
 
   redis_service:
@@ -74,6 +105,8 @@ services:
     image: redis:6.2-alpine
     ports:
       - "6379:6379"
+    networks:
+      - app-network
     restart: always
 
   rabbitmq_service:
@@ -89,6 +122,8 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    networks:
+      - app-network
     restart: always
 
 volumes:
