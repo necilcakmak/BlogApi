@@ -126,6 +126,22 @@ services:
       - app-network
     restart: always
 
+  nginx:
+    container_name: nginx_container
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/certs:/etc/nginx/certs
+    depends_on:
+      - blog_ui
+      - api_service
+    networks:
+      - app-network
+    restart: always
+
 volumes:
   upload_images:
   db_volume:
