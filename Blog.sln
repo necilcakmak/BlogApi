@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
 VisualStudioVersion = 18.3.11222.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Api", "Blog.APi\Blog.Api.csproj", "{0C6970C7-364F-42D3-B27A-D7AAFC0024DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Api", "Blog.Api\Blog.Api.csproj", "{0C6970C7-364F-42D3-B27A-D7AAFC0024DB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Core", "Blog.Core\Blog.Core.csproj", "{73E06B65-0E48-4846-AD04-977F8AEB18A8}"
 EndProject
