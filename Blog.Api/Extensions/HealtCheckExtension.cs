@@ -13,7 +13,7 @@ namespace Blog.Api.Extensions
             var redisConnectionString = $"{redisHost}:{redisPort}";
 
             var rabbitMqUri = configuration.GetConnectionString("RabbitMQ")
-                              ?? throw new InvalidOperationException("RabbitMQ bağlantı dizesi yapılandırmada bulunamadı.");
+                              ?? throw new InvalidOperationException("RabbitMQ bağlantı dizesi yapılandırmada bulunamadı."); 
 
             var postgreSqlConnection = configuration.GetConnectionString("BlogDB")
                                        ?? throw new InvalidOperationException("BlogDB bağlantı dizesi yapılandırmada bulunamadı.");
