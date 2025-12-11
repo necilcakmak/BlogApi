@@ -1,4 +1,3 @@
-version: "3.9"
 
 networks:
   app-network:
@@ -16,8 +15,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:80
     depends_on:
-      - pg_service
-      - pgadmin_service
+      pg_service:
+        condition: service_healthy
+      rabbitmq_service:
+        condition: service_healthy
     volumes:
       - upload_images:/app/wwwroot/images
     networks:
@@ -80,10 +81,15 @@ services:
       POSTGRES_PASSWORD: 1234
       POSTGRES_DB: BlogDB
     volumes:
-      - db_volume:/var/lib/postgresql/data
+      - db_volume:/var/lib/postgresql/data/pgdata
     networks:
       - app-network
     restart: always
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "root", "-d", "BlogDB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # ---------- pgAdmin ----------
   pgadmin_service:
@@ -121,6 +127,11 @@ services:
     networks:
       - app-network
     restart: always
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   # ---------- Caddy ----------
   caddy:

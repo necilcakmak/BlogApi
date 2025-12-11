@@ -11,9 +11,29 @@ namespace Blog.Api.Extensions
             var redisHost = configuration.GetValue<string>("RedisSettings:Host");
             var redisPort = configuration.GetValue<string>("RedisSettings:Port");
             var redisConnectionString = $"{redisHost}:{redisPort}";
+            const int MaxRetries = 10;
+            const int DelayInSeconds = 5;
+            string rabbitMqUri = string.Empty;
+            for (int i = 0; i < MaxRetries; i++)
+            {
+                try
+                {
+                    rabbitMqUri = configuration.GetConnectionString("RabbitMQ")
+                            ?? throw new InvalidOperationException("RabbitMQ bağlantı dizesi yapılandırmada bulunamadı.");
+                    Console.WriteLine("RabbitMQ bağlantısı başalı");
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"RabbitMQ bağlantısı başarısız. ({i + 1}/{MaxRetries}). {DelayInSeconds} saniye sonra tekrar denenecek. Hata: {ex.Message}");
+                    if (i == MaxRetries - 1)
+                    {
+                        throw;
+                    }
+                    Thread.Sleep(TimeSpan.FromSeconds(DelayInSeconds));
+                }
+            }
 
-            var rabbitMqUri = configuration.GetConnectionString("RabbitMQ")
-                              ?? throw new InvalidOperationException("RabbitMQ bağlantı dizesi yapılandırmada bulunamadı."); 
 
             var postgreSqlConnection = configuration.GetConnectionString("BlogDB")
                                        ?? throw new InvalidOperationException("BlogDB bağlantı dizesi yapılandırmada bulunamadı.");
