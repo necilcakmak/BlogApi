@@ -61,54 +61,6 @@ namespace Blog.Repository.EntityFramework.Mapping
                 CommentCount = 2,
                 Slug="ilk-makale",
                 Keywords = "{}"
-            }, new Article
-            {
-                Id = new Guid("15cd7fe9-3d73-4028-b3f1-0e8a09112570"),
-                IsActive = true,
-                CreatedDate = DateTime.Now.ToUniversalTime(),
-                UpdatedDate = DateTime.Now.ToUniversalTime(),
-                UserId = new Guid("45b533cd-ed21-4eb7-bb90-8838b6f9486c"),
-                CategoryId = new Guid("5533e9a6-186f-4a3d-9ef4-63a2f7c02eb2"),
-                PublishedDate = DateTime.Now.ToUniversalTime(),
-                Title = "ikinci makale",
-                Content = "ikinci makalenin içeriği",
-                Thumbnail = "blog2.jpg",
-                LikeCount = 25,
-                CommentCount = 3,
-                Slug = "ikinci-makale",
-                Keywords = "{}"
-            }, new Article
-            {
-                Id = new Guid("d1267b3b-c386-4481-804b-17c38c28d122"),
-                IsActive = true,
-                CreatedDate = DateTime.Now.ToUniversalTime(),
-                UpdatedDate = DateTime.Now.ToUniversalTime(),
-                UserId = new Guid("45b533cd-ed21-4eb7-bb90-8838b6f9486c"),
-                CategoryId = new Guid("1bbc4e68-3e73-4f11-bd09-11ba71b5b582"),
-                PublishedDate = DateTime.Now.ToUniversalTime(),
-                Title = "üçüncü makale",
-                Content = "üçüncü makalenin içeriği",
-                Thumbnail = "blog3.jpg",
-                LikeCount = 11,
-                CommentCount = 1,
-                Slug = "ucuncu-makale",
-                Keywords = "{}"
-            }, new Article
-            {
-                Id = new Guid("ddb5c34f-518c-4189-ae3a-fe9103558500"),
-                IsActive = true,
-                CreatedDate = DateTime.Now.ToUniversalTime(),
-                UpdatedDate = DateTime.Now.ToUniversalTime(),
-                UserId = new Guid("c91266a4-35d3-4b60-89aa-6fa26c33c908"),
-                CategoryId = new Guid("1bbc4e68-3e73-4f11-bd09-11ba71b5b582"),
-                PublishedDate = DateTime.Now.ToUniversalTime(),
-                Title = "dördüncü makale",
-                Content = "dördüncü makalenin içeriği",
-                Thumbnail = "blog4.jpg",
-                LikeCount = 10,
-                CommentCount = 5,
-                Slug = "dorduncu-makale",
-                Keywords = "{}"
             });
 
         }

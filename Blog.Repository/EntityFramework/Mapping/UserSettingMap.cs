@@ -39,27 +39,6 @@ namespace Blog.Repository.EntityFramework.Mapping
                     UserId = new Guid("c91266a4-35d3-4b60-89aa-6fa26c33c908"),
                     ReceiveMail = true,
                     NewBlog = true,              
-                },
-                new UserSetting
-                {
-                    Id = new Guid("e88c8860-4b9a-4736-9ed3-5cf23a75a86b"),
-                    CreatedDate = DateTime.Now.ToUniversalTime(),
-                    UpdatedDate = DateTime.Now.ToUniversalTime(),
-                    IsActive = true,
-                    UserId = new Guid("45b533cd-ed21-4eb7-bb90-8838b6f9486c"),
-                    ReceiveMail = true,
-                    NewBlog = true,
-
-                },
-                new UserSetting
-                {
-                    Id = new Guid("a6bacb41-6666-4f2c-b5c8-afdac80f2026"),
-                    CreatedDate = DateTime.Now.ToUniversalTime(),
-                    UpdatedDate = DateTime.Now.ToUniversalTime(),
-                    IsActive = true,
-                    UserId = new Guid("30d00d67-4f1e-405f-a992-f9ef825550c8"),
-                    ReceiveMail = true,
-                    NewBlog = true,
                 });
         }
     }

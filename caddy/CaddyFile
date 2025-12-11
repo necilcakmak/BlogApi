@@ -1,0 +1,8 @@
+
+necilcakmak.com {
+    reverse_proxy ui_container:3000
+}
+
+necilcakmak.com/api {
+    reverse_proxy api_container:80
+}

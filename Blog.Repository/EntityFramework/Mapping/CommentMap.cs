@@ -42,25 +42,6 @@ namespace Blog.Repository.EntityFramework.Mapping
                 ArticleId = new Guid("507462a3-5639-4573-b7d9-306d560a7ca8"),
                 UserId = new Guid("c91266a4-35d3-4b60-89aa-6fa26c33c908"),
 
-            }, new Comment
-            {
-                Id = new Guid("e8acb53c-0f5d-44c6-bc2d-14f2afce41c7"),
-                IsActive = true,
-                CreatedDate = DateTime.Now.ToUniversalTime(),
-                UpdatedDate = DateTime.Now.ToUniversalTime(),
-                Text = "örnek yorum 3",
-                ArticleId = new Guid("15cd7fe9-3d73-4028-b3f1-0e8a09112570"),
-                UserId = new Guid("45b533cd-ed21-4eb7-bb90-8838b6f9486c"),
-
-            }, new Comment
-            {
-                Id = new Guid("fcda26c7-2469-415f-b2bf-7b2571c11e4a"),
-                IsActive = true,
-                CreatedDate = DateTime.Now.ToUniversalTime(),
-                UpdatedDate = DateTime.Now.ToUniversalTime(),
-                Text = "örnek yorum 2",
-                ArticleId = new Guid("d1267b3b-c386-4481-804b-17c38c28d122"),
-                UserId = new Guid("c91266a4-35d3-4b60-89aa-6fa26c33c908"),
             });
         }
     }

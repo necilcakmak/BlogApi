@@ -62,41 +62,7 @@ namespace Blog.Repository.EntityFramework.Mapping
                     IsApproved = true,
                     RoleName = "Admin",
                     ImageName = "DefaultUser.jpg",
-                },
-                new User
-                {
-                    Id = new Guid("45b533cd-ed21-4eb7-bb90-8838b6f9486c"),
-                    CreatedDate = DateTime.Now.ToUniversalTime(),
-                    UpdatedDate = DateTime.Now.ToUniversalTime(),
-                    IsActive = true,
-                    UserName = "ömergürsoy",
-                    LastName = "Gürsoy",
-                    FirstName = "Ömer",
-                    Email = "ömer@ömer.com",
-                    Password = "$2a$11$uNx/XA0odP6BAp8xKqtkausOYVPqmGNmq1GYK/y0E6OgQNb/7XIfC",
-                    Gender = false,
-                    BirthDate = DateTime.Parse("1990-11-18").ToUniversalTime(),
-                    IsApproved = false,
-                    RoleName = "Admin",
-                    ImageName = "DefaultUser.jpg",
-                },
-                new User
-                {
-                    Id = new Guid("30d00d67-4f1e-405f-a992-f9ef825550c8"),
-                    CreatedDate = DateTime.Now.ToUniversalTime(),
-                    UpdatedDate = DateTime.Now.ToUniversalTime(),
-                    IsActive = true,
-                    UserName = "serverdogan",
-                    LastName = "Doğan",
-                    FirstName = "Server",
-                    Email = "server@dogan.com",
-                    Password = "$2a$11$uNx/XA0odP6BAp8xKqtkausOYVPqmGNmq1GYK/y0E6OgQNb/7XIfC",
-                    Gender = false,
-                    BirthDate = DateTime.Parse("1985-9-25").ToUniversalTime(),
-                    IsApproved = false,
-                    RoleName = "User",
-                    ImageName = "DefaultUser.jpg",
-                }); ;
+                });
         }
     }
 }

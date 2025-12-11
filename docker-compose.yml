@@ -31,9 +31,10 @@ services:
     build:
       context: ./Blog.Ui          
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: https://necilcakmak.com/api
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=https://necilcakmak.com/api
     ports:
       - "3000:3000"
     networks:
@@ -126,23 +127,26 @@ services:
       - app-network
     restart: always
 
-  nginx:
-    container_name: nginx_container
-    image: nginx:latest
+  caddy:
+    container_name: caddy_container
+    image: caddy:latest
+    restart: always
     ports:
       - "80:80"
       - "443:443"
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./nginx/certs:/etc/nginx/certs
+    networks:
+      - app-network
     depends_on:
       - blog_ui
       - api_service
-    networks:
-      - app-network
-    restart: always
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
 
 volumes:
   upload_images:
   db_volume:
   dbadmin_volume:
+  caddy_data:
+  caddy_config:
