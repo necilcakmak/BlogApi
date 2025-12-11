@@ -33,6 +33,7 @@ services:
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_API_URL: https://necilcakmak.com/api
+        NEXT_PUBLIC_IMAGE_URL: https://necilcakmak.com/images/
     environment:
       - NODE_ENV=production
     ports:

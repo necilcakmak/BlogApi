@@ -120,7 +120,7 @@ export default function ArticleDetailPage() {
           {article.user.imageName ? (
             <img
               src={
-                "https://localhost:44322/images/articles/" +
+                BASE_IMAGE_URL +
                 article.user.imageName
               }
               alt={`${article.user.firstName} ${article.user.lastName}`}

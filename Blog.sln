@@ -28,11 +28,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Caddy", "Caddy", "{27B4C3E4-E397-4EFB-9A21-53378393E383}"
-	ProjectSection(SolutionItems) = preProject
-		CaddyFile = CaddyFile
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,9 +73,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{27B4C3E4-E397-4EFB-9A21-53378393E383} = {87A64350-06D9-4F5A-9213-71B6D1C43BE7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9CDF39E3-194E-4CC6-8622-6AE7B8ED917F}

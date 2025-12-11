@@ -9,9 +9,14 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 
-# → Build arg ekle
+# Build arg ekle
 ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_IMAGE_URL
+
+# ENV olarak ayarla
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_IMAGE_URL=$NEXT_PUBLIC_IMAGE_URL
+
 
 RUN npm run build
 
