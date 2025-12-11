@@ -3,13 +3,17 @@
 		<TargetFramework>net10.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<EnableDefaultContentItems>false</EnableDefaultContentItems>
 	</PropertyGroup>
+
+	<!-- wwwroot altındaki tüm statik dosyaları publish'a dahil et -->
 	<ItemGroup>
 		<Content Include="wwwroot\**\*">
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
 	</ItemGroup>
 
+	<!-- NuGet paketleri -->
 	<ItemGroup>
 		<PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
 		<PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
@@ -30,24 +34,28 @@
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="10.0.0-rc.1.25458.5" />
 		<PackageReference Include="System.Threading.RateLimiting" Version="10.0.0" />
 	</ItemGroup>
+
+	<!-- Proje referansları -->
 	<ItemGroup>
 		<ProjectReference Include="..\Blog.Business\Blog.Business.csproj" />
 		<ProjectReference Include="..\Blog.Core\Blog.Core.csproj" />
 		<ProjectReference Include="..\Blog.Dto\Blog.Dto.csproj" />
 	</ItemGroup>
+
+	<!-- Resource dosyaları -->
 	<ItemGroup>
 		<Compile Update="Properties\Resources.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Resources.resx</DependentUpon>
 		</Compile>
-	</ItemGroup>
-	<ItemGroup>
 		<EmbeddedResource Update="Properties\Resources.resx">
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
+
+	<!-- Klasörleri include et -->
 	<ItemGroup>
 		<Folder Include="Areas\Admin\Data\" />
 		<Folder Include="Areas\Admin\Models\" />
