@@ -1,8 +1,18 @@
+api.necilcakmak.com {
+    reverse_proxy api_container:80
+}
+
+pgadmin.necilcakmak.com {
+    reverse_proxy pgadmin_container:80
+}
+
+rabbitmq.necilcakmak.com {
+    reverse_proxy rabbitmq_container:15672
+}
 
 necilcakmak.com {
     reverse_proxy ui_container:3000
-}
-
-necilcakmak.com/api/* {
-    reverse_proxy api_container:80
+    handle /images/* {
+        reverse_proxy api_container:80
+    }
 }

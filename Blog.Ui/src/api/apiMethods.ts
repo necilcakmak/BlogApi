@@ -13,6 +13,7 @@ export const login = (payload: LoginDto) =>
   postData<AccessToken>("auth/login", payload);
 export const register = (payload: RegisterDto) =>
   postData<AccessToken>("auth/register", payload);
+export const logout = () => getData("auth/logout");
 
 export const getArticles = () => getData<ArticleDto[]>("article/getList");
 export const getArticle = (id: string) =>

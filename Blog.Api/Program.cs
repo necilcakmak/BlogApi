@@ -125,8 +125,14 @@ app.UseHttpsRedirection();
 
 
 #region CORS Settings
+var allowedOrigins = new[]
+{
+    "https://necilcakmak.com",
+    "https://api.necilcakmak.com",
+    "http://localhost:3000",
+};
 app.UseCors(options => options
-.WithOrigins("http://20.124.207.158", "http://localhost", "https://localhost:7064", "http://localhost:8080", "http://localhost:5000", "http://localhost:4000", "http://localhost:3000")
+.WithOrigins(allowedOrigins)
 .AllowAnyHeader()
 .AllowAnyMethod()
 .AllowCredentials()
